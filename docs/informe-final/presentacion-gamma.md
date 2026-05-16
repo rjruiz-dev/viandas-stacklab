@@ -8,7 +8,7 @@
 
 **Título:** Viandas StackLab: De Excel al 95%
 
-**Subtítulo:** Cómo una empresa de software en Santa Fe pierde entre $71.000 y $129.000 ARS al mes pidiendo viandas con planillas Excel — y qué vamos a hacer al respecto.
+**Subtítulo:** Cómo una empresa de software en Santa Fe pierde entre $71.000 y $129.000 ARS al mes pidiendo viandas con planillas Excel — y qué voy a hacer al respecto.
 
 **Detalles:**
 - Empresa: StackLab (software, ~50 empleados)
@@ -102,7 +102,7 @@ El ciclo semanal actual:
 
 **¿Por qué esta métrica?**
 - Refleja el outcome real (no output): ¿se resolvió el problema?
-- Es "leading": podemos actuar antes del deadline si la tasa baja
+- Es "leading": puedo actuar antes del deadline si la tasa baja
 - Alinea a todos: Martín quiere comer, Lucía no quiere perseguir, la empresa no quiere tirar plata
 
 **Métricas de soporte:**
@@ -198,7 +198,7 @@ El ciclo semanal actual:
 
 ## SLIDE 9: Criterios de Decisión (GO / NO-GO)
 
-**Título:** Semana 8: decidimos si seguimos o pivotamos
+**Título:** Semana 8: decido si sigo o pivoteo
 
 **Contenido:**
 

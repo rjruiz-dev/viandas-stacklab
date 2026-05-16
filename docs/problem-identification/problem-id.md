@@ -299,7 +299,7 @@ Soy empleado de StackLab y sufro esto desde hace 2 años. Charlé informalmente 
 | **Won't** (fuera del MVP — explícito) | Pago online / integración con medios de pago | Las viandas las paga la empresa, no el empleado. No hay transacción económica en el sistema. |
 | **Won't** | App móvil nativa (iOS/Android) | Web responsive es suficiente para validar. El 95% del uso va a ser desde el celular o la laptop del trabajo. |
 | **Won't** | Integración con sistemas de RRHH (altas/bajas de empleados, legajos) | Overkill absoluto para el MVP. Lucía maneja la lista de empleados manualmente sin problema. |
-| **Won't** | Portal del proveedor (que el proveedor pueda loguearse y ver pedidos) | El consolidado se exporta y se envía por email. No necesitamos construir un B2B para validar la hipótesis. |
+| **Won't** | Portal del proveedor (que el proveedor pueda loguearse y ver pedidos) | El consolidado se exporta y se envía por email. No necesito construir un B2B para validar la hipótesis. |
 | **Won't** | Múltiples comedores o sucursales | StackLab tiene una sola sede. No hay necesidad de multi-tenancy en el MVP. |
 | **Won't** | Notificaciones push | El MVP usa email/Slack para recordatorios. Las notificaciones push requieren app nativa o service workers complejos. |
 

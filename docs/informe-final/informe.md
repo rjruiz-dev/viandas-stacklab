@@ -14,7 +14,7 @@
 
 StackLab, una empresa de software con aproximadamente 50 empleados en Santa Fe, cuenta con un comedor interno que ofrece viandas a su personal. El proceso actual de gestión de pedidos —basado en planillas Excel compartidas y recordatorios manuales por email— genera ineficiencias cuantificables y fricción interpersonal.
 
-Este informe cuenta cómo detectamos el problema, qué encontramos hablando con los empleados y con Lucía (la que gestiona el comedor), y qué proponemos hacer para solucionarlo. Lo armamos en 4 semanas de observar el día a día, hacer entrevistas y juntar datos reales del funcionamiento actual.
+Este informe cuenta cómo detecté el problema, qué encontré hablando con los empleados y con Lucía (la que gestiona el comedor), y qué propongo hacer para solucionarlo. Lo armé en 4 semanas de observar el día a día, hacer entrevistas y juntar datos reales del funcionamiento actual.
 
 **Hallazgos principales**:
 
@@ -159,7 +159,7 @@ NSM = (Viandas confirmadas antes del deadline semanal / Total de empleados que a
 
 ### 4.2 Justificación de la Elección
 
-Elegimos esta métrica porque cumple tres cosas que necesitamos:
+Elegí esta métrica porque cumple tres cosas que necesito:
 
 1. **Refleja directamente el valor del producto**: El propósito central del sistema es eliminar los olvidos de confirmación. Cada punto porcentual por debajo del 95% representa un empleado que se quedó sin almuerzo, una vianda desperdiciada, o tiempo administrativo extra para Lucía. La métrica captura el outcome, no el output.
 
@@ -181,7 +181,7 @@ Elegimos esta métrica porque cumple tres cosas que necesitamos:
 
 ### 5.1 Dashboard de Tracción — Visualizaciones Reales
 
-Acá están los gráficos que armamos con los datos que juntamos entre abril y mayo de 2026.
+Acá están los gráficos que armé con los datos que junté entre abril y mayo de 2026.
 
 > **Nota**: Las planillas originales fueron anonimizadas para proteger la privacidad de los empleados. La estructura y formato son idénticos a los utilizados en StackLab. Los datos cuantitativos se sustentan en observación directa y time-tracking auto-reportado.
 
@@ -233,7 +233,7 @@ Acá están los gráficos que armamos con los datos que juntamos entre abril y m
 
 ### 6.2 Criterios de Decisión (GO / NO-GO)
 
-Cuando terminemos la Etapa 4 (semana 8-10 del proyecto), vamos a evaluar así:
+Cuando termine la Etapa 4 (semana 8-10 del proyecto), voy a evaluar así:
 
 | Resultado | Criterio |
 |-----------|---------|
@@ -315,4 +315,4 @@ La semana que viene largamos 🚀
 
 ---
 
-*Este informe lo armamos basándonos en lo que vemos todos los días en el trabajo. Hablamos con compañeros reales, miramos planillas reales, y contamos lo que pasa. Los nombres (Martín, Lucía, Diego, Sofía) y la empresa "StackLab" son ficticios para cuidar la privacidad de todos, pero el problema y los números son reales.*
+*Este informe lo armé basándome en lo que veo todos los días en el trabajo. Hablé con compañeros reales, miré planillas reales, y cuento lo que pasa. Los nombres (Martín, Lucía, Diego, Sofía) y la empresa "StackLab" son ficticios para cuidar la privacidad de todos, pero el problema y los números son reales.*
