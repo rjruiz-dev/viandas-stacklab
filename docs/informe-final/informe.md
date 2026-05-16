@@ -92,6 +92,8 @@ Estas citas son de conversaciones reales de 15-20 minutos con compañeros de tra
 > *"Desde el celular ni lo intento porque la planilla se ve horrible. Espero a estar en la compu, abro el mail, busco el link, abro la planilla... y cuando llego son tantos pasos que lo dejo para después del almuerzo, y después me olvido por completo."*
 
 > *"La semana pasada fui a la oficina el viernes por una reunión que me avisaron el jueves a la tarde. Ya había pasado el deadline. Tuve que pedir delivery. $8.500 pesos tirados. Me dolió."*
+>
+> *"Otra cosa que me volvió loco: la planilla es compartida. Estoy buscando mi nombre, me cruzo con 'Roberto Sánchez' justo debajo de 'Rodrigo Sánchez', y sin querer le marco la vianda a Roberto pensando que era mi fila. Me di cuenta al otro día porque Roberto vino a reclamar que le habían pedido algo que él no quería. Es un desastre."*
 
 **Sofía Herrera** (Diseñadora UX, 29 años, cambia menús frecuentemente):
 
@@ -133,6 +135,8 @@ Como parte de la investigación, se recopilaron las planillas reales que utiliza
 4. **Sin integración con notificaciones**: Las planillas no están vinculadas a ningún sistema de recordatorio. Lucía debe cruzar mentalmente quién no confirmó y enviar mensajes individuales.
 
 5. **Gestión manual de feriados**: Los días feriados o no laborables Lucía los marca a mano en la planilla para que nadie pueda pedir viandas, ya que la empresa no trabaja esos días. Es un paso extra que se repite cada vez que hay feriado y no está automatizado.
+
+6. **Riesgo de editar la fila de otro empleado**: Al ser una planilla compartida donde todos editan simultáneamente, los empleados pueden confundirse de fila — especialmente cuando hay nombres similares o cuando la planilla se ve mal desde el celular. En una semana documentada, un empleado marcó la vianda de otro por error ("Rodrigo" confundió su fila con "Roberto"), generando un pedido incorrecto y una vianda no reclamada.
 
 ---
 

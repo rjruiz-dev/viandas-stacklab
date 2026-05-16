@@ -66,6 +66,7 @@
 
 - **08/05 09:30**: Martín pidió cambiar el viernes de C1 a P1 (post-deadline). Avisó por WhatsApp. Lucía actualizó manualmente.
 - **08/05 09:45**: Diego escribió "me olvidé del jueves, agregame C1". Lucía lo sumó.
+- **08/05 10:00**: Rodrigo Sánchez se confundió de fila y marcó C1 en la fila de Roberto Sánchez (fila 7) pensando que era la suya. Roberto ese día no asistía, así que quedó una vianda pedida de más que nadie reclamó.
 - **Sin confirmar**: María, Carlos, Facundo, Nicolás, Camila, Andrés, Matías, Paula, Carolina (algunos habitualmente no vienen, otros se olvidaron).
 
 ---
