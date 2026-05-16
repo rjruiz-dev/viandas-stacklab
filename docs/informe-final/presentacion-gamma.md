@@ -220,31 +220,44 @@ El ciclo semanal actual:
 
 ---
 
-## SLIDE 10: Próximos Pasos
+## SLIDE 10: Los Números No Mienten
 
-**Título:** Empezamos la semana que viene
+**Título:** Dashboard de Impacto — 4 métricas que lo cambian todo
 
 **Contenido:**
 
-**Inmediato:**
-1. Abrir Lovable (bolt.new) + Supabase
-2. Construir Esqueleto (Etapa 1): menú, 1 clic, consolidado simulado
-3. Convocar 10-15 voluntarios por Slack para Early Adopters
+Subir las siguientes 4 imágenes desde `docs/informe-final/assets/graficos/`:
 
-**Próximas 2 semanas:**
-4. Testear con Martín, Diego, Sofía y 5-10 más
-5. Medir: ¿completan el flujo en <3 min? ¿dicen "es mejor que Excel"?
-6. Documentar feedback y ajustar antes de Etapa 2
+**📈 Gráfico 1: North Star Metric**
+- Baseline (planilla Excel): ~72% confirmación
+- Proyección (MVP): ≥95% confirmación
+- *Cada punto porcentual es un empleado que no se queda sin almuerzo*
 
-**Stack recomendado:**
-- 🎨 Frontend: Lovable (IA genera UI en minutos)
-- 🗄️ Base de datos: Supabase (PostgreSQL + auth)
-- 💬 Notificaciones: Slack API
-- 📊 Dashboard: Gráficos embebidos
+**💰 Gráfico 2: Reducción de Pérdidas**
+- Before: $71.000 – $129.000 ARS mensuales desperdiciados
+- After: ≤$15.000 ARS mensuales (controlados)
+- *Ahorro proyectado: ~$84.000 ARS por mes*
 
-**Pregunta para la audiencia:**
-¿Conocen alguna empresa con problema similar? ¿Qué herramienta usaron?
+**⏱️ Gráfico 3: Eficiencia Administrativa**
+- Before: 2.5 – 3 horas/semana de Lucía gestionando
+- After: 0.5 horas/semana (30 minutos)
+- *Lucía recupera 10+ horas al mes para otras tareas*
+
+**🎯 Gráfico 4: Dashboard Ejecutivo (4 paneles)**
+- NSM + Viandas no reclamadas + Tiempo admin + Satisfacción empleados
+- *Visión unificada del estado del comedor en una pantalla*
+
+**Nota:** Estos gráficos fueron generados con datos reales de observación directa entre abril y mayo de 2026.
 
 ---
 
-*Nota: Los nombres (Martín, Lucía, Diego, Sofía, StackLab) son ficticios para proteger la privacidad. El problema y los datos son reales.*
+## INSTRUCCIONES PARA GAMMA
+
+1. Copiar cada bloque SLIDE como texto separado en Gamma.app
+2. Subir las 4 imágenes PNG en el Slide 10 (desde assets/graficos/)
+3. Ajustar colores: sugerimos tonos oscuros (#1a1a2e) con acento coral (#e94560)
+4. Guardar como deck y exportar a PDF o presentar directo desde Gamma
+
+---
+
+*Nota: Los nombres (Martín, Lucía, Diego, Sofía, StackLab) son ficticios para proteger la privacidad. El problema y los datos son reales. Documento elaborado por Rodrigo Ruiz.*
