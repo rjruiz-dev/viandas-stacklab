@@ -61,9 +61,10 @@ plt.close()
 fig, ax = plt.subplots(figsize=(10, 6))
 
 meses = ['Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago']
-perdidas_actual = [450, 380, 420, 350, 0, 0]  # Pre-MVP
-perdidas_proyectado = [450, 380, 420, 350, 150, 75]
-meta_perdidas = [75] * len(meses)
+# Valores en ARS (pesos argentinos)
+perdidas_actual = [129000, 108000, 118000, 99000, 0, 0]  # Pre-MVP
+perdidas_proyectado = [129000, 108000, 118000, 99000, 35000, 15000]
+meta_perdidas = [15000] * len(meses)
 
 idx_mvp_m = 4  # Jul inicia MVP
 
@@ -75,10 +76,10 @@ bars1 = ax.bar(x[:idx_mvp_m], perdidas_actual[:idx_mvp_m], width,
 bars2 = ax.bar(x[idx_mvp_m:], perdidas_proyectado[idx_mvp_m:], width,
                label='Con MVP', color=COLOR_PRIMARIO, alpha=0.8)
 
-ax.axhline(y=75, color=COLOR_SECUNDARIO, linestyle=':', linewidth=2, label='Meta (≤$75/mes)')
+ax.axhline(y=15000, color=COLOR_SECUNDARIO, linestyle=':', linewidth=2, label='Meta (≤$15.000 ARS/mes)')
 
 ax.set_xlabel('Mes', fontsize=12, fontweight='bold')
-ax.set_ylabel('Pérdida por Viandas Desperdiciadas (USD)', fontsize=12, fontweight='bold')
+ax.set_ylabel('Pérdida por Viandas Desperdiciadas (ARS)', fontsize=12, fontweight='bold')
 ax.set_title('Reducción de Pérdidas Económicas\nViandas No Reclamadas - StackLab', 
              fontsize=14, fontweight='bold', pad=20)
 ax.set_xticks(x)
@@ -87,8 +88,9 @@ ax.legend(loc='upper right', framealpha=0.9)
 ax.grid(True, alpha=0.3, axis='y')
 
 # Anotación de ahorro
-ahorro = 350 - 75
-ax.annotate(f'Ahorro proyectado:\n${ahorro}/mes', xy=(4.5, 150), xytext=(4.5, 250),
+ahorro = 99000 - 15000
+ax.annotate(f'Ahorro proyectado:\n${ahorro:,.0f} ARS/mes'.replace(',', '.'), 
+            xy=(4.5, 50000), xytext=(4.5, 80000),
             arrowprops=dict(arrowstyle='->', color=COLOR_SECUNDARIO),
             fontsize=11, color=COLOR_SECUNDARIO, fontweight='bold',
             ha='center')
