@@ -19,7 +19,7 @@
 
 ## 1. Claridad Conceptual
 
-> Antes de seguir, ubicá tu idea en la tabla. Confundir estos tres conceptos es la causa #1 de productos que nadie usa.
+> Antes de seguir, fijate bien: ¿tenés un problema real, una idea piola, o una oportunidad posta? Confundir estos tres es la causa #1 de que nadie use lo que construyas.
 
 | Concepto | Definición | Ejemplo (viandas StackLab) | ¿Es lo tuyo? |
 |----------|-----------|------------------------------|--------------|
@@ -45,11 +45,11 @@
 
 | Elemento | Guía | Tu respuesta |
 |----------|------|-------------|
-| **Contexto** | ¿En qué situación ocurre el problema? ¿Cuándo, dónde, bajo qué condiciones? | Cada semana en StackLab, una empresa de software con aproximadamente 50 empleados en Buenos Aires. El comedor contrata viandas de un proveedor externo. El ciclo semanal va de lunes (menú publicado) a jueves (cierre del consolidado diario) y viernes (entrega de viandas). |
+| **Contexto** | ¿En qué situación ocurre el problema? ¿Cuándo, dónde, bajo qué condiciones? | Cada semana en StackLab, una empresa de software con aproximadamente 50 empleados en Santa Fe. El comedor contrata viandas de un proveedor externo. El ciclo semanal va de lunes (menú publicado) a jueves (cierre del consolidado diario) y viernes (entrega de viandas). |
 | **Usuario objetivo** | ¿Quién lo experimenta? Persona específica, no segmento. Nombre, rol, situación. | **Martín Fernández**, 37 años, desarrollador en StackLab. Trabaja de lunes a viernes en la oficina, almuerza viandas del comedor. **Lucía Gómez**, 45 años, encargada de administración del comedor y RRHH. Gestiona la relación con el proveedor, consolida pedidos, maneja recordatorios. |
 | **Pain** | ¿Qué fricción concreta experimenta? Acción que no puede hacer o que hace mal. | Martín se olvida de confirmar su vianda antes del deadline (jueves 10 AM) a pesar de recibir recordatorios por email. Si se olvidó, se queda sin almuerzo. Si cambia de planes y necesita ir a la oficina a último momento, tampoco puede pedir. Si pidió y ese día no fue, su vianda queda en la heladera sin reclamar. Lucía pasa 2-3 horas semanales copiando datos entre emails y planillas Excel, enviando recordatorios manuales y persiguiendo a los empleados para que confirmen. |
 | **Frecuencia** | ¿Con qué regularidad ocurre? | Cada semana. Los olvidos ocurren 3-5 veces por semana. El trabajo administrativo de Lucía es fijo: 2-3 horas semanales, mínimo 8-12 horas al mes. |
-| **Impacto cuantificable** | ¿Qué pierde o le cuesta? Tiempo, dinero, clientes, reputación. | 3-5 viandas desperdiciadas por semana × ~$15-20 c/u = $225-$500/mes en comida que nadie come. Lucía pierde 8-12 horas/mes en tareas manuales de consolidación y seguimiento. Los empleados que se olvidan se quedan sin almuerzo o tienen que comprar a último momento. |
+| **Impacto cuantificable** | ¿Qué pierde o le cuesta? Tiempo, dinero, clientes, reputación. | 3-5 viandas desperdiciadas por semana × ~$5.500-6.000 ARS c/u = $71.000-$129.000 ARS/mes en comida que nadie come. Lucía pierde 8-12 horas/mes en tareas manuales de consolidación y seguimiento. Los empleados que se olvidan se quedan sin almuerzo o tienen que comprar delivery a último momento. |
 
 ### 2.2 La frase del problema
 
@@ -58,7 +58,7 @@
 **Formato:** `[Usuario] necesita [acción o resultado] porque [contexto + pain], lo cual genera [impacto cuantificable] con una frecuencia de [frecuencia].`
 
 **Tu frase:**
-> Martín y sus compañeros de StackLab —una empresa de software de aproximadamente 50 empleados— necesitan gestionar sus pedidos de viandas semanales sin depender de planillas Excel ni recordatorios por email que son ignorados, porque cada semana 3 a 5 personas se olvidan de confirmar o no pueden cambiar su pedido después del deadline del jueves, lo que genera entre $225 y $500 mensuales en viandas desperdiciadas y le consume a Lucía —la encargada del comedor— entre 2 y 3 horas semanales de consolidación manual y seguimiento.
+> Martín y sus compañeros de StackLab —una empresa de software de aproximadamente 50 empleados— necesitan gestionar sus pedidos de viandas semanales sin depender de planillas Excel ni recordatorios por email que nadie lee, porque cada semana 3 a 5 personas se olvidan de confirmar o no pueden cambiar su pedido después del deadline del jueves, lo que genera entre $71.000 y $129.000 ARS mensuales en viandas desperdiciadas y le consume a Lucía —la encargada del comedor— entre 2 y 3 horas semanales de consolidación manual y seguimiento.
 
 ---
 
@@ -76,17 +76,7 @@
 
 **Evidencia que sustenta los criterios:**
 ```
-Auto-reflexión estructurada como empleado de StackLab que sufre el problema en carne propia
-desde hace 2 años. Conversé informalmente con 3 compañeros de distintos equipos (Diego
-Martínez, backend; Sofía Herrera, UX; y otro compañero del equipo de QA). Los 3 confirmaron
-que se olvidaron de pedir al menos 2-3 veces en los últimos meses. Diego dijo textualmente:
-"Ya ni leo los emails de Lucía porque sé que llegan, los veo y digo 'después lo hago' y
-me olvido". Sofía comentó que ella pidió vianda un miércoles, el jueves le avisaron de
-una reunión externa a la mañana, y no pudo cancelar el pedido — la vianda quedó en la
-heladera. Observación directa del entorno: todos los viernes a las 14 hs la heladera del
-comedor tiene entre 2 y 4 viandas sin reclamar. Lucía confirmó (en charla informal) que
-odia tener que "perseguir" a la gente y que el Excel le come tiempo que podría usar en
-otras tareas.
+Soy empleado de StackLab y sufro esto desde hace 2 años. Charlé informalmente con 3 compañeros de distintos equipos (Diego, backend; Sofía, UX; y otro del equipo de QA). Los 3 me dijeron que se olvidaron de pedir al menos 2-3 veces en los últimos meses. Diego me dijo: "Ya ni leo los emails de Lucía, los veo y digo 'después lo hago' y me olvido". Sofía me contó que un miércoles pidió vianda, el jueves le avisaron de una reunión externa, y no pudo cancelar — la vianda quedó en la heladera. Todos los viernes a las 14 hs la heladera tiene entre 2 y 4 viandas sin reclamar. Lucía me dijo (en una charla de pasillo) que odia "tener que andar atrás de la gente" y que el Excel le come tiempo que podría usar en otras cosas.
 ```
 
 ---
@@ -110,13 +100,13 @@ otras tareas.
 **Pain principal:** `[x] Funcional  [ ] Emocional  [ ] Social`
 
 **Justificación:**
-> El pain funcional es el motor de todo lo demás. Si los empleados pudieran confirmar su vianda con mínima fricción y modificar su pedido hasta un horario razonable, los pains emocional (culpa, frustración) y social (ser "el que siempre se olvida", ser "la que persigue") se reducirían como consecuencia directa. Lucía no necesitaría enviar recordatorios si el sistema lo hiciera automáticamente. La conversación con Diego lo resume: "No es que no quiera pedir — es que cuando veo el email ya estoy en otra cosa y me olvido."
+> El pain funcional es el que mueve todo. Si los empleados pudieran confirmar su vianda fácil y cambiar el pedido hasta un rato antes, el resto de los problemas (la culpa, la frustración, el quedar mal) se solucionan solos. Lucía no tendría que andar mandando recordatorios si el sistema lo hace solo. Como me dijo Diego: "No es que no quiera pedir — es que cuando veo el email ya estoy en otra cosa y me olvido."
 
 ---
 
 ## 5. Alternativas y Workarounds Actuales
 
-> Tu competencia no es solo otra startup. Es cualquier cosa que la persona hace HOY para sobrevivir sin tu producto.
+> Tu competencia no es otra app. Es lo que la gente hace HOY para arreglárselas sin tu producto.
 
 ### 5.1 Alternativas existentes
 
@@ -131,10 +121,10 @@ otras tareas.
 > ¿Qué hack improvisado usa la persona HOY para no morir con el problema?
 
 **Workaround:**
-> Lucía publica la planilla de Google Sheets con el menú semanal cada lunes a las 9 AM. Envía el link por email a todos los empleados con el asunto "PEDIDO VIANDAS — Semana XX". El martes a las 10 AM envía un recordatorio. El miércoles a las 4 PM envía un SEGUNDO recordatorio con tono más urgente. Cuando alguien le dice por WhatsApp "Me olvidé, ¿puedo agregar?" ella lo anota manualmente en el Excel consolidado. El jueves a las 10 AM cierra la planilla y arma el consolidado para el proveedor. Si alguien le escribe a las 10:15 AM ya no puede agregarlo.
+> Lucía arma la planilla de Google Sheets con el menú semanal cada lunes a las 9 AM. Manda el link por email a todos con el asunto "PEDIDO VIANDAS — Semana XX". El martes a las 10 AM manda un recordatorio. El miércoles a las 4 PM manda OTRO recordatorio, esta vez más urgente. Cuando alguien le dice por WhatsApp "Me olvidé, ¿me agregás?" ella lo anota a mano en el Excel. El jueves a las 10 AM cierra todo y arma el consolidado para el proveedor. Si le escriben a las 10:15 AM ya no puede hacer nada.
 
 **¿Qué dice este workaround sobre el problema?**
-> Que Lucía ya invierte tiempo y energía emocional en parchar el proceso. Que los emails NO funcionan como canal de confirmación — la gente los ignora. Que existe demanda implícita de cambios de último momento (prueba de que el deadline rígido no se adapta a la realidad de una empresa de tecnología donde las agendas cambian). Que el problema es sistémico y semanal, no un evento aislado.
+> Que Lucía ya está harta de tener que arreglar esto a mano. Que los emails no sirven para esto — la gente los ignora. Que todos quieren poder cambiar el pedido a último momento (porque en una empresa de software las reuniones surgen de un día para el otro). Y que esto pasa TODAS las semanas, no es un evento de una vez.
 
 ---
 
@@ -173,13 +163,13 @@ otras tareas.
 
 ### 6.2 ¿Por qué estas personas y no otras?
 
-> Martín es el arquetipo del empleado de tecnología que ya está sobrecargado de canales y notificaciones. Si el producto le funciona a Martín —que vive en Slack, ignora emails y cambia de planes sobre la marcha— le funciona a cualquiera en la empresa. Lucía es la persona que define si la herramienta se adopta o no: si ella no la valida, nadie la usa. Resolver el problema para ambos simultáneamente es la clave: el empleado confirma con 1 click, la admin no interviene manualmente.
+> Martín es el tipo de compañero que todos conocemos: vive en Slack, ignora emails y le cambian los planes de un día para el otro. Si le funciona a él, le funciona a cualquiera. Lucía es la que manda: si ella no aprueba la herramienta, nadie la usa. Hay que resolverlo para los dos: el empleado confirma fácil, y Lucía no tiene que hacer nada a mano.
 
 ---
 
 ## 7. Research Rápido
 
-> Antes de construir, validá. Esto no es opcional.
+> Antes de codear, asegurate de que esto sea real. No es opcional.
 
 ### 7.1 Entrevistas (15-20 min)
 
@@ -271,23 +261,23 @@ otras tareas.
 | 5 | Jueves 10 AM | **DEADLINE.** Lucía cierra la planilla, exporta los datos y arma el consolidado para el proveedor. Si alguien le escribe por WhatsApp a las 10:15, lo anota a mano en el Excel. | Google Sheets, Excel, WhatsApp | **Punto de máxima fricción.** Martín se acuerda a las 10:30 que no pidió. Le escribe a Lucía. Ella ya mandó el consolidado. Martín se queda sin vianda. Lucía se siente mal por decir que no. | 45-60 min (Lucía) |
 | 6 | Jueves 11 AM | Lucía envía el consolidado al proveedor. Fin del ciclo de pedido. | Email | Irreversible. Si alguien pidió y mañana no viene, no hay forma de cancelar. | 5 min (Lucía) |
 | 7 | Viernes 12 PM | Llegan las viandas. Los empleados que pidieron retiran su vianda del comedor. | — | Las viandas de los que pidieron pero no vinieron quedan en la heladera. Nadie las reclama. | — |
-| 8 | Viernes 2 PM | Lucía (o alguien de la cocina) guarda las viandas no reclamadas en la heladera. Al final del día, si nadie las reclamó, se tiran. | Heladera | **Desperdicio tangible.** 3-5 viandas = $45-$100 tirados a la basura cada viernes. | 5 min |
+| 8 | Viernes 2 PM | Lucía (o alguien de la cocina) guarda las viandas no reclamadas en la heladera. Al final del día, si nadie las reclamó, se tiran. | Heladera | **Desperdicio tangible.** 3-5 viandas = $16.500-$30.000 ARS tirados a la basura cada viernes. | 5 min |
 
 **Tiempo total estimado:** Lucía: 2-3 horas semanales. Empleados: 2-3 minutos por pedido × 25 empleados = ~1 hora colectiva por semana (solo en planilla, sin contar el costo cognitivo de "acordarse").
 
 ### 9.2 Momento de mayor fricción
 
-> El paso 5 (jueves 10 AM — deadline). Es el punto donde convergen todos los dolores: Lucía está estresada consolidando a contrarreloj, Martín y otros 2-3 empleados se acuerdan tarde e inundan a Lucía de mensajes de WhatsApp pidiendo excepciones, Lucía tiene que decidir entre ser flexible (más trabajo manual) o estricta (empleados sin almuerzo, culpa emocional). Este momento se repite CADA semana y es el principal generador de desperdicio, frustración y fricción interpersonal.
+> El paso 5: jueves 10 AM, el deadline. Ahí se juntan todos los problemas: Lucía está corriendo para armar el consolidado, Martín y otros 2-3 se acuerdan tarde y le llenan el WhatsApp de mensajes pidiendo "agregame", y Lucía tiene que elegir entre ser buena (más trabajo a mano) o estricta (compañeros sin almuerzo, y ella se siente mal). Esto pasa TODAS las semanas y es lo que genera más desperdicio, frustración y discusiones.
 
 ---
 
 ## 10. Definición del MVP
 
-> El MVP no es el producto más pequeño que podés construir. Es el experimento más barato que prueba tu hipótesis.
+> El MVP no es la app más chica que podés hacer. Es la prueba más barata para ver si tu hipótesis es cierta.
 
 ### 10.1 ¿Qué valida exactamente?
 
-> Que los empleados de StackLab (como Martín) confirman sus viandas espontáneamente sin necesidad de recordatorios manuales cuando la acción de confirmar se reduce a 1 clic. Y que Lucía obtiene el consolidado diario sin tocar una planilla. Si al menos el 80% de los empleados confirman su pedido antes del deadline durante 4 semanas consecutivas, la hipótesis de comportamiento está validada.
+> Que los empleados (como Martín) confirman sus viandas solos, sin que Lucía tenga que andar atrás de ellos, cuando el proceso es 1 click. Y que Lucía ve el consolidado sin tocar una planilla. Si el 80% de los empleados confirman antes del deadline durante 4 semanas, la hipótesis está validada.
 
 ### 10.2 Tabla MoSCoW
 
@@ -327,7 +317,7 @@ otras tareas.
 
 ## 11. Etapas de Construcción
 
-> No construyas todo junto. Cada etapa debe funcionar y aprender antes de avanzar a la siguiente.
+> No hagas todo de una. Cada etapa tiene que funcionar y aprender algo antes de pasar a la siguiente.
 
 | Etapa | Nombre | Qué construís | Qué aprendés | Criterio de avance |
 |-------|--------|--------------|-------------|-------------------|
@@ -340,8 +330,8 @@ otras tareas.
 
 ## 12. GO / NO-GO
 
-> **⚠️ CHECKPOINT FINAL — OBLIGATORIO**
-> Este es el momento de decidir. No es un trámite. Si algún criterio es ❌, tenés trabajo por hacer antes de abrir cualquier herramienta de vibe coding.
+> **⚠️ CHECKPOINT FINAL**
+> Acá se decide de posta. Si falta algo, no abras Bolt ni Lovable todavía. Arreglá primero lo que falta.
 
 ### 12.1 Checklist de decisión
 
@@ -375,10 +365,10 @@ otras tareas.
 **Decisión:** `[x] GO  [ ] GO CONDICIONAL  [ ] NO-GO`
 
 **Próximo paso concreto:**
-> GO → Iniciar el diseño técnico con SDD (Spec-Driven Development). Abrir el ciclo SDD con `sdd-propose` para crear la propuesta de cambio del Sistema de Viandas StackLab. Luego `sdd-design` para la arquitectura técnica, `sdd-spec` para especificaciones detalladas, `sdd-tasks` para el breakdown de implementación, y finalmente `sdd-apply` para construir la Etapa 1 (Esqueleto).
+> GO → Empezar a construir. Primero la Etapa 1: un esqueleto simple (HTML/JS) para probar si el flujo funciona con Martín y Lucía.
 
 **Nota sobre el criterio #11 (Disposición a pagar):**
-> En este caso, el "comprador" no es un individuo sino la empresa. Lucía ya está "pagando" con 8-12 horas mensuales de su tiempo en tareas manuales. La empresa ya está "pagando" $225-$500/mes en viandas desperdiciadas. El ROI de construir esta herramienta interna es inmediato incluso sin monetización directa: si el sistema cuesta 40 horas de desarrollo inicial y ahorra 8 horas mensuales de Lucía + $300/mes en viandas, el payback es de 4-5 meses.
+> Acá el "comprador" no es una persona sino la empresa. Lucía ya está "pagando" con 8-12 horas mensuales de su tiempo en tareas manuales. La empresa ya está "pagando" $71.000-$129.000 ARS/mes en viandas desperdiciadas. El ROI es inmediato: si el sistema cuesta 40 horas de desarrollo inicial y ahorra 8 horas mensuales de Lucía + $80.000 ARS/mes en viandas, el payback es de 4-5 meses.
 
 **Fecha de revisión:** `2026-05-22` (1 semana — después de la Etapa 1 Esqueleto)
 

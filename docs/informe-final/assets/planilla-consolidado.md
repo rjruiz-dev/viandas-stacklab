@@ -1,6 +1,6 @@
 # Consolidado Diario de Viandas — StackLab Comedor Interno
 
-> **Nota**: Esta es una versión anonimizada con datos ficticios. La estructura y formato son idénticos a los utilizados en StackLab. Los nombres reales fueron reemplazados para proteger la privacidad de los empleados.
+> **Nota**: Esto es una versión ficticia (cambiamos los nombres reales por Martín, Lucía, etc.) pero la estructura es exactamente la misma que usa Lucía todos los jueves. Los platos, códigos y números son reales.
 
 ---
 
@@ -99,12 +99,12 @@
 
 | Concepto | Valor |
 |----------|-------|
-| Costo unitario estimado | $17.50 |
+| Costo unitario estimado | $5.500 ARS |
 | Total viandas encargadas | 78 |
-| Costo total semanal | $1,365.00 |
+| Costo total semanal | $429.000 ARS |
 | Viandas no reclamadas | 3 |
-| Pérdida por no reclamadas | $52.50 |
-| Pérdida mensual estimada (×4.3 semanas) | **$225.75** |
+| Pérdida por no reclamadas | $16.500 ARS |
+| Pérdida mensual estimada (×4.3 semanas) | **$71.000 ARS** |
 
 ---
 

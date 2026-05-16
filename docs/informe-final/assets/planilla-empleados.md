@@ -1,6 +1,6 @@
 # Planilla de Pedidos de Empleados — StackLab Comedor Interno
 
-> **Nota**: Esta es una versión anonimizada con datos ficticios. La estructura y formato son idénticos a los utilizados en StackLab. Los nombres reales fueron reemplazados para proteger la privacidad de los empleados.
+> **Nota**: Esto es una copia ficticia (cambiamos los nombres reales por Martín, Lucía, etc.) pero el formato es exactamente igual al que Lucía maneja todas las semanas. Los datos representan una semana típica.
 
 ---
 
