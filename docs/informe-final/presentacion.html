@@ -455,13 +455,34 @@
         }
 
         /* Print styles */
+        /* Force print colors */
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
         @media print {
             .slide {
                 page-break-after: always;
+                page-break-inside: avoid;
                 min-height: 100vh;
+                height: 100vh;
+                overflow: hidden;
+            }
+            .slide-dark {
+                background: #1a1a2e !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+            .slide-light {
+                background: #f5f5f5 !important;
+                -webkit-print-color-adjust: exact !important;
             }
             .nav-dots {
-                display: none;
+                display: none !important;
+            }
+            body {
+                background: #1a1a2e !important;
             }
         }
 
