@@ -1,0 +1,42 @@
+# Docker Compose — Viandas StackLab
+# Configuración de desarrollo local (placeholder para futuras etapas)
+# Actualmente el MVP se ejecuta como aplicación web estática o con herramientas de vibe coding (Bolt, Lovable, V0).
+# Esta configuración se activará cuando migremos a backend propio + base de datos.
+
+version: "3.9"
+
+services:
+  # === Backend (placeholder) ===
+  # backend:
+  #   build:
+  #     context: ./src/backend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - DATABASE_URL=postgresql://postgres:postgres@db:5432/viandas
+  #   depends_on:
+  #     - db
+
+  # === Frontend (placeholder) ===
+  # frontend:
+  #   build:
+  #     context: ./src/frontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+
+  # === Base de datos (placeholder) ===
+  # db:
+  #   image: postgres:15-alpine
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: viandas
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+# volumes:
+#   postgres_data:
