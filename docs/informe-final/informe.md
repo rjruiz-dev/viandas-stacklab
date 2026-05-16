@@ -106,6 +106,30 @@ Las siguientes citas provienen de entrevistas semi-estructuradas de 15-20 minuto
 | Las personas se frustran visiblemente al describir su workaround | ✅ Sofía levantó los ojos al cielo al mencionar el Excel. Martín describió el jueves a las 10:30 AM como un momento de "tirarse de los pelos". |
 | Más de 3 personas describieron el mismo problema con palabras similares | ✅ Los 4 entrevistados usaron frases como "me olvidé", "no llegué a completar", "ya había mandado el pedido" de forma independiente. |
 
+### 3.4 Evidencia del Workaround Actual — Planillas Excel
+
+Como parte de la investigación, se recopilaron las planillas reales que utiliza Lucía Gómez para gestionar el comedor. Debido a que contienen información personal de empleados (nombres completos, patrones de asistencia), se crearon versiones anonimizadas que preservan la estructura, formato y complejidad exacta del sistema actual.
+
+**Nota sobre privacidad**: Las planillas originales fueron anonimizadas para proteger la privacidad de los empleados. La estructura y formato son idénticos a los utilizados en StackLab. Los nombres y datos personales fueron reemplazados por nombres ficticios de empleados representativos.
+
+#### Archivos de evidencia disponibles
+
+| Documento | Descripción | Ubicación |
+|-----------|-------------|-----------|
+| Planilla de Menú Semanal | Menú semanal con códigos de plato (C1, C2, P1, S1, L1, L2), platos principales, alternativas, vegetarianos, sin TACC y opciones light | [`assets/planilla-menu-semanal.md`](assets/planilla-menu-semanal.md) |
+| Planilla de Empleados | Seguimiento individual de pedidos por día, con marcas de confirmación, faltantes y observaciones manuales | [`assets/planilla-empleados.md`](assets/planilla-empleados.md) |
+| Consolidado Diario | Resumen por día para el proveedor, con conteos manuales por código de plato, totales y cálculo económico de viandas no reclamadas | [`assets/planilla-consolidado.md`](assets/planilla-consolidado.md) |
+
+#### Hallazgos a partir del análisis de las planillas
+
+1. **Consolidación 100% manual**: Lucía cuenta columna por columna cuántos C1, C2, P1, etc. hay por día, luego transcribe los nombres de los platos desde otra pestaña y arma el consolidado. Este proceso toma aproximadamente 45 minutos semanales solo en conteo y transcripción.
+
+2. **Fragilidad ante cambios post-deadline**: Las planillas muestran múltiples correcciones manuales ("Diego pidió cambio por WhatsApp", "Martín avisó tarde"). No hay forma de versionar ni auditar quién cambió qué y cuándo.
+
+3. **Tasa de no-confirmación visible**: En la semana documentada, 11 de 20 empleados (55%) tenían al menos un día sin confirmar o con marcas de advertencia (⚠️). Esto obliga a Lucía a estimar o perseguir confirmaciones.
+
+4. **Sin integración con notificaciones**: Las planillas no están vinculadas a ningún sistema de recordatorio. Lucía debe cruzar mentalmente quién no confirmó y enviar mensajes individuales.
+
 ---
 
 ## 4. North Star Metric (NSM)
