@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viandas StackLab — De Excel al 95%</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
         * {
             margin: 0;
@@ -455,6 +456,14 @@
         }
 
         /* Print styles */
+        /* Icons */
+        .ph {
+            font-family: 'Phosphor' !important;
+            font-style: normal !important;
+            font-weight: normal !important;
+            -webkit-font-smoothing: antialiased !important;
+        }
+
         /* Force print colors */
         * {
             -webkit-print-color-adjust: exact !important;
@@ -533,7 +542,7 @@
     <!-- SLIDE 1: Carátula -->
     <section class="slide slide-dark" id="slide-1">
         <div class="slide-content" style="text-align: center;">
-            <div style="font-size: 4rem; margin-bottom: 20px;">🍽️</div>
+            <div style="font-size: 4rem; margin-bottom: 20px; color: var(--accent);"><i class="ph ph-bowl-food"></i></div>
             <h1>Viandas StackLab:<br><span style="color: var(--accent);">De Excel al 95%</span></h1>
             <p class="subtitle" style="max-width: 700px; margin: 0 auto;">
                 Cómo una empresa de software en Santa Fe deja de perder hasta $129.000 pesos al mes 
@@ -555,17 +564,17 @@
             
             <div class="cards">
                 <div class="card">
-                    <div class="card-icon">💰</div>
+                    <div class="card-icon"><i class="ph ph-currency-dollar"></i></div>
                     <h3>Pérdida mensual</h3>
                     <p><strong style="color: var(--accent); font-size: 1.3rem;">$71.000 – $129.000 ARS</strong><br>3 a 5 viandas por semana van a la basura. Costo unitario: $5.500 – $6.000 ARS.</p>
                 </div>
                 <div class="card">
-                    <div class="card-icon">⏱️</div>
+                    <div class="card-icon"><i class="ph ph-timer"></i></div>
                     <h3>Tiempo perdido</h3>
                     <p><strong style="color: var(--accent); font-size: 1.3rem;">8 – 12 horas</strong><br>de Lucía (administración) en consolidación manual y seguimiento.</p>
                 </div>
                 <div class="card">
-                    <div class="card-icon">📉</div>
+                    <div class="card-icon"><i class="ph ph-trend-down"></i></div>
                     <h3>Baja confirmación</h3>
                     <p><strong style="color: var(--accent); font-size: 1.3rem;">Solo ~70%</strong><br>de los empleados confirman. 55% tiene al menos un día sin confirmar.</p>
                 </div>
@@ -657,17 +666,17 @@
             
             <div class="cards" style="max-width: 800px; margin: 0 auto;">
                 <div class="card">
-                    <div class="card-icon">⏱️</div>
+                    <div class="card-icon"><i class="ph ph-timer"></i></div>
                     <h3>Admin ≤30 min/semana</h3>
                     <p>Lucía deja de perseguir confirmaciones</p>
                 </div>
                 <div class="card">
-                    <div class="card-icon">🗑️</div>
+                    <div class="card-icon"><i class="ph ph-trash"></i></div>
                     <h3>No reclamadas ≤1/semana</h3>
                     <p>Casi cero viandas a la basura</p>
                 </div>
                 <div class="card">
-                    <div class="card-icon">📝</div>
+                    <div class="card-icon"><i class="ph ph-pencil-line"></i></div>
                     <h3>Cambios post-deadline ≤2</h3>
                     <p>WhatsApp de "me olvidé" casi eliminados</p>
                 </div>
@@ -683,28 +692,28 @@
             
             <div class="comparison">
                 <div class="comparison-box before">
-                    <h3>📊 BEFORE — Planilla Excel</h3>
+                    <h3>BEFORE — Planilla Excel</h3>
                     <ul style="list-style: none; line-height: 2;">
-                        <li>💸 <strong>$71.000 – $129.000</strong> ARS perdidos/mes</li>
-                        <li>⏱️ <strong>8 – 12 horas</strong> de Lucía/mes</li>
-                        <li>📉 <strong>~70%</strong> tasa de confirmación</li>
-                        <li>😤 Empleados frustrados, Lucía agotada</li>
+                        <li><i class="ph ph-money" style="color: var(--accent);"></i> <strong>$71.000 – $129.000</strong> ARS perdidos/mes</li>
+                        <li><i class="ph ph-timer" style="color: var(--accent);"></i> <strong>8 – 12 horas</strong> de Lucía/mes</li>
+                        <li><i class="ph ph-trend-down" style="color: var(--accent);"></i> <strong>~70%</strong> tasa de confirmación</li>
+                        <li><i class="ph ph-x-circle" style="color: var(--danger);"></i> Empleados frustrados, Lucía agotada</li>
                     </ul>
                 </div>
                 <div class="arrow-center">➜</div>
                 <div class="comparison-box after">
-                    <h3>🚀 AFTER — MVP Web</h3>
+                    <h3>AFTER — MVP Web</h3>
                     <ul style="list-style: none; line-height: 2;">
-                        <li>💸 <strong>≤$15.000</strong> ARS perdidos/mes</li>
-                        <li>⏱️ <strong>≤2 horas</strong> de Lucía/mes</li>
-                        <li>📈 <strong>≥95%</strong> tasa de confirmación</li>
-                        <li>😎 10 segundos, 1 clic, listo</li>
+                        <li><i class="ph ph-money" style="color: var(--accent);"></i> <strong>≤$15.000</strong> ARS perdidos/mes</li>
+                        <li><i class="ph ph-timer" style="color: var(--accent);"></i> <strong>≤2 horas</strong> de Lucía/mes</li>
+                        <li><i class="ph ph-trend-up" style="color: var(--accent);"></i> <strong>≥95%</strong> tasa de confirmación</li>
+                        <li><i class="ph ph-smiley" style="color: var(--success);"></i> 10 segundos, 1 clic, listo</li>
                     </ul>
                 </div>
             </div>
             
             <div class="savings">
-                💰 Ahorro proyectado: <strong>~$84.000 ARS + 6-10 horas de Lucía por mes</strong> | Payback: 4-5 meses
+                <i class="ph ph-currency-dollar" style="color: var(--accent);"></i> Ahorro proyectado: <strong>~$84.000 ARS + 6-10 horas de Lucía por mes</strong> | Payback: 4-5 meses
             </div>
         </div>
     </section>
@@ -717,24 +726,24 @@
             
             <div class="comparison">
                 <div class="comparison-box" style="border-top: 5px solid var(--accent);">
-                    <h3>👤 Para el empleado</h3>
-                    <div style="font-size: 2rem; margin: 15px 0;">📋 ➜ ⚙️ ➜ 👆 ➜ ✅</div>
+                    <h3><i class="ph ph-user" style="color: var(--accent);"></i> Para el empleado</h3>
+                    <div style="font-size: 2rem; margin: 15px 0;"><i class="ph ph-clipboard-text" style="color: var(--accent);"></i> ➜ <i class="ph ph-gear" style="color: var(--accent);"></i> ➜ <i class="ph ph-hand-tap" style="color: var(--accent);"></i> ➜ <i class="ph ph-check-circle" style="color: var(--success);"></i></div>
                     <ul style="list-style: none; line-height: 2;">
-                        <li>📋 Ve el menú semanal</li>
-                        <li>⚙️ Configura días de oficina (1 vez)</li>
-                        <li>👆 Confirma con <strong>1 clic</strong></li>
-                        <li>✅ Recibe feedback: "Confirmado"</li>
+                        <li><i class="ph ph-clipboard-text" style="color: var(--accent);"></i> Ve el menú semanal</li>
+                        <li><i class="ph ph-gear" style="color: var(--accent);"></i> Configura días de oficina (1 vez)</li>
+                        <li><i class="ph ph-hand-tap" style="color: var(--accent);"></i> Confirma con <strong>1 clic</strong></li>
+                        <li><i class="ph ph-check-circle" style="color: var(--success);"></i> Recibe feedback: "Confirmado"</li>
                     </ul>
                 </div>
                 <div class="arrow-center">+</div>
                 <div class="comparison-box" style="border-top: 5px solid var(--success);">
-                    <h3>👩‍💼 Para Lucía</h3>
-                    <div style="font-size: 2rem; margin: 15px 0;">📊 ➜ 📅 ➜ 📈 ➜ 🎉</div>
+                    <h3><i class="ph ph-user-gear" style="color: var(--success);"></i> Para Lucía</h3>
+                    <div style="font-size: 2rem; margin: 15px 0;"><i class="ph ph-chart-bar" style="color: var(--accent);"></i> ➜ <i class="ph ph-calendar" style="color: var(--accent);"></i> ➜ <i class="ph ph-trend-up" style="color: var(--accent);"></i> ➜ <i class="ph ph-confetti" style="color: var(--success);"></i></div>
                     <ul style="list-style: none; line-height: 2;">
-                        <li>📊 Recibe consolidado automático</li>
-                        <li>📅 Marca feriados en calendario</li>
-                        <li>📈 Ve estadísticas simples</li>
-                        <li>🎉 <strong>Sin Excel. Nunca más.</strong></li>
+                        <li>Recibe consolidado automático</li>
+                        <li>Marca feriados en calendario</li>
+                        <li><i class="ph ph-trend-up" style="color: var(--accent);"></i> Ve estadísticas simples</li>
+                        <li><i class="ph ph-confetti" style="color: var(--success);"></i> <strong>Sin Excel. Nunca más.</strong></li>
                     </ul>
                 </div>
             </div>
@@ -780,19 +789,19 @@
             
             <div class="decision-cards">
                 <div class="decision-card go">
-                    <div class="decision-icon">🟢</div>
+                    <div class="decision-icon"><i class="ph ph-check-circle" style="color: var(--success); font-size: 3rem;"></i></div>
                     <h3>GO</h3>
                     <p>≥95% confirmación<br>Lucía &lt;30 min/semana<br>≥80% prefiere el sistema</p>
                     <p style="margin-top: 15px; font-weight: 600; color: var(--success);">Reemplazar Excel definitivamente</p>
                 </div>
                 <div class="decision-card conditional">
-                    <div class="decision-icon">🟡</div>
+                    <div class="decision-icon"><i class="ph ph-warning-circle" style="color: var(--warning); font-size: 3rem;"></i></div>
                     <h3>GO Condicional</h3>
                     <p>70-94% confirmación<br>Lucía &lt;1h/semana</p>
                     <p style="margin-top: 15px; font-weight: 600; color: #e6a817;">Iterar 1 ciclo más</p>
                 </div>
                 <div class="decision-card nogo">
-                    <div class="decision-icon">🔴</div>
+                    <div class="decision-icon"><i class="ph ph-x-circle" style="color: var(--danger); font-size: 3rem;"></i></div>
                     <h3>NO-GO</h3>
                     <p>&lt;70% confirmación<br>Sigue necesitando recordatorios</p>
                     <p style="margin-top: 15px; font-weight: 600; color: var(--danger);">Pivotar: problema cultural</p>
@@ -810,19 +819,19 @@
             <div class="image-grid">
                 <div>
                     <img src="assets/graficos/grafico-1-nsm-evolucion.png" alt="Evolución NSM">
-                    <div class="chart-caption">📈 North Star Metric: 72% → 95%</div>
+                    <div class="chart-caption"><i class="ph ph-trend-up" style="color: var(--accent);"></i> North Star Metric: 72% → 95%</div>
                 </div>
                 <div>
                     <img src="assets/graficos/grafico-2-perdidas-mensuales.png" alt="Reducción de Pérdidas">
-                    <div class="chart-caption">💰 Pérdidas: $71-129k → ≤$15k ARS/mes</div>
+                    <div class="chart-caption"><i class="ph ph-currency-dollar" style="color: var(--accent);"></i> Pérdidas: $71-129k → ≤$15k ARS/mes</div>
                 </div>
                 <div>
                     <img src="assets/graficos/grafico-3-tiempo-admin.png" alt="Tiempo Administrativo">
-                    <div class="chart-caption">⏱️ Tiempo admin: 2.5h → 0.5h/semana</div>
+                    <div class="chart-caption"><i class="ph ph-timer" style="color: var(--accent);"></i> Tiempo admin: 2.5h → 0.5h/semana</div>
                 </div>
                 <div>
                     <img src="assets/graficos/grafico-4-dashboard-compacto.png" alt="Dashboard Compacto">
-                    <div class="chart-caption">🎯 Dashboard ejecutivo 4 paneles</div>
+                    <div class="chart-caption"><i class="ph ph-target" style="color: var(--accent);"></i> Dashboard ejecutivo 4 paneles</div>
                 </div>
             </div>
             
