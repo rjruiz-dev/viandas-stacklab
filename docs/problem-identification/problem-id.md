@@ -11,7 +11,7 @@
 |-------|-------|
 | **Nombre tentativo del producto** | `Viandas StackLab — Gestor de pedidos de viandas para el comedor de StackLab` |
 | **Fecha** | `2026-05-15` |
-| **Autor** | `Martín Fernández (empleado StackLab — usuario directo del sistema)` |
+| **Autor** | `Rodrigo Ruiz (empleado StackLab — investigador y desarrollador del MVP)` |
 | **Versión del documento** | `v1.0` |
 | **Estado** | `[x] Borrador  [ ] En revisión  [ ] GO  [ ] NO-GO` |
 

@@ -3,6 +3,7 @@
 > **Proyecto**: Viandas StackLab — Gestor de Pedidos de Viandas para el Comedor Interno  
 > **Período de validación**: Abril – Mayo 2026  
 > **Versión**: v1.0  
+> **Autor**: Rodrigo Ruiz  
 > **Tipo de documento**: Informe final de validación de producto (10–15 páginas)
 
 > **⚠️ Nota legal y de privacidad**: Los nombres de personas (Martín Fernández, Lucía Gómez, Diego Martínez, Sofía Herrera) y la empresa "StackLab" son ficticios, creados para proteger la identidad de empleados reales y evitar exponer información sensible de la empresa y proveedores involucrados. El problema descrito (gestión de viandas mediante Excel, olvidos, desperdicio, fricción administrativa) es **real y documentado**. Las métricas, citas textuales y evidencias se sustentan en observación directa del entorno laboral y entrevistas con personas reales, anonimizadas para este informe.

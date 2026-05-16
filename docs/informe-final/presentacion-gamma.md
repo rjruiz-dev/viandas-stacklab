@@ -8,13 +8,13 @@
 
 **Título:** Viandas StackLab: De Excel al 95%
 
-**Subtítulo:** Cómo una empresa de software en Santa Fe pierde $100.000 ARS al mes pidiendo viandas con planillas Excel — y qué vamos a hacer al respecto.
+**Subtítulo:** Cómo una empresa de software en Santa Fe pierde entre $71.000 y $129.000 ARS al mes pidiendo viandas con planillas Excel — y qué vamos a hacer al respecto.
 
 **Detalles:**
 - Empresa: StackLab (software, ~50 empleados)
 - Ubicación: Santa Fe, Argentina
 - Período: Abril – Mayo 2026
-- Elaborado por: Equipo de Producto
+- Elaborado por: Rodrigo Ruiz
 
 ---
 
