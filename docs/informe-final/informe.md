@@ -89,9 +89,9 @@ Las siguientes citas provienen de entrevistas semi-estructuradas de 15-20 minuto
 
 **Diego Martínez** (Compañero de Martín, QA, 34 años):
 
-> *"Yo ya ni lo intento desde el celular. Espero a estar en la compu, abro el mail, busco el link, abro la planilla... y cuando llego ya me olvidé qué días iba a la oficina. Es ridículo."*
+> *"Desde el celular ni lo intento porque la planilla se ve horrible. Espero a estar en la compu, abro el mail, busco el link, abro la planilla... y cuando llego son tantos pasos que me olvido qué días iba a la oficina."*
 
-> *"La semana pasada fui a la oficina el viernes por una reunión que me avisaron el jueves a la tarde. Ya había pasado el deadline. Tuve que pedir delivery. $12 tirados."*
+> *"La semana pasada fui a la oficina el viernes por una reunión que me avisaron el jueves a la tarde. Ya había pasado el deadline. Tuve que pedir delivery. $8.500 pesos tirados. Me dolió."*
 
 **Sofía Herrera** (Diseñadora UX, 29 años, cambia menús frecuentemente):
 
