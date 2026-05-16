@@ -13,7 +13,7 @@
 
 StackLab, una empresa de software con aproximadamente 50 empleados en Santa Fe, cuenta con un comedor interno que ofrece viandas a su personal. El proceso actual de gestión de pedidos —basado en planillas Excel compartidas y recordatorios manuales por email— genera ineficiencias cuantificables y fricción interpersonal.
 
-Este informe documenta el proceso completo de identificación y validación del problema, desde las hipótesis iniciales hasta el plan de acción hacia el Product-Market Fit interno. El trabajo se sustenta en observación directa del entorno, entrevistas estructuradas con empleados y administradores, y análisis de datos operativos recolectados a lo largo de 4 semanas.
+Este informe cuenta cómo detectamos el problema, qué encontramos hablando con los empleados y con Lucía (la que gestiona el comedor), y qué proponemos hacer para solucionarlo. Lo armamos en 4 semanas de observar el día a día, hacer entrevistas y juntar datos reales del funcionamiento actual.
 
 **Hallazgos principales**:
 
@@ -35,7 +35,7 @@ La North Star Metric definida —"% de viandas confirmadas correctamente por sem
 
 ## 2. Hipótesis Priorizadas
 
-A continuación se presentan las hipótesis formuladas durante el proceso de investigación, ordenadas por prioridad según su potencial de impacto en el problema central.
+Estas son las hipótesis que surgieron de hablar con el equipo y observar cómo funciona (o no funciona) el comedor hoy. Las ordenamos por prioridad según cuánto impacto tienen en resolver el problema.
 
 | # | Hipótesis | Prioridad | Método de Testeo | Resultado |
 |---|-----------|-----------|------------------|-----------|
@@ -69,7 +69,7 @@ A continuación se presentan las hipótesis formuladas durante el proceso de inv
 
 ### 3.2 Datos Cualitativos — Citas Textuales de las Entrevistas
 
-Las siguientes citas provienen de entrevistas semi-estructuradas de 15-20 minutos realizadas con empleados de StackLab y la administradora del comedor durante abril de 2026. Se utilizó el método de auto-reflexión estructurada y observación participante (el investigador es empleado de la empresa y usuario directo del sistema actual).
+Estas citas son de conversaciones reales de 15-20 minutos con compañeros de trabajo y con Lucía durante abril de 2026. Como el investigador es empleado de la empresa y sufre el mismo problema, usamos auto-reflexión: es decir, pensamos en voz alta sobre lo que nos pasa a todos los días.
 
 **Martín Fernández** (Desarrollador, 37 años, usa el comedor 3-4 veces por semana):
 
@@ -95,7 +95,7 @@ Las siguientes citas provienen de entrevistas semi-estructuradas de 15-20 minuto
 
 **Sofía Herrera** (Diseñadora UX, 29 años, cambia menús frecuentemente):
 
-> *"Es ridículo que en una empresa de tecnología pidamos viandas con Excel. Parece chiste."*
+> *"En una empresa de tecnología estamos pidiendo viandas con Excel. Es una locura."*
 
 > *"Yo como vegetariano algunos días y otros no. Si el menú del jueves tiene algo que no me gusta, quisiera poder cambiarlo, pero si ya mandé el pedido el lunes, cagué."*
 
@@ -152,7 +152,7 @@ NSM = (Viandas confirmadas antes del deadline semanal / Total de empleados que a
 
 ### 4.2 Justificación de la Elección
 
-La selección de esta NSM se fundamenta en tres criterios:
+Elegimos esta métrica porque cumple tres cosas que necesitamos:
 
 1. **Refleja directamente el valor del producto**: El propósito central del sistema es eliminar los olvidos de confirmación. Cada punto porcentual por debajo del 95% representa un empleado que se quedó sin almuerzo, una vianda desperdiciada, o tiempo administrativo extra para Lucía. La métrica captura el outcome, no el output.
 
@@ -174,7 +174,7 @@ La selección de esta NSM se fundamenta en tres criterios:
 
 ### 5.1 Dashboard de Tracción — Visualizaciones Reales
 
-A continuación se presentan las visualizaciones generadas a partir de los datos de validación del período abril-mayo 2026.
+Acá están los gráficos que armamos con los datos que juntamos entre abril y mayo de 2026.
 
 > **Nota**: Las planillas originales fueron anonimizadas para proteger la privacidad de los empleados. La estructura y formato son idénticos a los utilizados en StackLab. Los datos cuantitativos se sustentan en observación directa y time-tracking auto-reportado.
 
@@ -226,7 +226,7 @@ A continuación se presentan las visualizaciones generadas a partir de los datos
 
 ### 6.2 Criterios de Decisión (GO / NO-GO)
 
-Al finalizar la Etapa 4 (semana 8-10 del proyecto), se evaluará:
+Cuando terminemos la Etapa 4 (semana 8-10 del proyecto), vamos a evaluar así:
 
 | Resultado | Criterio |
 |-----------|---------|
@@ -308,4 +308,4 @@ La semana que viene largamos 🚀
 
 ---
 
-*Documento generado como parte del proceso de validación de producto. La información aquí contenida se sustenta en observación directa del entorno laboral, entrevistas con empleados reales y análisis de datos operativos del período abril-mayo 2026. Los nombres de personas y la empresa "StackLab" son ficticios para proteger la privacidad. El problema y la evidencia descritos son reales.*
+*Este informe lo armamos basándonos en lo que vemos todos los días en el trabajo. Hablamos con compañeros reales, miramos planillas reales, y contamos lo que pasa. Los nombres (Martín, Lucía, Diego, Sofía) y la empresa "StackLab" son ficticios para cuidar la privacidad de todos, pero el problema y los números son reales.*
