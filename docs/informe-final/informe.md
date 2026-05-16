@@ -201,67 +201,6 @@ A continuación se presentan las visualizaciones generadas a partir de los datos
 ![Dashboard Compacto](assets/graficos/grafico-4-dashboard-compacto.png)
 
 *Dashboard ejecutivo con 4 paneles: NSM, viandas no reclamadas, tiempo admin y satisfacción de empleados.*
-┌─────────────────────────────────────────────────────────────────────┐
-│  VIANDAS STACKLAB — Panel Semanal                          Semana 19 │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐              │
-│  │  NSM: 87%    │  │  Pendientes  │  │  Deadline    │              │
-│  │  21/24 conf. │  │  Faltan 3    │  │  1d 14h 32m  │              │
-│  │  ▲ +12%      │  │  ▼ -40%      │  │              │              │
-│  └──────────────┘  └──────────────┘  └──────────────┘              │
-│                                                                      │
-│  ┌──────────────────────────────────────────────────────────────┐   │
-│  │  TASA DE CONFIRMACIÓN ACUMULADA (Día a día)                  │   │
-│  │  ┌──────────────────────────────────────────────────────┐    │   │
-│  │  │ 100% │                                          *    │    │   │
-│  │  │  80% │                              *---*            │    │   │
-│  │  │  60% │                    *---*                      │    │   │
-│  │  │  40% │          *---*                                │    │   │
-│  │  │  20% │    *---*                                      │    │   │
-│  │  │   0% │ *                                             │    │   │
-│  │  │      └──────────────────────────────────────────     │    │   │
-│  │  │       Lun   Mar   Mié   Jue   Vie  (deadline)        │    │   │
-│  │  └──────────────────────────────────────────────────────┘    │   │
-│  │  ── Esta semana (87%)  - - - Semana anterior (78%)          │   │
-│  └──────────────────────────────────────────────────────────────┘   │
-│                                                                      │
-│  ┌────────────────────────────┐  ┌────────────────────────────┐    │
-│  │  TOP EMPLEADOS SIN         │  │  VIANDAS POR TIPO DE MENÚ  │    │
-│  │  CONFIRMAR                 │  │  ┌──────────────────────┐  │    │
-│  │  ┌──────────────────────┐  │  │  │ Tradicional  █████ 12│  │    │
-│  │  │ Diego Martínez       │  │  │  │ Vegetariano  ███    6│  │    │
-│  │  │ Sofía Herrera        │  │  │  │ Sin TACC      ██    4│  │    │
-│  │  │ Martín Fernández  ✓  │  │  │  │ Ensalada      █     2│  │    │
-│  │  └──────────────────────┘  │  │  └──────────────────────┘  │    │
-│  └────────────────────────────┘  └────────────────────────────┘    │
-│                                                                      │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-#### Vista de Tendencia — Evolución Histórica (4 semanas)
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  TENDENCIA SEMANAL — NSM + MÉTRICAS SECUNDARIAS              │
-│                                                               │
-│  ┌────────────────────────────────────────────────────────┐  │
-│  │ SEMANA │ NSM  │ Viandas No │ Tiempo Lucía │ Solicitudes │  │
-│  │        │      │ Reclamadas │ (min/sem)    │ Post-dead   │  │
-│  ├────────┼──────┼────────────┼──────────────┼─────────────┤  │
-│  │ S16    │ 72%  │     5      │     145      │      6      │  │
-│  │ S17    │ 68%  │     4      │     155      │      5      │  │
-│  │ S18    │ 78%  │     3      │     110      │      4      │  │
-│  │ S19    │ 87%  │     1      │      45      │      2      │  │
-│  └────────────────────────────────────────────────────────┘  │
-│                                                               │
-│  [GRÁFICO DE LÍNEAS: NSM subiendo de 72% a 87%]              │
-│  [GRÁFICO DE BARRAS: Tiempo de Lucía bajando de 145 a 45]    │
-│                                                               │
-│  *Datos de S16-S17: baseline pre-MVP (planilla Excel).       │
-│   Datos de S18-S19: con MVP en uso.                          │
-└──────────────────────────────────────────────────────────────┘
-```
 
 ### 5.2 Métricas de Tracción (Proyección)
 
