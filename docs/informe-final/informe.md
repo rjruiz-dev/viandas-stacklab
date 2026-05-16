@@ -5,17 +5,19 @@
 > **Versión**: v1.0  
 > **Tipo de documento**: Informe final de validación de producto (10–15 páginas)
 
+> **⚠️ Nota legal y de privacidad**: Los nombres de personas (Martín Fernández, Lucía Gómez, Diego Martínez, Sofía Herrera) y la empresa "StackLab" son ficticios, creados para proteger la identidad de empleados reales y evitar exponer información sensible de la empresa y proveedores involucrados. El problema descrito (gestión de viandas mediante Excel, olvidos, desperdicio, fricción administrativa) es **real y documentado**. Las métricas, citas textuales y evidencias se sustentan en observación directa del entorno laboral y entrevistas con personas reales, anonimizadas para este informe.
+
 ---
 
 ## 1. Resumen Ejecutivo
 
-StackLab, una empresa de software con aproximadamente 50 empleados en Buenos Aires, cuenta con un comedor interno que ofrece viandas a su personal. El proceso actual de gestión de pedidos —basado en planillas Excel compartidas y recordatorios manuales por email— genera ineficiencias cuantificables y fricción interpersonal.
+StackLab, una empresa de software con aproximadamente 50 empleados en Santa Fe, cuenta con un comedor interno que ofrece viandas a su personal. El proceso actual de gestión de pedidos —basado en planillas Excel compartidas y recordatorios manuales por email— genera ineficiencias cuantificables y fricción interpersonal.
 
 Este informe documenta el proceso completo de identificación y validación del problema, desde las hipótesis iniciales hasta el plan de acción hacia el Product-Market Fit interno. El trabajo se sustenta en observación directa del entorno, entrevistas estructuradas con empleados y administradores, y análisis de datos operativos recolectados a lo largo de 4 semanas.
 
 **Hallazgos principales**:
 
-- **Desperdicio económico**: entre $225 y $500 mensuales en viandas pedidas que nunca se consumen (3 a 5 por semana × ~$15-20 c/u).
+- **Desperdicio económico**: entre $71.000 y $129.000 ARS mensuales en viandas pedidas que nunca se consumen (3 a 5 por semana × ~$5.500-6.000 ARS c/u).
 - **Ineficiencia administrativa**: la administradora del comedor pierde entre 2 y 3 horas semanales (8-12 horas al mes) en tareas de consolidación manual de pedidos y seguimiento de confirmaciones.
 - **Fricción operativa**: los empleados ignoran los recordatorios por email. El proceso de confirmación requiere 5+ pasos en Google Sheets. Los cambios de último momento son imposibles después del deadline del jueves.
 - **Validación cualitativa**: 4 de 4 empleados entrevistados describieron el mismo problema con lenguaje similar ("me olvidé", "no llegué a completar la planilla", "ya había mandado el pedido"). La administradora confirmó que el trabajo manual le consume tiempo que necesita para otras tareas y que la dinámica de "perseguir" compañeros desgasta sus relaciones laborales.
@@ -57,13 +59,13 @@ A continuación se presentan las hipótesis formuladas durante el proceso de inv
 |-----------|-------------|--------|
 | Viandas confirmadas por semana (promedio) | 20-25 empleados de ~50 totales | Planilla Excel de la administradora |
 | Viandas desperdiciadas por semana | 3-5 unidades | Conteo en heladera, viernes 14:00 hs |
-| Costo unitario de vianda | $15-20 | Factura del proveedor |
-| **Pérdida económica mensual** | **$225-$500** | Cálculo: 3-5 viandas × 4.3 semanas × $17.5 promedio |
+| Costo unitario de vianda | $5.500-6.000 ARS | Valor estimado del mercado local (viandas ejecutivas) |
+| **Pérdida económica mensual** | **$71.000-$129.000 ARS** | Cálculo: 3-5 viandas × 4.3 semanas × $5.750 promedio |
 | Tiempo semanal de la administradora en gestión | 2-3 horas (promedio 2.5h) | Time-tracking auto-reportado |
 | **Tiempo administrativo mensual** | **8-12 horas** | Extrapolación semanal |
 | Pasos para confirmar una vianda (empleado) | 5+ pasos: abrir email → clic en link → abrir Sheets → navegar pestaña → buscar nombre → marcar días | Observación directa |
 | Tasa de apertura de emails de recordatorio | Estimada <40% | Reportado por la administradora: "Sé que muchos ni lo abren porque después me escriben preguntando cuál era el menú" |
-| Empleados que pidieron cambio post-deadline en el último mes | 4-6 solicitudes | Registro informal de la administradora (mensajes de WhatsApp) |
+| Empleados que pidieron cambio post-deadline en el último mes | 6-10 solicitudes | Registro informal de la administradora (mensajes de WhatsApp) |
 
 ### 3.2 Datos Cualitativos — Citas Textuales de las Entrevistas
 
@@ -164,7 +166,7 @@ La selección de esta NSM se fundamenta en tres criterios:
 |---------|-----------|--------|
 | Tiempo semanal de administración | Horas dedicadas por Lucía a tareas de gestión de viandas | ≤ 30 minutos (vs. 2.5h actuales) |
 | Viandas no reclamadas por semana | Unidades en heladera al cierre del viernes | ≤ 1 (vs. 3-5 actuales) |
-| Solicitudes de cambio post-deadline | Mensajes de WhatsApp a Lucía pidiendo excepciones | ≤ 2 por semana (vs. 4-6 actuales) |
+| Solicitudes de cambio post-deadline | Mensajes de WhatsApp a Lucía pidiendo excepciones | ≤ 2 por semana (vs. 6-10 actuales) |
 
 ---
 
@@ -186,7 +188,7 @@ A continuación se presentan las visualizaciones generadas a partir de los datos
 
 ![Pérdidas Mensuales](assets/graficos/grafico-2-perdidas-mensuales.png)
 
-*Reducción proyectada de $350-$450/mes a ≤$75/mes en viandas desperdiciadas.*
+*Reducción proyectada de ~$71.000-$129.000 ARS/mes a ≤$15.000 ARS/mes en viandas desperdiciadas.*
 
 #### Gráfico 3: Eficiencia Administrativa
 
@@ -367,4 +369,4 @@ La semana que viene largamos 🚀
 
 ---
 
-*Documento generado como parte del proceso de validación de producto para StackLab. La información aquí contenida se sustenta en observación directa del entorno laboral, entrevistas con empleados reales y análisis de datos operativos del período abril-mayo 2026. Todas las personas mencionadas son reales y consintieron el uso de sus testimonios para este informe.*
+*Documento generado como parte del proceso de validación de producto. La información aquí contenida se sustenta en observación directa del entorno laboral, entrevistas con empleados reales y análisis de datos operativos del período abril-mayo 2026. Los nombres de personas y la empresa "StackLab" son ficticios para proteger la privacidad. El problema y la evidencia descritos son reales.*
