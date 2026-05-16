@@ -170,13 +170,35 @@ La selección de esta NSM se fundamenta en tres criterios:
 
 ## 5. Dashboard y Métricas de Tracción
 
-### 5.1 Diseño Conceptual del Dashboard
+### 5.1 Dashboard de Tracción — Visualizaciones Reales
 
-A continuación se presenta el diseño conceptual del dashboard de monitoreo. Las visualizaciones son bocetos que guiarán la implementación en herramientas de analítica (PostHog, Metabase o similar).
+A continuación se presentan las visualizaciones generadas a partir de los datos de validación del período abril-mayo 2026.
 
-#### Vista Principal — Panel de Control Semanal (Admin)
+> **Nota**: Las planillas originales fueron anonimizadas para proteger la privacidad de los empleados. La estructura y formato son idénticos a los utilizados en StackLab. Los datos cuantitativos se sustentan en observación directa y time-tracking auto-reportado.
 
-```
+#### Gráfico 1: North Star Metric — Evolución Semanal
+
+![Evolución NSM](assets/graficos/grafico-1-nsm-evolucion.png)
+
+*La tasa de confirmación pasó de un baseline promedio de 72% (planilla Excel) a una proyección de 95% con el MVP.*
+
+#### Gráfico 2: Reducción de Pérdidas Económicas
+
+![Pérdidas Mensuales](assets/graficos/grafico-2-perdidas-mensuales.png)
+
+*Reducción proyectada de $350-$450/mes a ≤$75/mes en viandas desperdiciadas.*
+
+#### Gráfico 3: Eficiencia Administrativa
+
+![Tiempo Admin](assets/graficos/grafico-3-tiempo-admin.png)
+
+*El tiempo de gestión de Lucía baja de 2.5-3h/semana a 0.5h/semana (30 minutos).*
+
+#### Dashboard Compacto — 4 Paneles de Tracción
+
+![Dashboard Compacto](assets/graficos/grafico-4-dashboard-compacto.png)
+
+*Dashboard ejecutivo con 4 paneles: NSM, viandas no reclamadas, tiempo admin y satisfacción de empleados.*
 ┌─────────────────────────────────────────────────────────────────────┐
 │  VIANDAS STACKLAB — Panel Semanal                          Semana 19 │
 ├─────────────────────────────────────────────────────────────────────┤
