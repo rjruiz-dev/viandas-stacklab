@@ -1,6 +1,10 @@
 # Planilla de Pedidos de Empleados — StackLab Comedor Interno
 
 > **Nota**: Esto es una copia ficticia (cambiamos los nombres reales por Martín, Lucía, etc.) pero el formato es exactamente igual al que Lucía maneja todas las semanas. Los datos representan una semana típica.
+>
+> **Sobre los empleados**: La planilla muestra 20 empleados que usan el comedor con regularidad. StackLab tiene 50 empleados en total; el resto trabaja remoto o no usa el servicio habitualmente, pero cuando tengan que asistir a la oficina también se sumarían a través de este sistema.
+>
+> **Feriados**: Los días feriados o no laborables Lucía los marca manualmente en la planilla para que nadie pueda pedir viandas, ya que la empresa no trabaja esos días.
 
 ---
 

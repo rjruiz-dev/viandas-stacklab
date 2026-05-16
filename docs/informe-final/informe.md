@@ -132,6 +132,8 @@ Como parte de la investigación, se recopilaron las planillas reales que utiliza
 
 4. **Sin integración con notificaciones**: Las planillas no están vinculadas a ningún sistema de recordatorio. Lucía debe cruzar mentalmente quién no confirmó y enviar mensajes individuales.
 
+5. **Gestión manual de feriados**: Los días feriados o no laborables Lucía los marca a mano en la planilla para que nadie pueda pedir viandas, ya que la empresa no trabaja esos días. Es un paso extra que se repite cada vez que hay feriado y no está automatizado.
+
 ---
 
 ## 4. North Star Metric (NSM)

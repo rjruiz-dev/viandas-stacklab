@@ -1,6 +1,10 @@
 # Planilla de Menú Semanal — StackLab Comedor Interno
 
 > **Nota**: Esta es una versión anonimizada con datos ficticios. La estructura y formato son idénticos a los utilizados en StackLab. Los nombres reales fueron reemplazados para proteger la privacidad de los empleados.
+>
+> **Sobre los empleados**: Este menú corresponde a 20 empleados que usan el comedor con regularidad. StackLab tiene 50 empleados en total; el resto trabaja remoto o no usa el servicio habitualmente, pero cuando asistan a la oficina también pedirían a través de este sistema.
+>
+> **Feriados**: Los días feriados o no laborables Lucía los marca manualmente en todas las planillas para que nadie pueda hacer pedidos, ya que la empresa no trabaja esos días.
 
 ---
 

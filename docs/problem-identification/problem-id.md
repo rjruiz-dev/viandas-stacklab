@@ -292,7 +292,7 @@ Soy empleado de StackLab y sufro esto desde hace 2 años. Charlé informalmente 
 | **Should** (importante pero no bloqueante) | Recordatorio automático por email o Slack 24h y 2h antes del deadline | Reduce la dependencia de Lucía para seguimiento. Pero el MVP puede funcionar sin esto si la tasa de confirmación espontánea es alta. |
 | **Should** | Capacidad de modificar o cancelar pedido hasta el deadline | El dolor de "quise cambiar y no pude" es real. Pero el MVP puede empezar con "confirmás y listo" y agregar edición después. |
 | **Should** | Vista de histórico de pedidos por empleado | Útil para trackear hábitos y resolver disputas, pero no bloquea la validación de la hipótesis. |
-| **Should** | Estadísticas simples para admin (% confirmación, viandas totales, tendencia semanal) | Le da a Lucía visibilidad sin tener que contar manualmente. No es core para la primera validación. |
+| **Should** | Calendario de feriados / días no laborables (el admin marca feriados, los empleados no pueden pedir esos días) | Lucía hace esto manualmente hoy. Automatizarlo ahorra un paso recurrente y evita pedidos en días que la empresa no trabaja. |
 | **Could** (nice to have) | Preferencias de menú / restricciones alimentarias (vegetariano, sin TACC, etc.) | Valioso para la experiencia, pero el proveedor actual ya conoce estas restricciones. No afecta la hipótesis central. |
 | **Could** | "Favoritos" o "repetir pedido de la semana anterior" | Acelera el proceso para empleados rutinarios. No es necesario para validar. |
 | **Could** | Integración con Google Calendar para detectar días de oficina automáticamente | Muy útil, pero complejo y no esencial para la hipótesis. |

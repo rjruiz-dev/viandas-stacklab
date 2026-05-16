@@ -1,6 +1,10 @@
 # Consolidado Diario de Viandas — StackLab Comedor Interno
 
 > **Nota**: Esto es una versión ficticia (cambiamos los nombres reales por Martín, Lucía, etc.) pero la estructura es exactamente la misma que usa Lucía todos los jueves. Los platos, códigos y números son reales.
+>
+> **Sobre los empleados**: Este consolidado corresponde a 20 empleados que usan el comedor regularmente. StackLab tiene 50 empleados en total; el resto trabaja remoto o no usa el servicio habitualmente, pero cuando asistan a la oficina se sumarían al sistema.
+>
+> **Feriados**: Los días feriados o no laborables Lucía los marca manualmente en la planilla base para que nadie pueda pedir, ya que la empresa no trabaja esos días.
 
 ---
 
