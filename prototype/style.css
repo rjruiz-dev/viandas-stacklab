@@ -352,16 +352,17 @@ th {
   text-align: left;
   font-weight: 600;
   white-space: nowrap;
-  position: sticky;
-  top: var(--header-height);
-  z-index: 10;
 }
 
 td {
   padding: 8px 10px;
   border-bottom: 1px solid var(--border-color);
-  vertical-align: top;
-  height: 1px; /* Force equal height rows */
+  vertical-align: middle;
+}
+
+tr {
+  height: auto;
+  min-height: 40px;
 }
 
 tr:nth-child(even) td {
@@ -372,13 +373,19 @@ tr:hover td {
   background: rgba(233, 69, 96, 0.04);
 }
 
+th[scope="row"] {
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
 /* --- Traffic-Light Status Classes --- */
 .status-ok,
 .status-late,
 .status-missing,
 .status-na {
   overflow: hidden;
-  padding: 6px 4px !important;
+  padding: 10px 8px !important;
+  min-height: 40px;
 }
 
 .status-ok {
