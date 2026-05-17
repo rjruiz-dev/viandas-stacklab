@@ -113,11 +113,16 @@
           titleHtml = '<h2 class="card__title" style="color:var(--accent)">📌 Hoy: ' + label + '</h2>';
         }
 
-        // Options list
+        // Options list with radio buttons (only if not confirmed)
         var listHtml = '<ul class="menu-list">';
         options.forEach(function (opt, i) {
-          listHtml += '<li><span class="menu-list__number">' + (i + 1) +
-            '</span> ' + opt + '</li>';
+          var radioHtml = '';
+          if (!confirmed) {
+            radioHtml = '<input type="radio" name="dish-' + date + '" value="' + i + '" class="dish-radio" id="dish-' + date + '-' + i + '">';
+          }
+          listHtml += '<li><label for="dish-' + date + '-' + i + '" style="cursor:pointer;display:flex;align-items:center;gap:8px;">' +
+            '<span class="menu-list__number">' + (i + 1) + '</span> ' +
+            radioHtml + ' ' + opt + '</label></li>';
         });
         listHtml += '</ul>';
 
@@ -125,14 +130,20 @@
         var footerHtml = '';
         if (confirmed) {
           var wasLate = false;
+          var dishName = '';
           var confirmations = V.getConfirmations();
-          if (confirmations[date] && confirmations[date].late) {
-            wasLate = true;
+          if (confirmations[date]) {
+            wasLate = confirmations[date].late === true;
+            var dIdx = confirmations[date].dishIndex;
+            if (typeof dIdx === 'number' && options[dIdx]) {
+              dishName = options[dIdx];
+            }
           }
           var badgeClass = wasLate ? 'confirm-badge--late' : 'confirm-badge--ok';
           var badgeText = wasLate ? '⚠️ Confirmado tarde' : '✅ Confirmado';
+          var dishHtml = dishName ? '<br><span style="font-size:0.85rem;opacity:0.8;">' + dishName + '</span>' : '';
           footerHtml = '<div class="confirm-footer">' +
-            '<span class="text-muted" style="font-size:0.8rem">Ya confirmaste este día</span>' +
+            '<span class="text-muted" style="font-size:0.8rem">Ya confirmaste este día' + dishHtml + '</span>' +
             '<span class="confirm-badge ' + badgeClass + '">' + badgeText + '</span>' +
             '</div>';
         } else if (isDeadline) {
@@ -198,7 +209,12 @@
         menuContainer.querySelectorAll('.confirm-btn').forEach(function (btn) {
           btn.addEventListener('click', function () {
             var date = btn.getAttribute('data-date');
-            var confirmData = V.buildConfirmation({ late: V.isDeadlineSimulated() });
+            var selectedRadio = document.querySelector('input[name="dish-' + date + '"]:checked');
+            var dishIndex = selectedRadio ? parseInt(selectedRadio.value) : 0;
+            var confirmData = V.buildConfirmation({ 
+              late: V.isDeadlineSimulated(),
+              dishIndex: dishIndex
+            });
             V.saveConfirmation(date, confirmData);
             render(); // Re-render to show confirmed state
           });

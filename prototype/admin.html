@@ -71,6 +71,27 @@
       var V = window.ViandasApp;
       var EMPLOYEES = V.EMPLOYEES;
       var DAY_NAMES = V.DAY_NAMES;
+      var menuData = null;
+
+      // Load menu.json for dish names
+      function loadMenu() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'menu.json', false); // Synchronous for simplicity
+        xhr.send(null);
+        if (xhr.status === 200) {
+          menuData = JSON.parse(xhr.responseText);
+        }
+      }
+      loadMenu();
+
+      function getDishName(date, dishIndex) {
+        if (!menuData || !menuData.days) return '';
+        var day = menuData.days.find(function(d) { return d.date === date; });
+        if (day && day.options && day.options[dishIndex]) {
+          return day.options[dishIndex];
+        }
+        return '';
+      }
 
       /* --- Fake data: deterministic demo status per employee+day --- */
       function fakeStatus(empIdx, dayIdx) {
@@ -111,17 +132,17 @@
         if (simUser && empName === simUser) {
           var confirmations = V.getConfirmations();
           var entry = confirmations[date];
-          if (!entry || !entry.confirmed) return 'missing';
-          if (entry.late) return 'late';
-          return 'confirmed';
+          if (!entry || !entry.confirmed) return { status: 'missing', dishIndex: null };
+          if (entry.late) return { status: 'late', dishIndex: entry.dishIndex };
+          return { status: 'confirmed', dishIndex: entry.dishIndex };
         }
 
         // Otherwise use fake demo data
-        return fakeStatus(empIdx, dayIdx);
+        return { status: fakeStatus(empIdx, dayIdx), dishIndex: null };
       }
 
       /* --- Traffic-light cell render --- */
-      function statusCell(status) {
+      function statusCell(status, dishName) {
         var cls, label;
         switch (status) {
           case 'confirmed':
@@ -140,7 +161,8 @@
             cls = 'status-na';
             label = '—';
         }
-        return '<td class="' + cls + '" aria-label="' + label + '">' + label + '</td>';
+        var dishHtml = dishName ? '<br><span style="font-size:0.75rem;opacity:0.7;">' + dishName + '</span>' : '';
+        return '<td class="' + cls + '" aria-label="' + label + '">' + label + dishHtml + '</td>';
       }
 
       /* --- Main render --- */
@@ -169,10 +191,11 @@
 
           DAY_NAMES.forEach(function (day, dayIdx) {
             var date = getDateForDayIndex(dayIdx);
-            var status = getCellStatus(empIdx, empName, dayIdx, date);
-            row.innerHTML += statusCell(status);
+            var result = getCellStatus(empIdx, empName, dayIdx, date);
+            var dishName = getDishName(date, result.dishIndex);
+            row.innerHTML += statusCell(result.status, dishName);
 
-            stats[status] = (stats[status] || 0) + 1;
+            stats[result.status] = (stats[result.status] || 0) + 1;
             stats.total++;
           });
 

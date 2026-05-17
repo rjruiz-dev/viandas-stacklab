@@ -297,7 +297,8 @@
     return {
       confirmed: true,
       timestamp: nowISO(),
-      late: opts.late === true || isDeadlineSimulated()
+      late: opts.late === true || isDeadlineSimulated(),
+      dishIndex: typeof opts.dishIndex === 'number' ? opts.dishIndex : null
     };
   }
 
