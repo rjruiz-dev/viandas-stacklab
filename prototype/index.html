@@ -65,7 +65,8 @@
   <!-- ============================================================
        Page-specific script
        ============================================================ -->
-  <script>
+  <script defer>
+    document.addEventListener('DOMContentLoaded', function() {
     (function () {
       'use strict';
       var V = window.ViandasApp;
@@ -256,6 +257,7 @@
         fetchMenu();
       }
     })();
+    }); // DOMContentLoaded
   </script>
 </body>
 </html>

@@ -51,7 +51,8 @@
   <!-- ============================================================
        Page-specific script
        ============================================================ -->
-  <script>
+  <script defer>
+    document.addEventListener('DOMContentLoaded', function() {
     (function () {
       'use strict';
       var V = window.ViandasApp;
@@ -140,6 +141,7 @@
         loadAttendance(initial);
       }
     })();
+    }); // DOMContentLoaded
   </script>
 </body>
 </html>
