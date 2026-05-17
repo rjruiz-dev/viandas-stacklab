@@ -1,0 +1,65 @@
+{
+  "week": "2026-05-12",
+  "days": [
+    {
+      "date": "2026-05-12",
+      "label": "Lunes 12/05",
+      "options": [
+        "Milanesa napolitana con puré",
+        "Pollo al disco con arroz",
+        "Tartas de verdura",
+        "Pollo grillado",
+        "Ensalada César",
+        "Wrap vegetales"
+      ]
+    },
+    {
+      "date": "2026-05-13",
+      "label": "Martes 13/05",
+      "options": [
+        "Bife de chorizo",
+        "Penne rigate",
+        "Wok de verduras",
+        "Bife grillado",
+        "Bowl quinoa",
+        "Sopa lentejas"
+      ]
+    },
+    {
+      "date": "2026-05-14",
+      "label": "Miércoles 14/05",
+      "options": [
+        "Pollo al horno",
+        "Milanesa de soja",
+        "Lasagna berenjena",
+        "Suprema grillada",
+        "Ensalada atún",
+        "Sandwich pechuga"
+      ]
+    },
+    {
+      "date": "2026-05-15",
+      "label": "Jueves 15/05",
+      "options": [
+        "Ñoquis con tuco",
+        "Risotto champiñones",
+        "Hamburguesa lentejas",
+        "Pechuga plancha",
+        "Sopa verduras",
+        "Wrap pollo"
+      ]
+    },
+    {
+      "date": "2026-05-16",
+      "label": "Viernes 16/05",
+      "options": [
+        "Pescado horno",
+        "Suprema rellena",
+        "Fajitas vegetales",
+        "Filet merluza",
+        "Bowl salmón",
+        "Ensalada griega"
+      ]
+    }
+  ]
+}
