@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viandas StackLab — Vista Consolidada</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <!-- ============================================================
+       Header with user simulation dropdown
+       ============================================================ -->
+  <header class="header">
+    <span class="header__title">🥗 Viandas StackLab</span>
+    <nav class="header__nav">
+      <a href="index.html">Menú</a>
+      <a href="config.html">Config</a>
+      <span id="user-sim"></span>
+    </nav>
+  </header>
+
+  <!-- ============================================================
+       Main: admin consolidated view
+       ============================================================ -->
+  <main class="main">
+    <h1 class="card__title mb-1">📊 Vista consolidada — Lucía</h1>
+
+    <!-- Summary stats -->
+    <div class="card" id="stats-card">
+      <div class="flex flex-wrap gap-1" id="stats-container">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card">
+      <div class="table-wrapper">
+        <table id="admin-table" aria-label="Estado de confirmaciones por empleado y día">
+          <thead>
+            <tr id="table-header-row">
+              <th scope="col">Empleado</th>
+              <!-- Day columns populated by JS -->
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+      <div id="empty-table" class="cta-card hidden">
+        <div class="cta-card__icon">📭</div>
+        <p class="cta-card__text">Sin datos de confirmaciones todavía.</p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex flex-wrap gap-1 items-center justify-between mt-1">
+      <button id="export-btn" class="btn btn--outline" type="button">📥 Exportar reporte</button>
+      <span class="text-muted" style="font-size:0.75rem" id="footer-note"></span>
+    </div>
+  </main>
+
+  <!-- ============================================================
+       Page-specific script
+       ============================================================ -->
+  <script>
+    (function () {
+      'use strict';
+      var V = window.ViandasApp;
+      var EMPLOYEES = V.EMPLOYEES;
+      var DAY_NAMES = V.DAY_NAMES;
+
+      /* --- Fake data: deterministic demo status per employee+day --- */
+      function fakeStatus(empIdx, dayIdx) {
+        // Deterministic seeded look using employee and day index
+        var seed = (empIdx * 7 + dayIdx * 3) % 10;
+
+        // Employee patterns (base rates)
+        switch (empIdx) {
+          case 0: // Martín — organized, mostly green
+            if (seed < 8) return 'confirmed';
+            if (seed === 8) return 'late';
+            return 'missing';
+          case 1: // Diego — sometimes late
+            if (seed < 6) return 'confirmed';
+            if (seed < 8) return 'late';
+            return 'missing';
+          case 2: // Sofía — reliable, all confirmed
+            if (seed < 9) return 'confirmed';
+            return 'late';
+          case 3: // Ana — forgets sometimes
+            if (seed < 5) return 'confirmed';
+            if (seed < 7) return 'late';
+            return 'missing';
+          case 4: // Carlos — mixed
+            if (seed < 7) return 'confirmed';
+            if (seed === 7) return 'late';
+            return 'missing';
+          default:
+            return 'confirmed';
+        }
+      }
+
+      /* --- Get status for a specific employee and day --- */
+      function getCellStatus(empIdx, empName, dayIdx, date) {
+        var simUser = V.getSimulatedUser();
+
+        // If this is the simulated user, use real confirmations
+        if (simUser && empName === simUser) {
+          var confirmations = V.getConfirmations();
+          var entry = confirmations[date];
+          if (!entry || !entry.confirmed) return 'missing';
+          if (entry.late) return 'late';
+          return 'confirmed';
+        }
+
+        // Otherwise use fake demo data
+        return fakeStatus(empIdx, dayIdx);
+      }
+
+      /* --- Traffic-light cell render --- */
+      function statusCell(status) {
+        var cls, label;
+        switch (status) {
+          case 'confirmed':
+            cls = 'status-ok';
+            label = '✓ Confirmado';
+            break;
+          case 'late':
+            cls = 'status-late';
+            label = '⚠ Tarde';
+            break;
+          case 'missing':
+            cls = 'status-missing';
+            label = '✗ Falta';
+            break;
+          default:
+            cls = 'status-na';
+            label = '—';
+        }
+        return '<td class="' + cls + '" aria-label="' + label + '">' + label + '</td>';
+      }
+
+      /* --- Main render --- */
+      function render() {
+        var tableBody = document.getElementById('table-body');
+        var headerRow = document.getElementById('table-header-row');
+        var emptyTable = document.getElementById('empty-table');
+        var statsContainer = document.getElementById('stats-container');
+        var footerNote = document.getElementById('footer-note');
+        var simUser = V.getSimulatedUser();
+        var isDeadline = V.isDeadlineSimulated();
+
+        // Build header: Empleado + Lunes..Viernes
+        headerRow.innerHTML = '<th scope="col">Empleado</th>';
+        DAY_NAMES.forEach(function (day) {
+          headerRow.innerHTML += '<th scope="col">' + day + '</th>';
+        });
+
+        // Build rows
+        tableBody.innerHTML = '';
+        var stats = { confirmed: 0, late: 0, missing: 0, total: 0 };
+
+        EMPLOYEES.forEach(function (empName, empIdx) {
+          var row = document.createElement('tr');
+          row.innerHTML = '<th scope="row">' + empName + '</th>';
+
+          DAY_NAMES.forEach(function (day, dayIdx) {
+            var date = getDateForDayIndex(dayIdx);
+            var status = getCellStatus(empIdx, empName, dayIdx, date);
+            row.innerHTML += statusCell(status);
+
+            stats[status] = (stats[status] || 0) + 1;
+            stats.total++;
+          });
+
+          tableBody.appendChild(row);
+        });
+
+        // Empty fallback
+        if (EMPLOYEES.length === 0 || stats.total === 0) {
+          emptyTable.classList.remove('hidden');
+        } else {
+          emptyTable.classList.add('hidden');
+        }
+
+        // Summary stats
+        var confirmedPct = stats.total > 0
+          ? Math.round(((stats.confirmed + stats.late) / stats.total) * 100)
+          : 0;
+
+        statsContainer.innerHTML =
+          '<div style="flex:1;min-width:120px">' +
+          '<span style="font-size:0.8rem;color:var(--text-muted)">Confirmados</span><br>' +
+          '<strong style="font-size:1.5rem;color:var(--success)">' + (stats.confirmed + stats.late) +
+          '</strong><span style="font-size:0.8rem"> de ' + stats.total + '</span>' +
+          '</div>' +
+          '<div style="flex:1;min-width:100px">' +
+          '<span style="font-size:0.8rem;color:var(--text-muted)">A tiempo</span><br>' +
+          '<strong style="font-size:1.5rem;color:var(--success)">' + stats.confirmed + '</strong>' +
+          '</div>' +
+          '<div style="flex:1;min-width:100px">' +
+          '<span style="font-size:0.8rem;color:var(--text-muted)">Tarde</span><br>' +
+          '<strong style="font-size:1.5rem;color:var(--warning)">' + stats.late + '</strong>' +
+          '</div>' +
+          '<div style="flex:1;min-width:100px">' +
+          '<span style="font-size:0.8rem;color:var(--text-muted)">Faltan</span><br>' +
+          '<strong style="font-size:1.5rem;color:var(--danger)">' + stats.missing + '</strong>' +
+          '</div>' +
+          '<div style="flex:1;min-width:100px">' +
+          '<span style="font-size:0.8rem;color:var(--text-muted)">% Cumplimiento</span><br>' +
+          '<strong style="font-size:1.5rem">' + confirmedPct + '%</strong>' +
+          '</div>';
+
+        // Footer note
+        var note = 'Datos demo generados automáticamente';
+        if (simUser) {
+          note += ' · Usuario real: ' + simUser;
+        }
+        if (isDeadline) {
+          note += ' · ⏰ Simulación de cierre activa';
+        }
+        footerNote.textContent = note;
+      }
+
+      /* --- Derive ISO date from day index (Mon=0..Fri=4) anchored to menu week --- */
+      function getDateForDayIndex(dayIdx) {
+        // Base date: Monday of the menu week (May 12, 2026)
+        var base = new Date('2026-05-12T12:00:00');
+        base.setDate(base.getDate() + dayIdx);
+        return base.toISOString().slice(0, 10);
+      }
+
+      /* --- Fake export button --- */
+      function initExportButton() {
+        var btn = document.getElementById('export-btn');
+        btn.addEventListener('click', function () {
+          alert('📥 Reporte de viandas — Funcionalidad disponible en etapa 2.\n\n' +
+            'Actualmente podés visualizar los datos en esta tabla.\n' +
+            'El reporte incluirá: empleado, día, estado y timestamp.');
+        });
+      }
+
+      /* --- Init --- */
+      function init() {
+        initExportButton();
+        V.initUserSimulation('#user-sim', {
+          onChange: function () {
+            window.location.reload();
+          }
+        });
+        render();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>
