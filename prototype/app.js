@@ -458,7 +458,7 @@
     banner.innerHTML =
       '<span class="notification-banner__icon" aria-hidden="true">📬</span>' +
       '<span class="notification-banner__text">' +
-      'Recordatorio: Tenés hasta el <strong>jueves 10 AM</strong> para confirmar tu vianda (simulación Gmail / Google Chat)' +
+      'Recordatorio: Tenés hasta el <strong>jueves 10 AM</strong> para confirmar tu vianda (simulación Gmail/Google Chat)' +
       '</span>' +
       '<button class="notification-banner__dismiss" aria-label="Cerrar recordatorio" type="button">Entendido</button>';
 
