@@ -336,6 +336,95 @@ a:hover {
   -webkit-overflow-scrolling: touch;
   border-radius: var(--radius);
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin: 0 calc(var(--space) * -1);
+  width: calc(100% + var(--space) * 2);
+}
+
+table {
+  width: 100%;
+  min-width: 500px;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+}
+
+th {
+  background: var(--bg-dark);
+  color: var(--text-light);
+  padding: 6px 8px;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+
+tr {
+  height: auto;
+  min-height: 32px;
+}
+
+tr:nth-child(even) td {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+tr:hover td {
+  background: rgba(233, 69, 96, 0.04);
+}
+
+th[scope="row"] {
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* --- Traffic-Light Status Classes --- */
+.status-ok,
+.status-late,
+.status-missing,
+.status-na {
+  overflow: hidden;
+  padding: 6px 4px !important;
+  min-height: 32px;
+}
+
+.status-ok {
+  background: var(--success) !important;
+  color: var(--text-dark);
+  font-weight: 600;
+  text-align: center;
+  font-size: 0.7rem;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.status-late {
+  background: var(--warning) !important;
+  color: var(--text-dark);
+  font-weight: 600;
+  text-align: center;
+  font-size: 0.7rem;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.status-missing {
+  background: var(--danger) !important;
+  color: var(--text-light);
+  font-weight: 600;
+  text-align: center;
+  font-size: 0.7rem;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.status-na {
+  background: rgba(0,0,0,0.05) !important;
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 0.65rem;
 }
 
 table {
@@ -709,13 +798,37 @@ th[scope="row"] {
   }
 
   /* Table larger on desktop */
+  .table-wrapper {
+    margin: 0;
+    width: 100%;
+  }
+
   table {
-    font-size: 0.95rem;
+    font-size: 0.875rem;
+    min-width: 700px;
   }
 
   th,
   td {
-    padding: 12px 16px;
+    padding: 10px 12px;
+  }
+
+  .status-ok,
+  .status-late,
+  .status-missing,
+  .status-na {
+    padding: 10px 8px !important;
+    min-height: 40px;
+  }
+
+  .status-ok,
+  .status-late,
+  .status-missing {
+    font-size: 0.8rem;
+  }
+
+  .status-na {
+    font-size: 0.75rem;
   }
 
   /* Form grid */
