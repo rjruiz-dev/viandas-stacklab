@@ -140,7 +140,7 @@
         });
 
         if (cleaned) {
-          V.setItem('viandas_confirmations', confirmations);
+          V.setItem(V.getUserKey('viandas_confirmations'), confirmations);
         }
 
         saveStatus.textContent = '✅ Configuración guardada' + (cleaned ? ' (se limpiaron reservas de días no asistidos)' : '');

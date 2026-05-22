@@ -116,52 +116,68 @@
   }
 
   /* --------------------------------------------------------
+     Per-user storage helpers
+     -------------------------------------------------------- */
+
+  /**
+    * Get a user-specific key (prefix with simulated user name).
+    * Falls back to base key if no simulated user.
+    * @param {string} baseKey
+    * @returns {string}
+    */
+  function getUserKey(baseKey) {
+    var simUser = getSimulatedUser();
+    if (!simUser) return baseKey;
+    return baseKey + '_' + simUser.replace(/\s+/g, '_');
+  }
+
+  /* --------------------------------------------------------
      State Management
      -------------------------------------------------------- */
 
   /**
-   * Get current user config.
-   * @returns {{ name: string, attendance: boolean[] } | null}
-   */
+    * Get current user config.
+    * @returns {{ name: string, attendance: boolean[] } | null}
+    */
   function getCurrentUser() {
-    return getItem(KEYS.USER);
+    return getItem(getUserKey(KEYS.USER));
   }
 
   /**
-   * Save user config.
-   * @param {{ name: string, attendance: boolean[] }} user
-   */
+    * Save user config.
+    * @param {{ name: string, attendance: boolean[] }} user
+    */
   function saveUser(user) {
-    return setItem(KEYS.USER, user);
+    return setItem(getUserKey(KEYS.USER), user);
   }
 
   /**
-   * Get all confirmations.
-   * @returns {{ [date: string]: { confirmed: boolean, timestamp: string, late: boolean } }}
-   */
+    * Get all confirmations for the current user.
+    * @returns {{ [date: string]: { confirmed: boolean, timestamp: string, late: boolean } }}
+    */
   function getConfirmations() {
-    return getItem(KEYS.CONFIRMATIONS) || {};
+    return getItem(getUserKey(KEYS.CONFIRMATIONS)) || {};
   }
 
   /**
-   * Save a confirmation for a specific date.
-   * @param {string} date - ISO date (e.g. "2026-05-12")
-   * @param {{ confirmed: boolean, timestamp: string, late: boolean }} data
-   */
+    * Save a confirmation for a specific date.
+    * @param {string} date - ISO date (e.g. "2026-05-12")
+    * @param {{ confirmed: boolean, timestamp: string, late: boolean }} data
+    */
   function saveConfirmation(date, data) {
     var confirmations = getConfirmations();
     confirmations[date] = data;
-    return setItem(KEYS.CONFIRMATIONS, confirmations);
+    return setItem(getUserKey(KEYS.CONFIRMATIONS), confirmations);
   }
 
   /**
-   * Remove a confirmation for a specific date.
-   * @param {string} date - ISO date
-   */
+    * Remove a confirmation for a specific date.
+    * @param {string} date - ISO date
+    */
   function removeConfirmation(date) {
     var confirmations = getConfirmations();
     delete confirmations[date];
-    return setItem(KEYS.CONFIRMATIONS, confirmations);
+    return setItem(getUserKey(KEYS.CONFIRMATIONS), confirmations);
   }
 
   /**
@@ -584,6 +600,7 @@
     getSimulatedUser: getSimulatedUser,
     setSimulatedUser: setSimulatedUser,
     initUserSimulation: initUserSimulation,
+    getUserKey: getUserKey,
     EMPLOYEES: EMPLOYEES,
 
     // Banner
