@@ -56,7 +56,10 @@
 
     <!-- Actions -->
     <div class="flex flex-wrap gap-1 items-center justify-between mt-1">
-      <button id="export-btn" class="btn btn--outline" type="button">📥 Exportar reporte</button>
+      <div class="flex flex-wrap gap-1">
+        <button id="export-btn" class="btn btn--outline" type="button">📥 Reporte semanal</button>
+        <button id="export-daily-btn" class="btn btn--outline" type="button">📋 Reporte por día</button>
+      </div>
       <span class="text-muted" style="font-size:0.75rem" id="footer-note"></span>
     </div>
   </main>
@@ -363,7 +366,103 @@
           var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
           var link = document.createElement('a');
           var url = URL.createObjectURL(blob);
-          var filename = 'viandas-stacklab-' + new Date().toISOString().slice(0, 10) + '.csv';
+          var filename = 'viandas-stacklab-semanal-' + new Date().toISOString().slice(0, 10) + '.csv';
+
+          link.setAttribute('href', url);
+          link.setAttribute('download', filename);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        });
+      }
+
+      /* --- Generate Daily CSV (for kitchen/operations) --- */
+      function generateDailyCSV() {
+        var lines = [];
+        var isDeadline = V.isDeadlineSimulated();
+        var timestamp = new Date().toLocaleString('es-AR');
+        var weekLabel = 'Semana 12-16 mayo 2026';
+
+        lines.push(['Reporte de Viandas por Día - StackLab']);
+        lines.push([weekLabel]);
+        lines.push(['Generado:', timestamp]);
+        if (isDeadline) {
+          lines.push(['⚠️ Simulación de cierre de pedidos activa']);
+        }
+        lines.push([]);
+
+        DAY_NAMES.forEach(function (dayName, dayIdx) {
+          var date = getDateForDayIndex(dayIdx);
+          lines.push(['=== ' + dayName.toUpperCase() + ' ' + date + ' ===']);
+          lines.push(['Empleado', 'Plato', 'Estado']);
+
+          var dishCounts = {};
+          var totalEmployees = 0;
+
+          EMPLOYEES.forEach(function (empName, empIdx) {
+            if (!employeeAttends(empName, dayIdx)) {
+              lines.push([empName, '—', 'No asiste']);
+              return;
+            }
+
+            var result = getCellStatus(empIdx, empName, dayIdx, date);
+            var dishName = getDishName(date, result.dishIndex) || '—';
+            var statusLabel = '';
+
+            switch (result.status) {
+              case 'confirmed':
+                statusLabel = 'Confirmado';
+                totalEmployees++;
+                if (dishName !== '—') {
+                  dishCounts[dishName] = (dishCounts[dishName] || 0) + 1;
+                }
+                break;
+              case 'late':
+                statusLabel = 'Tarde';
+                totalEmployees++;
+                if (dishName !== '—') {
+                  dishCounts[dishName] = (dishCounts[dishName] || 0) + 1;
+                }
+                break;
+              case 'missing':
+                statusLabel = 'Falta';
+                break;
+              default:
+                statusLabel = '—';
+            }
+
+            lines.push([empName, dishName, statusLabel]);
+          });
+
+          lines.push([]);
+          lines.push(['Total empleados con vianda:', totalEmployees]);
+
+          if (Object.keys(dishCounts).length > 0) {
+            lines.push(['Total por plato:']);
+            Object.keys(dishCounts).forEach(function (dish) {
+              lines.push(['', dish, dishCounts[dish]]);
+            });
+          }
+
+          lines.push([]);
+        });
+
+        var csv = lines.map(function (row) {
+          return row.map(escapeCSV).join(';');
+        }).join('\n');
+
+        return '\uFEFF' + csv;
+      }
+
+      function initDailyExportButton() {
+        var btn = document.getElementById('export-daily-btn');
+        btn.addEventListener('click', function () {
+          var csvContent = generateDailyCSV();
+          var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+          var link = document.createElement('a');
+          var url = URL.createObjectURL(blob);
+          var filename = 'viandas-stacklab-diario-' + new Date().toISOString().slice(0, 10) + '.csv';
 
           link.setAttribute('href', url);
           link.setAttribute('download', filename);
@@ -377,6 +476,7 @@
       /* --- Init --- */
       function init() {
         initExportButton();
+        initDailyExportButton();
         V.initUserSimulation('#user-sim', {
           onChange: function () {
             window.location.reload();
