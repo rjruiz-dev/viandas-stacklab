@@ -4,7 +4,7 @@
 
 ## Acerca del Proyecto
 
-StackLab es una empresa de software con aproximadamente 50 empleados en Buenos Aires. El comedor interno ofrece viandas a su personal, pero la gestión actual —basada en planillas Excel compartidas y recordatorios manuales por email— genera desperdicio económico ($225-$500/mes en viandas no reclamadas), ineficiencia administrativa (8-12 horas mensuales de trabajo manual) y fricción interpersonal.
+StackLab es una empresa de software con aproximadamente 50 empleados en Santa Fe. El comedor interno ofrece viandas a su personal, pero la gestión actual —basada en planillas Excel compartidas y recordatorios manuales por email— genera desperdicio económico ($71.000-$129.000 ARS/mes en viandas no reclamadas), ineficiencia administrativa (8-12 horas mensuales de trabajo manual) y fricción interpersonal.
 
 Este proyecto construye una herramienta web simple para que los empleados configuren sus días de asistencia y confirmen viandas con un solo clic, mientras la administradora recibe un consolidado automático sin intervención manual.
 
@@ -52,7 +52,7 @@ viandas-stacklab/
 | **NSM**: % viandas confirmadas correctamente /semana | ~70% | ≥ 95% |
 | Viandas no reclamadas /semana | 3-5 | ≤ 1 |
 | Tiempo admin /semana | 2-3 horas | ≤ 30 minutos |
-| Costo desperdicio /mes | $225-$500 | ≤ $75 |
+| Costo desperdicio /mes | $71.000-$129.000 ARS | ≤ $25.000 ARS |
 
 ## Fases del Proyecto
 
