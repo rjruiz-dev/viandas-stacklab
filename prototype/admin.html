@@ -285,13 +285,112 @@
         return base.toISOString().slice(0, 10);
       }
 
-      /* --- Fake export button --- */
+      /* --- Export CSV --- */
+      function escapeCSV(str) {
+        if (!str) return '';
+        var s = String(str).replace(/"/g, '""');
+        if (/[;\n\r"]/.test(s)) {
+          return '"' + s + '"';
+        }
+        return s;
+      }
+
+      function generateCSV() {
+        var lines = [];
+        var isDeadline = V.isDeadlineSimulated();
+        var simUser = V.getSimulatedUser();
+        var weekLabel = 'Semana 12-16 mayo 2026';
+        var timestamp = new Date().toLocaleString('es-AR');
+
+        // Header info
+        lines.push(['Reporte de Viandas - StackLab']);
+        lines.push([weekLabel]);
+        lines.push(['Generado:', timestamp]);
+        if (isDeadline) {
+          lines.push(['⚠️ Simulación de cierre de pedidos activa']);
+        }
+        lines.push([]); // empty line
+
+        // Table header
+        lines.push(['Empleado', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']);
+
+        // Rows
+        EMPLOYEES.forEach(function (empName, empIdx) {
+          var row = [empName];
+          DAY_NAMES.forEach(function (day, dayIdx) {
+            var date = getDateForDayIndex(dayIdx);
+            var result = getCellStatus(empIdx, empName, dayIdx, date);
+            var dishName = getDishName(date, result.dishIndex);
+            var cell = '';
+            switch (result.status) {
+              case 'confirmed':
+                cell = 'Confirmado' + (dishName ? ': ' + dishName : '');
+                break;
+              case 'late':
+                cell = 'Tarde' + (dishName ? ': ' + dishName : '');
+                break;
+              case 'missing':
+                cell = 'Falta';
+                break;
+              case 'na':
+                cell = '—';
+                break;
+              default:
+                cell = '—';
+            }
+            row.push(cell);
+          });
+          lines.push(row);
+        });
+
+        lines.push([]); // empty line
+
+        // Summary
+        var stats = { confirmed: 0, late: 0, missing: 0, total: 0 };
+        EMPLOYEES.forEach(function (empName, empIdx) {
+          DAY_NAMES.forEach(function (day, dayIdx) {
+            var date = getDateForDayIndex(dayIdx);
+            var result = getCellStatus(empIdx, empName, dayIdx, date);
+            if (result.status !== 'na') {
+              stats[result.status] = (stats[result.status] || 0) + 1;
+              stats.total++;
+            }
+          });
+        });
+        var confirmedPct = stats.total > 0
+          ? Math.round(((stats.confirmed + stats.late) / stats.total) * 100)
+          : 0;
+
+        lines.push(['Resumen']);
+        lines.push(['Confirmados a tiempo:', stats.confirmed]);
+        lines.push(['Confirmados tarde:', stats.late]);
+        lines.push(['Faltan:', stats.missing]);
+        lines.push(['% Cumplimiento:', confirmedPct + '%']);
+
+        // Convert to CSV with semicolon separator (Excel Spanish)
+        var csv = lines.map(function (row) {
+          return row.map(escapeCSV).join(';');
+        }).join('\n');
+
+        // Add BOM for Excel Spanish compatibility
+        return '\uFEFF' + csv;
+      }
+
       function initExportButton() {
         var btn = document.getElementById('export-btn');
         btn.addEventListener('click', function () {
-          alert('📥 Reporte de viandas — Funcionalidad disponible en etapa 2.\n\n' +
-            'Actualmente podés visualizar los datos en esta tabla.\n' +
-            'El reporte incluirá: empleado, día, estado y timestamp.');
+          var csvContent = generateCSV();
+          var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+          var link = document.createElement('a');
+          var url = URL.createObjectURL(blob);
+          var filename = 'viandas-stacklab-' + new Date().toISOString().slice(0, 10) + '.csv';
+
+          link.setAttribute('href', url);
+          link.setAttribute('download', filename);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
         });
       }
 
