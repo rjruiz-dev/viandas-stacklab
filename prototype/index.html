@@ -214,18 +214,47 @@
           menuContainer.appendChild(card);
         });
 
+        /* --- Update a single day card without re-rendering the whole page --- */
+        function updateCardForDate(date) {
+          var attendingDays = getAttendingDays();
+          var day = attendingDays.find(function (d) { return d.date === date; });
+          if (!day) return;
+
+          var oldCard = menuContainer.querySelector('[data-date="' + date + '"]');
+          if (!oldCard) return;
+
+          var newCard = renderDayCard(day, 0, attendingDays);
+          oldCard.replaceWith(newCard);
+
+          // Re-bind cancel button on the new card
+          var cancelBtn = newCard.querySelector('.cancel-btn');
+          if (cancelBtn) {
+            cancelBtn.addEventListener('click', function () {
+              var d = cancelBtn.getAttribute('data-date');
+              if (confirm('¿Seguro que querés cancelar tu pedido para el ' + d + '?')) {
+                V.removeConfirmation(d);
+                updateCardForDate(d);
+              }
+            });
+          }
+        }
+
         // Bind confirm buttons
         menuContainer.querySelectorAll('.confirm-btn').forEach(function (btn) {
           btn.addEventListener('click', function () {
             var date = btn.getAttribute('data-date');
             var selectedRadio = document.querySelector('input[name="dish-' + date + '"]:checked');
-            var dishIndex = selectedRadio ? parseInt(selectedRadio.value) : 0;
+            if (!selectedRadio) {
+              alert('⚠️ Seleccioná un plato antes de confirmar');
+              return;
+            }
+            var dishIndex = parseInt(selectedRadio.value);
             var confirmData = V.buildConfirmation({ 
               late: V.isDeadlineSimulated(),
               dishIndex: dishIndex
             });
             V.saveConfirmation(date, confirmData);
-            render(); // Re-render to show confirmed state
+            updateCardForDate(date); // Update only this card
           });
         });
 
@@ -235,7 +264,7 @@
             var date = btn.getAttribute('data-date');
             if (confirm('¿Seguro que querés cancelar tu pedido para el ' + date + '?')) {
               V.removeConfirmation(date);
-              render(); // Re-render to show unconfirmed state
+              updateCardForDate(date); // Update only this card
             }
           });
         });
