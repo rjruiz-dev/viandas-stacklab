@@ -1,0 +1,15 @@
+# Archivos de presentación local (no subir al remoto)
+docs/informe-final/presentacion-gamma.md
+docs/informe-final/presentacion-notebooklm.md
+
+# Archivos temporales
+*.log
+.DS_Store
+Thumbs.db
+
+# Dependencias
+node_modules/
+
+# Entornos
+.env
+.env.local
