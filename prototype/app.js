@@ -181,6 +181,28 @@
   }
 
   /**
+    * Get user config for a specific employee by name.
+    * @param {string} name - Employee name
+    * @returns {{ name: string, attendance: boolean[] } | null}
+    */
+  function getUserByName(name) {
+    if (!name) return null;
+    var key = KEYS.USER + '_' + name.replace(/\s+/g, '_');
+    return getItem(key);
+  }
+
+  /**
+    * Get confirmations for a specific employee by name.
+    * @param {string} name - Employee name
+    * @returns {{ [date: string]: { confirmed: boolean, timestamp: string, late: boolean, dishIndex: number } }}
+    */
+  function getConfirmationsByName(name) {
+    if (!name) return {};
+    var key = KEYS.CONFIRMATIONS + '_' + name.replace(/\s+/g, '_');
+    return getItem(key) || {};
+  }
+
+  /**
    * Check if deadline is currently simulated as passed.
    * @returns {boolean}
    */
@@ -578,6 +600,8 @@
     getConfirmations: getConfirmations,
     saveConfirmation: saveConfirmation,
     removeConfirmation: removeConfirmation,
+    getUserByName: getUserByName,
+    getConfirmationsByName: getConfirmationsByName,
     isDeadlineSimulated: isDeadlineSimulated,
     setDeadlineSimulated: setDeadlineSimulated,
     toggleDeadlineSimulated: toggleDeadlineSimulated,

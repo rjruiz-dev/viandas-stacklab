@@ -126,26 +126,13 @@
 
       /* --- Check if employee attends on a given day --- */
       function employeeAttends(empName, dayIdx) {
-        // For the simulated user, read real config
-        var simUser = V.getSimulatedUser();
-        if (simUser && empName === simUser) {
-          var user = V.getCurrentUser();
-          if (user && Array.isArray(user.attendance)) {
-            return user.attendance[dayIdx] === true;
-          }
-          // If no config, assume they attend (backward compat)
-          return true;
+        // Read real config for any employee by name
+        var user = V.getUserByName(empName);
+        if (user && Array.isArray(user.attendance)) {
+          return user.attendance[dayIdx] === true;
         }
-        // For other employees, use fake attendance patterns
-        var patterns = [
-          [1,1,0,1,0], // Martín: Lun, Mar, Jue
-          [1,1,1,0,1], // Diego: Lun, Mar, Mie, Vie
-          [1,1,1,1,1], // Sofía: all days
-          [1,0,1,0,1], // Ana: Lun, Mie, Vie
-          [0,1,1,1,0]  // Carlos: Mar, Mie, Jue
-        ];
-        var pattern = patterns[empIdx] || [1,1,1,1,1];
-        return pattern[dayIdx] === 1;
+        // If no config found, assume they don't attend (safer default)
+        return false;
       }
 
       /* --- Get status for a specific employee and day --- */
@@ -155,19 +142,12 @@
           return { status: 'na', dishIndex: null };
         }
 
-        var simUser = V.getSimulatedUser();
-
-        // If this is the simulated user, use real confirmations
-        if (simUser && empName === simUser) {
-          var confirmations = V.getConfirmations();
-          var entry = confirmations[date];
-          if (!entry || !entry.confirmed) return { status: 'missing', dishIndex: null };
-          if (entry.late) return { status: 'late', dishIndex: entry.dishIndex };
-          return { status: 'confirmed', dishIndex: entry.dishIndex };
-        }
-
-        // Otherwise use fake demo data
-        return { status: fakeStatus(empIdx, dayIdx), dishIndex: null };
+        // Read real confirmations for any employee by name
+        var confirmations = V.getConfirmationsByName(empName);
+        var entry = confirmations[date];
+        if (!entry || !entry.confirmed) return { status: 'missing', dishIndex: null };
+        if (entry.late) return { status: 'late', dishIndex: entry.dishIndex };
+        return { status: 'confirmed', dishIndex: entry.dishIndex };
       }
 
       /* --- Traffic-light cell render --- */
