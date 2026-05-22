@@ -155,15 +155,12 @@
             '<button class="btn btn--danger btn--sm cancel-btn" data-date="' + date + '">❌ Cancelar</button>' +
             '</div>' +
             '</div>';
-        } else if (isDeadline) {
-          footerHtml = '<div class="confirm-footer">' +
-            '<span class="text-muted">Cierre: jueves 10 AM</span>' +
-            '<button class="btn btn--primary" disabled>Confirmar</button>' +
-            '</div>';
         } else {
+          var btnText = isDeadline ? '⚠ Confirmar tarde' : '✔ Confirmar vianda';
+          var btnClass = isDeadline ? 'btn btn--warning btn--block confirm-btn' : 'btn btn--primary btn--block confirm-btn';
           footerHtml = '<div class="confirm-footer">' +
-            '<button class="btn btn--primary btn--block confirm-btn" data-date="' + date + '">' +
-            '✔ Confirmar vianda</button>' +
+            '<button class="' + btnClass + '" data-date="' + date + '">' +
+            btnText + '</button>' +
             '</div>';
         }
 
