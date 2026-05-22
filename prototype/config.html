@@ -120,7 +120,30 @@
         }
 
         V.saveUser({ name: simUser, attendance: attendance });
-        saveStatus.textContent = '✅ Configuración guardada';
+
+        // Clean up confirmations for days the user no longer attends
+        var confirmations = V.getConfirmations();
+        var cleaned = false;
+        var dayDates = [
+          '2026-05-12', // Lunes
+          '2026-05-13', // Martes
+          '2026-05-14', // Miércoles
+          '2026-05-15', // Jueves
+          '2026-05-16'  // Viernes
+        ];
+
+        dayDates.forEach(function (date, idx) {
+          if (!attendance[idx] && confirmations[date]) {
+            delete confirmations[date];
+            cleaned = true;
+          }
+        });
+
+        if (cleaned) {
+          V.setItem('viandas_confirmations', confirmations);
+        }
+
+        saveStatus.textContent = '✅ Configuración guardada' + (cleaned ? ' (se limpiaron reservas de días no asistidos)' : '');
         saveStatus.className = '';
         saveStatus.style.color = 'var(--success)';
         menuCta.style.display = 'block';

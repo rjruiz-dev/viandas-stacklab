@@ -124,8 +124,37 @@
         }
       }
 
+      /* --- Check if employee attends on a given day --- */
+      function employeeAttends(empName, dayIdx) {
+        // For the simulated user, read real config
+        var simUser = V.getSimulatedUser();
+        if (simUser && empName === simUser) {
+          var user = V.getCurrentUser();
+          if (user && Array.isArray(user.attendance)) {
+            return user.attendance[dayIdx] === true;
+          }
+          // If no config, assume they attend (backward compat)
+          return true;
+        }
+        // For other employees, use fake attendance patterns
+        var patterns = [
+          [1,1,0,1,0], // Martín: Lun, Mar, Jue
+          [1,1,1,0,1], // Diego: Lun, Mar, Mie, Vie
+          [1,1,1,1,1], // Sofía: all days
+          [1,0,1,0,1], // Ana: Lun, Mie, Vie
+          [0,1,1,1,0]  // Carlos: Mar, Mie, Jue
+        ];
+        var pattern = patterns[empIdx] || [1,1,1,1,1];
+        return pattern[dayIdx] === 1;
+      }
+
       /* --- Get status for a specific employee and day --- */
       function getCellStatus(empIdx, empName, dayIdx, date) {
+        // First check: does this employee attend this day?
+        if (!employeeAttends(empName, dayIdx)) {
+          return { status: 'na', dishIndex: null };
+        }
+
         var simUser = V.getSimulatedUser();
 
         // If this is the simulated user, use real confirmations
