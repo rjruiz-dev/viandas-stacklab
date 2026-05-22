@@ -10,6 +10,11 @@ Thumbs.db
 # Dependencias
 node_modules/
 
+# Archivos de generación de PDF (solo local)
+docs/informe-final/generate-pdf.js
+docs/informe-final/package.json
+docs/informe-final/package-lock.json
+
 # Entornos
 .env
 .env.local
