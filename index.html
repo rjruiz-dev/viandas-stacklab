@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viandas StackLab — Menú Semanal</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <!-- ============================================================
+       Header with user simulation dropdown
+       ============================================================ -->
+  <header class="header">
+    <span class="header__title">🥗 Viandas StackLab</span>
+    <nav class="header__nav">
+      <a href="config.html">Config</a>
+      <a href="admin.html">Admin</a>
+      <span id="user-sim"></span>
+    </nav>
+  </header>
+
+  <!-- ============================================================
+       Notification banner (Gmail / Google Chat simulation)
+       Container populated by app.js initNotificationBanner
+       ============================================================ -->
+  <div id="notification-banner"></div>
+
+  <!-- ============================================================
+       Deadline banner (hidden by default, shown on simulation)
+       ============================================================ -->
+  <div id="deadline-banner" class="deadline-banner hidden" role="alert">
+    ⏰ Cierre de pedidos: jueves 10 AM. Ya no se pueden confirmar viandas.
+  </div>
+
+  <!-- ============================================================
+       Main: weekly menu
+       ============================================================ -->
+  <main class="main">
+    <!-- Loading state -->
+    <div id="loading" class="card text-center">
+      <p>Cargando menú…</p>
+    </div>
+
+    <!-- Empty state: no attendance days configured -->
+    <div id="empty-state" class="card cta-card hidden">
+      <div class="cta-card__icon">📅</div>
+      <h2 class="cta-card__title">Configurá tus días</h2>
+      <p class="cta-card__text">
+        Seleccioná qué días asistís a la oficina para ver el menú de esos días.
+      </p>
+      <a href="config.html" class="btn btn--primary">⚙️ Ir a Configuración</a>
+    </div>
+
+    <!-- Deadline simulator controls -->
+    <div id="deadline-controls" class="flex justify-between items-center gap-1 mb-1 hidden">
+      <span id="deadline-sim-btn"></span>
+      <span id="deadline-status" class="text-muted" style="font-size:0.8rem"></span>
+    </div>
+
+    <!-- Menu days grid -->
+    <div id="menu-container" class="menu-grid hidden"></div>
+  </main>
+
+  <!-- ============================================================
+       Page-specific script
+       ============================================================ -->
+  <script defer>
+    document.addEventListener('DOMContentLoaded', function() {
+    (function () {
+      'use strict';
+      var V = window.ViandasApp;
+
+      /* --- DOM refs --- */
+      var loadingEl = document.getElementById('loading');
+      var emptyStateEl = document.getElementById('empty-state');
+      var deadlineBannerEl = document.getElementById('deadline-banner');
+      var deadlineControlsEl = document.getElementById('deadline-controls');
+      var deadlineSimBtnEl = document.getElementById('deadline-sim-btn');
+      var deadlineStatusEl = document.getElementById('deadline-status');
+      var menuContainer = document.getElementById('menu-container');
+
+      var menuData = null;
+      var currentUser = null;
+
+      /* --- Helper: get selected attendance days from menu --- */
+      function getAttendingDays() {
+        if (!currentUser || !Array.isArray(currentUser.attendance)) return [];
+        if (!menuData || !Array.isArray(menuData.days)) return [];
+        return menuData.days.filter(function (day, idx) {
+          return idx < currentUser.attendance.length && currentUser.attendance[idx];
+        });
+      }
+
+      /* --- Helper: render a single day card --- */
+      function renderDayCard(day, idx, attendingDays) {
+        var date = day.date;
+        var label = day.label;
+        var options = day.options;
+        var isDeadline = V.isDeadlineSimulated();
+        var confirmed = V.isConfirmed(date);
+
+        var card = document.createElement('div');
+        card.className = 'card';
+        card.setAttribute('data-date', date);
+
+        // Day header
+        var titleHtml = '<h2 class="card__title">' + label + '</h2>';
+
+        // Highlight today
+        var today = new Date().toISOString().slice(0, 10);
+        if (date === today) {
+          titleHtml = '<h2 class="card__title" style="color:var(--accent)">📌 Hoy: ' + label + '</h2>';
+        }
+
+        // Options list with radio buttons (always show, preselect if confirmed)
+        var selectedDish = null;
+        if (confirmed) {
+          var confirmations = V.getConfirmations();
+          if (confirmations[date] && typeof confirmations[date].dishIndex === 'number') {
+            selectedDish = confirmations[date].dishIndex;
+          }
+        }
+
+        var listHtml = '<ul class="menu-list">';
+        options.forEach(function (opt, i) {
+          var isSelected = selectedDish === i;
+          var radioHtml = '<input type="radio" name="dish-' + date + '" value="' + i + '" class="dish-radio" id="dish-' + date + '-' + i + '"' + (isSelected ? ' checked' : '') + '>';
+          listHtml += '<li><label for="dish-' + date + '-' + i + '" style="cursor:pointer;display:flex;align-items:center;gap:8px;">' +
+            '<span class="menu-list__number">' + (i + 1) + '</span> ' +
+            radioHtml + ' ' + opt + '</label></li>';
+        });
+        listHtml += '</ul>';
+
+        // Footer: confirm button, confirmed badge + cancel, or disabled
+        var footerHtml = '';
+        if (confirmed) {
+          var wasLate = false;
+          var dishName = '';
+          var confirmations = V.getConfirmations();
+          if (confirmations[date]) {
+            wasLate = confirmations[date].late === true;
+            var dIdx = confirmations[date].dishIndex;
+            if (typeof dIdx === 'number' && options[dIdx]) {
+              dishName = options[dIdx];
+            }
+          }
+          var badgeClass = wasLate ? 'confirm-badge--late' : 'confirm-badge--ok';
+          var badgeText = wasLate ? '⚠️ Confirmado tarde' : '✅ Confirmado';
+          var dishHtml = dishName ? '<br><span style="font-size:0.85rem;opacity:0.8;">' + dishName + '</span>' : '';
+          footerHtml = '<div class="confirm-footer" style="flex-wrap:wrap;gap:8px;">' +
+            '<span class="text-muted" style="font-size:0.8rem">Ya confirmaste este día' + dishHtml + '</span>' +
+            '<div style="display:flex;gap:8px;align-items:center;">' +
+            '<span class="confirm-badge ' + badgeClass + '">' + badgeText + '</span>' +
+            '<button class="btn btn--danger btn--sm cancel-btn" data-date="' + date + '">❌ Cancelar</button>' +
+            '</div>' +
+            '</div>';
+        } else {
+          var btnText = isDeadline ? '⚠ Confirmar tarde' : '✔ Confirmar vianda';
+          var btnClass = isDeadline ? 'btn btn--warning btn--block confirm-btn' : 'btn btn--primary btn--block confirm-btn';
+          footerHtml = '<div class="confirm-footer">' +
+            '<button class="' + btnClass + '" data-date="' + date + '">' +
+            btnText + '</button>' +
+            '</div>';
+        }
+
+        card.innerHTML = titleHtml + listHtml + footerHtml;
+        return card;
+      }
+
+      /* --- Main render --- */
+      function render() {
+        if (!menuData) return;
+
+        currentUser = V.getCurrentUser();
+        var attendingDays = getAttendingDays();
+        var isDeadline = V.isDeadlineSimulated();
+
+        // Empty state: no attendance configured
+        if (!currentUser || attendingDays.length === 0) {
+          loadingEl.classList.add('hidden');
+          emptyStateEl.classList.remove('hidden');
+          menuContainer.classList.add('hidden');
+          deadlineControlsEl.classList.add('hidden');
+          deadlineBannerEl.classList.add('hidden');
+          return;
+        }
+
+        // Has attendance → show menu
+        loadingEl.classList.add('hidden');
+        emptyStateEl.classList.add('hidden');
+        menuContainer.innerHTML = '';
+        menuContainer.classList.remove('hidden');
+        deadlineControlsEl.classList.remove('hidden');
+
+        // Deadline banner
+        if (isDeadline) {
+          deadlineBannerEl.classList.remove('hidden');
+        } else {
+          deadlineBannerEl.classList.add('hidden');
+        }
+
+        // Deadline status text
+        deadlineStatusEl.textContent = isDeadline
+          ? 'Modo simulación: pedidos cerrados'
+          : '';
+
+        // Render each attending day
+        attendingDays.forEach(function (day, idx) {
+          var card = renderDayCard(day, idx, attendingDays);
+          menuContainer.appendChild(card);
+        });
+
+        /* --- Update a single day card without re-rendering the whole page --- */
+        function updateCardForDate(date) {
+          var attendingDays = getAttendingDays();
+          var day = attendingDays.find(function (d) { return d.date === date; });
+          if (!day) return;
+
+          var oldCard = menuContainer.querySelector('[data-date="' + date + '"]');
+          if (!oldCard) return;
+
+          var newCard = renderDayCard(day, 0, attendingDays);
+          oldCard.replaceWith(newCard);
+
+          // Re-bind cancel button on the new card
+          var cancelBtn = newCard.querySelector('.cancel-btn');
+          if (cancelBtn) {
+            cancelBtn.addEventListener('click', function () {
+              var d = cancelBtn.getAttribute('data-date');
+              if (confirm('¿Seguro que querés cancelar tu pedido para el ' + d + '?')) {
+                V.removeConfirmation(d);
+                updateCardForDate(d);
+              }
+            });
+          }
+        }
+
+        // Bind confirm buttons
+        menuContainer.querySelectorAll('.confirm-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var date = btn.getAttribute('data-date');
+            var selectedRadio = document.querySelector('input[name="dish-' + date + '"]:checked');
+            if (!selectedRadio) {
+              alert('⚠️ Seleccioná un plato antes de confirmar');
+              return;
+            }
+            var dishIndex = parseInt(selectedRadio.value);
+            var confirmData = V.buildConfirmation({ 
+              late: V.isDeadlineSimulated(),
+              dishIndex: dishIndex
+            });
+            V.saveConfirmation(date, confirmData);
+            updateCardForDate(date); // Update only this card
+          });
+        });
+
+        // Bind cancel buttons
+        menuContainer.querySelectorAll('.cancel-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var date = btn.getAttribute('data-date');
+            if (confirm('¿Seguro que querés cancelar tu pedido para el ' + date + '?')) {
+              V.removeConfirmation(date);
+              updateCardForDate(date); // Update only this card
+            }
+          });
+        });
+      }
+
+      /* --- Init deadline button (re-render on toggle) --- */
+      function initDeadline() {
+        V.initDeadlineButton('#deadline-sim-btn', {
+          onToggle: function () {
+            render();
+          }
+        });
+      }
+
+      /* --- Init notification banner --- */
+      function initBanner() {
+        V.initNotificationBanner('#notification-banner');
+      }
+
+      /* --- Init user simulation --- */
+      function initUserSim() {
+        V.initUserSimulation('#user-sim', {
+          onChange: function () {
+            // Reload to refresh everything with new user context
+            window.location.reload();
+          }
+        });
+      }
+
+      /* --- Fetch menu.json and bootstrap --- */
+      function fetchMenu() {
+        fetch('menu.json')
+          .then(function (resp) {
+            if (!resp.ok) throw new Error('HTTP ' + resp.status);
+            return resp.json();
+          })
+          .then(function (data) {
+            menuData = data;
+            initDeadline();
+            initBanner();
+            initUserSim();
+            render();
+          })
+          .catch(function (err) {
+            console.error('[Viandas] Failed to load menu.json:', err);
+            loadingEl.innerHTML =
+              '<p style="color:var(--danger)">❌ Error al cargar el menú. Recargá la página.</p>';
+          });
+      }
+
+      /* --- Bootstrap --- */
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fetchMenu);
+      } else {
+        fetchMenu();
+      }
+    })();
+    }); // DOMContentLoaded
+  </script>
+</body>
+</html>

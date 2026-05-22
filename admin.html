@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viandas StackLab — Vista Consolidada</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <!-- ============================================================
+       Header with user simulation dropdown
+       ============================================================ -->
+  <header class="header">
+    <span class="header__title">🥗 Viandas StackLab</span>
+    <nav class="header__nav">
+      <a href="index.html">Menú</a>
+      <a href="config.html">Config</a>
+      <span id="user-sim"></span>
+    </nav>
+  </header>
+
+  <!-- ============================================================
+       Main: admin consolidated view
+       ============================================================ -->
+  <main class="main">
+    <h1 class="card__title mb-1">📊 Vista consolidada — Lucía</h1>
+
+    <!-- Summary stats -->
+    <div class="card" id="stats-card">
+      <div class="flex flex-wrap gap-1" id="stats-container">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card">
+      <div class="table-wrapper">
+        <table id="admin-table" aria-label="Estado de confirmaciones por empleado y día">
+          <thead>
+            <tr id="table-header-row">
+              <th scope="col">Empleado</th>
+              <!-- Day columns populated by JS -->
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+      <div id="empty-table" class="cta-card hidden">
+        <div class="cta-card__icon">📭</div>
+        <p class="cta-card__text">Sin datos de confirmaciones todavía.</p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex flex-wrap gap-1 items-center justify-between mt-1">
+      <div class="flex flex-wrap gap-1">
+        <button id="export-btn" class="btn btn--outline" type="button">📥 Reporte semanal</button>
+        <button id="export-daily-btn" class="btn btn--outline" type="button">📋 Reporte por día</button>
+      </div>
+      <span class="text-muted" style="font-size:0.75rem" id="footer-note"></span>
+    </div>
+  </main>
+
+  <!-- ============================================================
+       Page-specific script
+       ============================================================ -->
+  <script defer>
+    document.addEventListener('DOMContentLoaded', function() {
+    (function () {
+      'use strict';
+      var V = window.ViandasApp;
+      var EMPLOYEES = V.EMPLOYEES;
+      var DAY_NAMES = V.DAY_NAMES;
+      var menuData = null;
+
+      // Load menu.json for dish names
+      function loadMenu() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'menu.json', false); // Synchronous for simplicity
+        xhr.send(null);
+        if (xhr.status === 200) {
+          menuData = JSON.parse(xhr.responseText);
+        }
+      }
+      loadMenu();
+
+      function getDishName(date, dishIndex) {
+        if (!menuData || !menuData.days) return '';
+        var day = menuData.days.find(function(d) { return d.date === date; });
+        if (day && day.options && day.options[dishIndex]) {
+          return day.options[dishIndex];
+        }
+        return '';
+      }
+
+      /* --- Fake data: deterministic demo status per employee+day --- */
+      function fakeStatus(empIdx, dayIdx) {
+        // Deterministic seeded look using employee and day index
+        var seed = (empIdx * 7 + dayIdx * 3) % 10;
+
+        // Employee patterns (base rates)
+        switch (empIdx) {
+          case 0: // Martín — organized, mostly green
+            if (seed < 8) return 'confirmed';
+            if (seed === 8) return 'late';
+            return 'missing';
+          case 1: // Diego — sometimes late
+            if (seed < 6) return 'confirmed';
+            if (seed < 8) return 'late';
+            return 'missing';
+          case 2: // Sofía — reliable, all confirmed
+            if (seed < 9) return 'confirmed';
+            return 'late';
+          case 3: // Ana — forgets sometimes
+            if (seed < 5) return 'confirmed';
+            if (seed < 7) return 'late';
+            return 'missing';
+          case 4: // Carlos — mixed
+            if (seed < 7) return 'confirmed';
+            if (seed === 7) return 'late';
+            return 'missing';
+          default:
+            return 'confirmed';
+        }
+      }
+
+      /* --- Check if employee attends on a given day --- */
+      function employeeAttends(empName, dayIdx) {
+        // Read real config for any employee by name
+        var user = V.getUserByName(empName);
+        if (user && Array.isArray(user.attendance)) {
+          return user.attendance[dayIdx] === true;
+        }
+        // If no config found, assume they don't attend (safer default)
+        return false;
+      }
+
+      /* --- Get status for a specific employee and day --- */
+      function getCellStatus(empIdx, empName, dayIdx, date) {
+        // First check: does this employee attend this day?
+        if (!employeeAttends(empName, dayIdx)) {
+          return { status: 'na', dishIndex: null };
+        }
+
+        // Read real confirmations for any employee by name
+        var confirmations = V.getConfirmationsByName(empName);
+        var entry = confirmations[date];
+        if (!entry || !entry.confirmed) return { status: 'missing', dishIndex: null };
+        if (entry.late) return { status: 'late', dishIndex: entry.dishIndex };
+        return { status: 'confirmed', dishIndex: entry.dishIndex };
+      }
+
+      /* --- Traffic-light cell render --- */
+      function statusCell(status, dishName) {
+        var cls, label;
+        switch (status) {
+          case 'confirmed':
+            cls = 'status-ok';
+            label = '✓ Confirmado';
+            break;
+          case 'late':
+            cls = 'status-late';
+            label = '⚠ Tarde';
+            break;
+          case 'missing':
+            cls = 'status-missing';
+            label = '✗ Falta';
+            break;
+          default:
+            cls = 'status-na';
+            label = '—';
+        }
+        var dishHtml = dishName ? '<div style="font-size:0.7rem;opacity:0.8;margin-top:2px;word-break:break-word;">' + dishName + '</div>' : '';
+        return '<td class="' + cls + '" aria-label="' + label + '"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;">' + label + dishHtml + '</div></td>';
+      }
+
+      /* --- Main render --- */
+      function render() {
+        var tableBody = document.getElementById('table-body');
+        var headerRow = document.getElementById('table-header-row');
+        var emptyTable = document.getElementById('empty-table');
+        var statsContainer = document.getElementById('stats-container');
+        var footerNote = document.getElementById('footer-note');
+        var simUser = V.getSimulatedUser();
+        var isDeadline = V.isDeadlineSimulated();
+
+        // Build header: Empleado + Lunes..Viernes
+        headerRow.innerHTML = '<th scope="col">Empleado</th>';
+        DAY_NAMES.forEach(function (day) {
+          headerRow.innerHTML += '<th scope="col">' + day + '</th>';
+        });
+
+        // Build rows
+        tableBody.innerHTML = '';
+        var stats = { confirmed: 0, late: 0, missing: 0, total: 0 };
+
+        EMPLOYEES.forEach(function (empName, empIdx) {
+          var row = document.createElement('tr');
+          row.innerHTML = '<th scope="row">' + empName + '</th>';
+
+          DAY_NAMES.forEach(function (day, dayIdx) {
+            var date = getDateForDayIndex(dayIdx);
+            var result = getCellStatus(empIdx, empName, dayIdx, date);
+            var dishName = getDishName(date, result.dishIndex);
+            row.innerHTML += statusCell(result.status, dishName);
+
+            stats[result.status] = (stats[result.status] || 0) + 1;
+            stats.total++;
+          });
+
+          tableBody.appendChild(row);
+        });
+
+        // Empty fallback
+        if (EMPLOYEES.length === 0 || stats.total === 0) {
+          emptyTable.classList.remove('hidden');
+        } else {
+          emptyTable.classList.add('hidden');
+        }
+
+        // Summary stats
+        var confirmedPct = stats.total > 0
+          ? Math.round(((stats.confirmed + stats.late) / stats.total) * 100)
+          : 0;
+
+        statsContainer.innerHTML =
+          '<div style="flex:1;min-width:120px">' +
+          '<span style="font-size:0.8rem;color:var(--text-muted)">Confirmados</span><br>' +
+          '<strong style="font-size:1.5rem;color:var(--success)">' + (stats.confirmed + stats.late) +
+          '</strong><span style="font-size:0.8rem"> de ' + stats.total + '</span>' +
+          '</div>' +
+          '<div style="flex:1;min-width:100px">' +
+          '<span style="font-size:0.8rem;color:var(--text-muted)">A tiempo</span><br>' +
+          '<strong style="font-size:1.5rem;color:var(--success)">' + stats.confirmed + '</strong>' +
+          '</div>' +
+          '<div style="flex:1;min-width:100px">' +
+          '<span style="font-size:0.8rem;color:var(--text-muted)">Tarde</span><br>' +
+          '<strong style="font-size:1.5rem;color:var(--warning)">' + stats.late + '</strong>' +
+          '</div>' +
+          '<div style="flex:1;min-width:100px">' +
+          '<span style="font-size:0.8rem;color:var(--text-muted)">Faltan</span><br>' +
+          '<strong style="font-size:1.5rem;color:var(--danger)">' + stats.missing + '</strong>' +
+          '</div>' +
+          '<div style="flex:1;min-width:100px">' +
+          '<span style="font-size:0.8rem;color:var(--text-muted)">% Cumplimiento</span><br>' +
+          '<strong style="font-size:1.5rem">' + confirmedPct + '%</strong>' +
+          '</div>';
+
+        // Footer note
+        var note = 'Datos demo generados automáticamente';
+        if (simUser) {
+          note += ' · Usuario real: ' + simUser;
+        }
+        if (isDeadline) {
+          note += ' · ⏰ Simulación de cierre activa';
+        }
+        footerNote.textContent = note;
+      }
+
+      /* --- Derive ISO date from day index (Mon=0..Fri=4) anchored to menu week --- */
+      function getDateForDayIndex(dayIdx) {
+        // Base date: Monday of the menu week (May 12, 2026)
+        var base = new Date('2026-05-12T12:00:00');
+        base.setDate(base.getDate() + dayIdx);
+        return base.toISOString().slice(0, 10);
+      }
+
+      /* --- Export CSV --- */
+      function escapeCSV(str) {
+        if (!str) return '';
+        var s = String(str).replace(/"/g, '""');
+        if (/[;\n\r"]/.test(s)) {
+          return '"' + s + '"';
+        }
+        return s;
+      }
+
+      function generateCSV() {
+        var lines = [];
+        var isDeadline = V.isDeadlineSimulated();
+        var simUser = V.getSimulatedUser();
+        var weekLabel = 'Semana 12-16 mayo 2026';
+        var timestamp = new Date().toLocaleString('es-AR');
+
+        // Header info
+        lines.push(['Reporte de Viandas - StackLab']);
+        lines.push([weekLabel]);
+        lines.push(['Generado:', timestamp]);
+        if (isDeadline) {
+          lines.push(['⚠️ Simulación de cierre de pedidos activa']);
+        }
+        lines.push([]); // empty line
+
+        // Table header
+        lines.push(['Empleado', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']);
+
+        // Rows
+        EMPLOYEES.forEach(function (empName, empIdx) {
+          var row = [empName];
+          DAY_NAMES.forEach(function (day, dayIdx) {
+            var date = getDateForDayIndex(dayIdx);
+            var result = getCellStatus(empIdx, empName, dayIdx, date);
+            var dishName = getDishName(date, result.dishIndex);
+            var cell = '';
+            switch (result.status) {
+              case 'confirmed':
+                cell = 'Confirmado' + (dishName ? ': ' + dishName : '');
+                break;
+              case 'late':
+                cell = 'Tarde' + (dishName ? ': ' + dishName : '');
+                break;
+              case 'missing':
+                cell = 'Falta';
+                break;
+              case 'na':
+                cell = '—';
+                break;
+              default:
+                cell = '—';
+            }
+            row.push(cell);
+          });
+          lines.push(row);
+        });
+
+        lines.push([]); // empty line
+
+        // Summary
+        var stats = { confirmed: 0, late: 0, missing: 0, total: 0 };
+        EMPLOYEES.forEach(function (empName, empIdx) {
+          DAY_NAMES.forEach(function (day, dayIdx) {
+            var date = getDateForDayIndex(dayIdx);
+            var result = getCellStatus(empIdx, empName, dayIdx, date);
+            if (result.status !== 'na') {
+              stats[result.status] = (stats[result.status] || 0) + 1;
+              stats.total++;
+            }
+          });
+        });
+        var confirmedPct = stats.total > 0
+          ? Math.round(((stats.confirmed + stats.late) / stats.total) * 100)
+          : 0;
+
+        lines.push(['Resumen']);
+        lines.push(['Confirmados a tiempo:', stats.confirmed]);
+        lines.push(['Confirmados tarde:', stats.late]);
+        lines.push(['Faltan:', stats.missing]);
+        lines.push(['% Cumplimiento:', confirmedPct + '%']);
+
+        // Convert to CSV with semicolon separator (Excel Spanish)
+        var csv = lines.map(function (row) {
+          return row.map(escapeCSV).join(';');
+        }).join('\n');
+
+        // Add BOM for Excel Spanish compatibility
+        return '\uFEFF' + csv;
+      }
+
+      function initExportButton() {
+        var btn = document.getElementById('export-btn');
+        btn.addEventListener('click', function () {
+          var csvContent = generateCSV();
+          var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+          var link = document.createElement('a');
+          var url = URL.createObjectURL(blob);
+          var filename = 'viandas-stacklab-semanal-' + new Date().toISOString().slice(0, 10) + '.csv';
+
+          link.setAttribute('href', url);
+          link.setAttribute('download', filename);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        });
+      }
+
+      /* --- Generate Daily CSV (for kitchen/operations) --- */
+      function generateDailyCSV() {
+        var lines = [];
+        var isDeadline = V.isDeadlineSimulated();
+        var timestamp = new Date().toLocaleString('es-AR');
+        var weekLabel = 'Semana 12-16 mayo 2026';
+
+        lines.push(['Reporte de Viandas por Día - StackLab']);
+        lines.push([weekLabel]);
+        lines.push(['Generado:', timestamp]);
+        if (isDeadline) {
+          lines.push(['⚠️ Simulación de cierre de pedidos activa']);
+        }
+        lines.push([]);
+
+        DAY_NAMES.forEach(function (dayName, dayIdx) {
+          var date = getDateForDayIndex(dayIdx);
+          lines.push(['=== ' + dayName.toUpperCase() + ' ' + date + ' ===']);
+          lines.push(['Empleado', 'Plato', 'Estado']);
+
+          var dishCounts = {};
+          var totalEmployees = 0;
+
+          EMPLOYEES.forEach(function (empName, empIdx) {
+            if (!employeeAttends(empName, dayIdx)) {
+              lines.push([empName, '—', 'No asiste']);
+              return;
+            }
+
+            var result = getCellStatus(empIdx, empName, dayIdx, date);
+            var dishName = getDishName(date, result.dishIndex) || '—';
+            var statusLabel = '';
+
+            switch (result.status) {
+              case 'confirmed':
+                statusLabel = 'Confirmado';
+                totalEmployees++;
+                if (dishName !== '—') {
+                  dishCounts[dishName] = (dishCounts[dishName] || 0) + 1;
+                }
+                break;
+              case 'late':
+                statusLabel = 'Tarde';
+                totalEmployees++;
+                if (dishName !== '—') {
+                  dishCounts[dishName] = (dishCounts[dishName] || 0) + 1;
+                }
+                break;
+              case 'missing':
+                statusLabel = 'Falta';
+                break;
+              default:
+                statusLabel = '—';
+            }
+
+            lines.push([empName, dishName, statusLabel]);
+          });
+
+          lines.push([]);
+          lines.push(['Total empleados con vianda:', totalEmployees]);
+
+          if (Object.keys(dishCounts).length > 0) {
+            lines.push(['Total por plato:']);
+            Object.keys(dishCounts).forEach(function (dish) {
+              lines.push(['', dish, dishCounts[dish]]);
+            });
+          }
+
+          lines.push([]);
+        });
+
+        var csv = lines.map(function (row) {
+          return row.map(escapeCSV).join(';');
+        }).join('\n');
+
+        return '\uFEFF' + csv;
+      }
+
+      function initDailyExportButton() {
+        var btn = document.getElementById('export-daily-btn');
+        btn.addEventListener('click', function () {
+          var csvContent = generateDailyCSV();
+          var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+          var link = document.createElement('a');
+          var url = URL.createObjectURL(blob);
+          var filename = 'viandas-stacklab-diario-' + new Date().toISOString().slice(0, 10) + '.csv';
+
+          link.setAttribute('href', url);
+          link.setAttribute('download', filename);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        });
+      }
+
+      /* --- Init --- */
+      function init() {
+        initExportButton();
+        initDailyExportButton();
+        V.initUserSimulation('#user-sim', {
+          onChange: function () {
+            window.location.reload();
+          }
+        });
+        render();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+    }); // DOMContentLoaded
+  </script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viandas StackLab — Configuración</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <!-- ============================================================
+       Header with user simulation dropdown
+       ============================================================ -->
+  <header class="header">
+    <span class="header__title">🥗 Viandas StackLab</span>
+    <nav class="header__nav">
+      <a href="index.html" class="nav--active">Menú</a>
+      <a href="admin.html">Admin</a>
+      <span id="user-sim"></span>
+    </nav>
+  </header>
+
+  <!-- ============================================================
+       Main: attendance configuration
+       ============================================================ -->
+  <main class="main">
+    <div class="card">
+      <h1 class="card__title">⚙️ Configuración</h1>
+      <p class="card__subtitle">Seleccioná los días que asistís a la oficina esta semana</p>
+
+      <div class="form-group">
+        <span class="form-label">Días de asistencia (L–V)</span>
+        <div class="toggle-group" id="day-toggles" role="group" aria-label="Días de asistencia">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <div class="confirm-footer">
+        <span id="save-status" class="text-muted"></span>
+        <button id="save-btn" class="btn btn--primary" type="button">💾 Guardar configuración</button>
+      </div>
+    </div>
+
+    <!-- CTA back to menu -->
+    <div class="cta-card card" id="menu-cta" style="display:none">
+      <p class="cta-card__text">¿Ya configuraste tus días? Volvé al menú para confirmar tus viandas.</p>
+      <a href="index.html" class="btn btn--secondary">📋 Ir al menú semanal</a>
+    </div>
+  </main>
+
+  <!-- ============================================================
+       Page-specific script
+       ============================================================ -->
+  <script defer>
+    document.addEventListener('DOMContentLoaded', function() {
+    (function () {
+      'use strict';
+      var V = window.ViandasApp;
+      var DAY_NAMES = V.DAY_NAMES;
+
+      /* --- DOM refs --- */
+      var dayTogglesEl = document.getElementById('day-toggles');
+      var saveBtn = document.getElementById('save-btn');
+      var saveStatus = document.getElementById('save-status');
+      var menuCta = document.getElementById('menu-cta');
+
+      var toggles = []; // Array of button elements [Mon..Fri]
+
+      /* --- Build toggle buttons --- */
+      DAY_NAMES.forEach(function (day, idx) {
+        var btn = document.createElement('button');
+        btn.className = 'toggle-btn';
+        btn.type = 'button';
+        btn.textContent = day;
+        btn.setAttribute('aria-pressed', 'false');
+        btn.setAttribute('aria-label', 'Alternar ' + day);
+        btn.addEventListener('click', function () {
+          var pressed = btn.getAttribute('aria-pressed') === 'true';
+          btn.setAttribute('aria-pressed', String(!pressed));
+          saveStatus.textContent = '';
+          saveStatus.className = 'text-muted';
+        });
+        dayTogglesEl.appendChild(btn);
+        toggles.push(btn);
+      });
+
+      /* --- Load existing config for a given user name --- */
+      function loadAttendance(name) {
+        var user = V.getCurrentUser();
+        if (user && user.name === name && Array.isArray(user.attendance)) {
+          toggles.forEach(function (btn, i) {
+            btn.setAttribute('aria-pressed', user.attendance[i] ? 'true' : 'false');
+          });
+          menuCta.style.display = 'block';
+        } else {
+          toggles.forEach(function (btn) {
+            btn.setAttribute('aria-pressed', 'false');
+          });
+          menuCta.style.display = 'none';
+        }
+      }
+
+      /* --- Save handler --- */
+      saveBtn.addEventListener('click', function () {
+        var simUser = V.getSimulatedUser();
+        if (!simUser) {
+          saveStatus.textContent = '⚠️ Seleccioná un empleado en el menú superior';
+          saveStatus.className = 'text-muted';
+          return;
+        }
+
+        var attendance = toggles.map(function (btn) {
+          return btn.getAttribute('aria-pressed') === 'true';
+        });
+
+        if (!attendance.some(function (v) { return v; })) {
+          saveStatus.textContent = '⚠️ Seleccioná al menos un día';
+          saveStatus.className = 'text-muted';
+          return;
+        }
+
+        V.saveUser({ name: simUser, attendance: attendance });
+
+        // Clean up confirmations for days the user no longer attends
+        var confirmations = V.getConfirmations();
+        var cleaned = false;
+        var dayDates = [
+          '2026-05-12', // Lunes
+          '2026-05-13', // Martes
+          '2026-05-14', // Miércoles
+          '2026-05-15', // Jueves
+          '2026-05-16'  // Viernes
+        ];
+
+        dayDates.forEach(function (date, idx) {
+          if (!attendance[idx] && confirmations[date]) {
+            delete confirmations[date];
+            cleaned = true;
+          }
+        });
+
+        if (cleaned) {
+          V.setItem(V.getUserKey('viandas_confirmations'), confirmations);
+        }
+
+        saveStatus.textContent = '✅ Configuración guardada' + (cleaned ? ' (se limpiaron reservas de días no asistidos)' : '');
+        saveStatus.className = '';
+        saveStatus.style.color = 'var(--success)';
+        menuCta.style.display = 'block';
+      });
+
+      /* --- Init user simulation dropdown --- */
+      V.initUserSimulation('#user-sim', {
+        onChange: function (name) {
+          if (name) {
+            loadAttendance(name);
+          }
+        }
+      });
+
+      /* --- Initial load --- */
+      var initial = V.getSimulatedUser();
+      if (initial) {
+        loadAttendance(initial);
+      }
+    })();
+    }); // DOMContentLoaded
+  </script>
+</body>
+</html>
