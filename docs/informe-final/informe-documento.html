@@ -2319,7 +2319,7 @@ La semana que viene largamos 🚀</div>
     </ul>
 
     <h3 class="section-title">F.2 Estrategia general</h3>
-    <p>El sistema se resuelve en tres capas: configuración de asistencia, selección de platos y consolidación administrativa. Elegí HTML/CSS/JS vanilla sin frameworks ni build step porque el objetivo de la Etapa 1 es validar el flujo con usuarios reales, no perder tiempo en infraestructura. Si la hipótesis se confirma, la Etapa 2 migra a React + Supabase.</p>
+    <p>Cuando me puse a armar esto, lo dividí en tres partes: primero que cada uno configure sus días de asistencia, después que elija el plato, y al final que Lucía vea todo consolidado en una tabla. Elegí HTML/CSS/JS vanilla —sin frameworks ni build step— porque en esta etapa lo importante era validar el flujo con Martín y Lucía, no perder tiempo configurando un entorno de desarrollo. Si la hipótesis se confirma, en la Etapa 2 migro todo a React + Supabase.</p>
 
     <h3 class="section-title">F.3 Decisiones clave</h3>
     <div class="table-wrap">
@@ -2381,6 +2381,7 @@ La semana que viene largamos 🚀</div>
     </ul>
 
     <h3 class="section-title">G.2 Análisis temporal: Big-O y pasos dominantes</h3>
+    <p>Acá te muestro cómo calculé la complejidad de cada operación que armé:</p>
     <div class="table-wrap">
         <table>
             <thead>
@@ -2391,97 +2392,101 @@ La semana que viene largamos 🚀</div>
                     <td><code>saveUser()</code></td>
                     <td><strong>O(1)</strong></td>
                     <td>Serialización JSON + escritura a localStorage</td>
-                    <td>El objeto usuario tiene tamaño fijo (nombre + 5 booleans). localStorage.setItem() escribe un string de longitud constante.</td>
+                    <td>Guardar un usuario es escribir un JSON chiquito en el navegador. El objeto siempre pesa lo mismo (nombre + 5 booleans), así que no importa si tenés 5 o 500 empleados: la operación es instantánea.</td>
                 </tr>
                 <tr>
                     <td><code>getConfirmations()</code></td>
                     <td><strong>O(c)</strong></td>
                     <td>Parseo de JSON desde localStorage</td>
-                    <td>c = confirmaciones históricas del usuario. En la práctica c ≤ 5 (una semana), pero si guardamos historial, c crece linealmente con el tiempo.</td>
+                    <td>Lo que me costó acá fue que localStorage solo guarda strings. Entonces cada vez que leo confirmaciones tengo que hacer JSON.parse. c es la cantidad de confirmaciones del usuario. Hoy c ≤ 5 (una semana), pero si en la Etapa 3 guardo historial, c crece linealmente.</td>
                 </tr>
                 <tr>
                     <td><code>saveConfirmation()</code></td>
                     <td><strong>O(c)</strong></td>
                     <td>Lectura del objeto completo + modificación + re-escritura</td>
-                    <td>Aunque solo modificamos una entrada, localStorage obliga a leer y re-escribir todo el objeto de confirmaciones. c determina el tamaño de esa operación.</td>
+                    <td>Acá descubrí una limitación de localStorage: no puedo modificar un campo suelto. Tengo que leer TODO el objeto, modificar la entrada que quiero, y re-escribir TODO de vuelta. Por eso es O(c) y no O(1).</td>
                 </tr>
                 <tr>
                     <td><code>renderAdminTable()</code></td>
                     <td><strong>O(u × d)</strong></td>
-                    <td>Doble loop: recorre cada empleado × cada día</td>
-                    <td>Para cada celda (u × d) consulta localStorage (O(1) con hash) y genera HTML. Con u=5, d=5: 25 iteraciones, trivial. Con u=1000, d=5: 5000 iteraciones, aún manejable en navegador moderno (~5ms).</td>
+                    <td>Doble loop: recorro cada empleado × cada día</td>
+                    <td>Para llenar la tabla de Lucía tengo que recorrer todos los empleados (u) y todos los días (d). Con 5 empleados son 25 celdas, imperceptible. Con 1000 empleados serían 5000 celdas, todavía manejable (~5ms en navegador moderno).</td>
                 </tr>
                 <tr>
                     <td><code>generateCSV()</code></td>
                     <td><strong>O(u × d)</strong></td>
-                    <td>Recorre matriz empleado-día y concatena strings</td>
-                    <td>Mismo orden que renderAdminTable, pero con overhead adicional de escapeCSV (revisión char-by-char de cada celda). En la práctica, el string resultante para 1000 empleados pesa ~500 KB, generable en <100ms.</td>
+                    <td>Recorro matriz empleado-día y concateno strings</td>
+                    <td>Es el mismo doble loop que renderAdminTable, pero además reviso cada carácter de cada celda para escapar comas y punto-y-coma. Para 1000 empleados el CSV pesa ~500 KB y se genera en menos de 100ms.</td>
                 </tr>
                 <tr>
                     <td><code>updateCardForDate()</code></td>
                     <td><strong>O(1)</strong></td>
                     <td>Reemplazo de un nodo DOM por otro pre-renderizado</td>
-                    <td>No recorre la lista de días. El navegador actualiza solo ese subtree del DOM.</td>
+                    <td>Cuando confirmás un plato, solo reemplazo la tarjeta de ese día. No toco las demás. El navegador actualiza solo ese pedacito del DOM.</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <h3 class="section-title">G.3 Análisis espacial: memoria auxiliar y estructuras</h3>
+    <h3 class="section-title">G.3 Análisis espacial: cuánto ocupa en memoria</h3>
+    <p>Me fijé cuánto espacio ocupa cada cosa que guardo:</p>
     <ul>
-        <li><strong>Usuario activo:</strong> O(1) — 1 objeto {name, attendance[5]} ≈ 50 bytes en JSON.</li>
-        <li><strong>Confirmaciones:</strong> O(c) — c entradas {date: {confirmed, late, dishIndex, timestamp}}. Cada entrada ≈ 80 bytes. Para c=5/semana: 400 bytes/usuario.</li>
-        <li><strong>Tabla admin en memoria:</strong> O(u × d) — matriz de celdas generada para renderizado. En el DOM, cada celda es un nodo (~200 bytes). Para u=1000, d=5: ~1 MB de nodos.</li>
-        <li><strong>Menú semanal:</strong> O(d × p) — 5 días × 6 platos = 30 strings. Fijo, no crece con usuarios.</li>
-        <li><strong>Total por usuario/semana:</strong> ~500 bytes. Para 1000 usuarios: ~500 KB. Para 10.000 usuarios: ~5 MB (límite de localStorage por dominio).</li>
+        <li><strong>Usuario activo:</strong> Un objeto chiquito {name, attendance[5]} ocupa ~50 bytes en JSON. Constante, no crece.</li>
+        <li><strong>Confirmaciones:</strong> Cada entrada {date, confirmed, late, dishIndex, timestamp} ocupa ~80 bytes. Para una semana (5 días): ~400 bytes por usuario.</li>
+        <li><strong>Tabla admin en memoria:</strong> Cuando genero la tabla para Lucía, cada celda es un nodo DOM (~200 bytes). Con 1000 empleados y 5 días: ~1 MB de nodos. Hoy con 5 empleados es ridículo.</li>
+        <li><strong>Menú semanal:</strong> 5 días × 6 platos = 30 strings. Fijo, no cambia con la cantidad de usuarios.</li>
+        <li><strong>Total por usuario/semana:</strong> ~500 bytes. Para 1000 usuarios: ~500 KB. Para 10.000 usuarios: ~5 MB. Ahí tocaría el límite de localStorage (5 MB por dominio).</li>
     </ul>
 
     <h3 class="section-title">G.4 Casos: mejor, promedio y peor</h3>
+    <p>Armé esta tabla pensando en cómo se comporta el sistema en distintas situaciones:</p>
     <div class="table-wrap">
         <table>
             <thead>
-                <tr><th>Escenario</th><th>Condición</th><th>Impacto</th></tr>
+                <tr><th>Escenario</th><th>Condición</th><th>Qué pasa</th></tr>
             </thead>
             <tbody>
                 <tr>
                     <td><strong>Mejor caso</strong></td>
                     <td>Usuario sin confirmaciones previas (c=0)</td>
-                    <td>saveConfirmation() opera sobre objeto vacío. O(1) real. Renderizado mínimo.</td>
+                    <td>Guardar una confirmación sobre objeto vacío es instantáneo. O(1) real. No hay nada que renderizar.</td>
                 </tr>
                 <tr>
                     <td><strong>Caso promedio</strong></td>
                     <td>Usuario confirma 2-3 días por semana (c=3)</td>
-                    <td>Operaciones sobre objeto pequeño. localStorage I/O < 1ms. DOM updates imperceptibles.</td>
+                    <td>El objeto de confirmaciones es chiquito. Leer/escribir localStorage tarda < 1ms. El usuario no nota nada.</td>
                 </tr>
                 <tr>
                     <td><strong>Peor caso</strong></td>
-                    <td>Historial acumulado de 52 semanas (c=260) + 1000 usuarios simultáneos</td>
-                    <td>localStorage parsea 260 entradas × 1000 usuarios = 260K objetos. renderAdminTable genera 5000 celdas. localStorage quota de 5 MB se alcanza.</td>
+                    <td>Historial de 52 semanas (c=260) + 1000 usuarios</td>
+                    <td>Acá se complica. localStorage tiene que parsear 260 entradas por usuario. Con 1000 usuarios es mucho trabajo. Y si cada uno ocupa ~500 bytes, llegamos a 5 MB —el límite de localStorage.</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <h3 class="section-title">G.5 Cuellos de botella prácticos (más allá del Big-O)</h3>
-    <p><strong>I/O de localStorage:</strong> Aunque getItem/setItem son O(1), son síncronas y bloquean el hilo principal. Con 1000 usuarios y escrituras concurrentes, el navegador puede congelarse 50-100ms. En la práctica esto no ocurre porque cada empleado opera su propio navegador (no hay concurrencia real).</p>
-    <p><strong>Serialización JSON:</strong> JSON.stringify/parse son costosos para objetos grandes. Con c=260 confirmaciones, parsear toma ~2ms. No es crítico para interacciones humanas, pero lo sería si procesáramos lotes de 1000 usuarios en segundo plano.</p>
-    <p><strong>Renderizado DOM:</strong> Generar 5000 celdas de tabla (u=1000) crea ~5000 nodos DOM. El navegador moderno lo renderiza en <50ms, pero el reflow puede hacer scroll lento. Para u>500, sería necesario virtualizar la tabla (mostrar solo filas visibles).</p>
+    <h3 class="section-title">G.5 Cuellos de botella prácticos (lo que descubrí probando)</h3>
+    <p><strong>I/O de localStorage:</strong> Me di cuenta de que getItem/setItem son síncronas —bloquean el hilo principal del navegador. Si tuviera 1000 usuarios escribiendo al mismo tiempo, el navegador se congelaría. Pero en la práctica no pasa porque cada empleado usa su propia computadora. No hay concurrencia real.</p>
+    <p><strong>Serialización JSON:</strong> Otro descubrimiento: JSON.stringify y JSON.parse son costosos. Con 260 confirmaciones, parsear toma ~2ms. Para una interacción humana no se nota, pero si procesara lotes de 1000 usuarios en segundo plano sería un problema.</p>
+    <p><strong>Renderizado DOM:</strong> Generar 5000 celdas (1000 empleados × 5 días) crea muchos nodos. El navegador los renderiza en <50ms, pero después el scroll se vuelve lento porque el navegador recalcula layout constantemente. Para más de 500 empleados tendría que mostrar solo las filas visibles (virtualización).</p>
 
-    <h3 class="section-title">G.6 Implicancias al escalar</h3>
+    <h3 class="section-title">G.6 Qué pasa si esto crece</h3>
+    <p>Me puse a calcular cómo se comportaría el sistema con distintos tamaños de empresa:</p>
     <ul>
-        <li><strong>Para 50 empleados (actual StackLab):</strong> El sistema funciona sin fricción. localStorage sobra. Renderizado instantáneo.</li>
-        <li><strong>Para 500 empleados:</strong> localStorage sigue siendo viable (~250 KB), pero el renderizado de la tabla admin comienza a notarse (50ms de lag). Se recomienda virtualización o paginación.</li>
-        <li><strong>Para 5000 empleados:</strong> localStorage alcanza su límite de 5 MB. El parseo de JSON en cada operación introduce latencia perceptible. Se requiere base de datos indexada (IndexedDB o Supabase) con paginación server-side.</li>
-        <li><strong>Para 50.000 empleados:</strong> localStorage es inviable. Se requiere arquitectura cliente-servidor con API REST, base de datos PostgreSQL, caché Redis y CDN para assets estáticos.</li>
+        <li><strong>Para 50 empleados (StackLab hoy):</strong> Todo funciona perfecto. localStorage sobra. La tabla se renderiza instantáneamente. Es lo que estamos validando ahora.</li>
+        <li><strong>Para 500 empleados:</strong> localStorage seguiría funcionando (~250 KB), pero la tabla de Lucía empezaría a tardar 50ms en aparecer. Se notaría un pequeño lag. Ahí ya tendría que paginar o virtualizar.</li>
+        <li><strong>Para 5000 empleados:</strong> localStorage llegaría a su límite de 5 MB. Cada operación tardaría lo suficiente como para que el usuario lo note. Tendría que migrar a IndexedDB o Supabase.</li>
+        <li><strong>Para 50.000 empleados:</strong> localStorage es inviable. Necesitaría una arquitectura real con servidor, API REST, PostgreSQL y CDN. Pero eso ya es otro proyecto.</li>
     </ul>
 
-    <h3 class="section-title">G.7 Recomendaciones y mejoras para escalar</h3>
+    <h3 class="section-title">G.7 Qué haría para escalar (si la Etapa 1 funciona)</h3>
+    <p>Armé esta lista de mejoras pensando en el futuro:</p>
     <ul>
-        <li><strong>Optimización inmediata (Etapa 2):</strong> Migrar de localStorage a IndexedDB. Soporta índices, queries y hasta 50 MB. Reduce costo de serialización JSON.</li>
-        <li><strong>Virtualización de tabla (Etapa 2):</strong> Implementar react-window o similar para renderizar solo filas visibles. Reduce DOM de O(u × d) a O(20 × d) (solo las filas en viewport).</li>
-        <li><strong>Compresión de historial:</strong> En lugar de guardar todas las semanas, mantener solo las últimas 4 semanas en localStorage y archivar el resto en cloud.</li>
-        <li><strong>Batching de escrituras:</strong> Acumular cambios en memoria y flush a localStorage cada 5 segundos (o al cambiar de página), reduciendo I/O síncrona.</li>
-        <li><strong>Worker threads (Etapa 3):</strong> Para generación de CSV con u>1000, mover la lógica a un Web Worker para no bloquear el UI thread.</li>
+        <li><strong>Etapa 2 — IndexedDB:</strong> Migraría de localStorage a IndexedDB. Soporta 50 MB, tiene índices y no necesito parsear JSON todo el tiempo.</li>
+        <li><strong>Etapa 2 — Virtualización:</strong> Mostraría solo las 20 filas visibles de la tabla en lugar de las 5000. El DOM pasaría de O(u × d) a O(20 × d).</li>
+        <li><strong>Etapa 2 — Compresión:</strong> Guardaría solo las últimas 4 semanas en el navegador y archivaría el resto en la nube.</li>
+        <li><strong>Etapa 3 — Batching:</strong> Acumularía cambios en memoria y los guardaría cada 5 segundos, en lugar de escribir localStorage en cada clic.</li>
+        <li><strong>Etapa 3 — Web Workers:</strong> Para generar CSV con 1000+ empleados, movería el trabajo a un Web Worker para no congelar la pantalla.</li>
     </ul>
 
     <div class="page-footer">
@@ -2496,10 +2501,10 @@ La semana que viene largamos 🚀</div>
     <h2 class="annex-title">Suite de Pruebas Unitarias</h2>
 
     <h3 class="section-title">H.1 Alcance</h3>
-    <p>Se implementaron <strong>10 tests</strong> que cubren: almacenamiento, confirmaciones, cancelaciones, estados de semáforo, simulación de deadline, separación de datos por empleado y formato de fechas.</p>
+    <p>Armé <strong>10 tests</strong> que cubren lo que considero crítico: almacenamiento, confirmaciones, cancelaciones, estados de semáforo, simulación de deadline, separación de datos por empleado y formato de fechas.</p>
 
-    <h3 class="section-title">H.2 Metodología</h3>
-    <p>Framework propio ligero (~30 líneas) usando <code>console.assert</code>. No requiere dependencias externas. Los tests se ejecutan abriendo <code>tests.html</code> en cualquier navegador.</p>
+    <h3 class="section-title">H.2 Cómo los armé</h3>
+    <p>No quise instalar Jest ni Mocha para un MVP de Etapa 1. Me armé un mini-framework propio (~30 líneas) usando <code>console.assert</code>. Cero dependencias. Los tests se ejecutan abriendo <code>tests.html</code> en cualquier navegador.</p>
 
     <h3 class="section-title">H.3 Casos de prueba</h3>
     <div class="table-wrap">
@@ -2596,33 +2601,34 @@ La semana que viene largamos 🚀</div>
     <span class="annex-label">Anexo I</span>
     <h2 class="annex-title">Datos de Prueba y Reproducibilidad</h2>
 
-    <h3 class="section-title">I.1 Instrucciones de reproducibilidad</h3>
-    <p><strong>Paso 1:</strong> Clonar repo desde <code>https://github.com/rjruiz-dev/viandas-stacklab</code> o descargar ZIP.</p>
-    <p><strong>Paso 2:</strong> Abrir <code>index.html</code> en cualquier navegador moderno (Chrome, Firefox, Edge). No requiere servidor.</p>
-    <p><strong>Paso 3:</strong> Seleccionar empleado del dropdown superior (ej: "Martín Fernández").</p>
-    <p><strong>Paso 4:</strong> Ir a "Config" → marcar días de asistencia → guardar.</p>
-    <p><strong>Paso 5:</strong> Ir a "Menú" → seleccionar plato con radio button → "Confirmar vianda".</p>
-    <p><strong>Paso 6:</strong> Ir a "Admin" → verificar tabla semáforo con estado verde.</p>
-    <p><strong>Paso 7:</strong> Hacer clic en "Simular jueves 10 AM" → confirmar otro plato → verificar estado amarillo (tarde).</p>
+    <h3 class="section-title">I.1 Cómo lo corrí yo (y cómo lo podés correr vos)</h3>
+    <p><strong>Paso 1:</strong> Cloná el repo desde <code>https://github.com/rjruiz-dev/viandas-stacklab</code> o descargá el ZIP.</p>
+    <p><strong>Paso 2:</strong> Abrí <code>index.html</code> en cualquier navegador moderno. No necesitás servidor ni instalación.</p>
+    <p><strong>Paso 3:</strong> Seleccioná un empleado del dropdown (ej: "Martín Fernández").</p>
+    <p><strong>Paso 4:</strong> Andá a "Config" → marcá tus días de asistencia → guardá.</p>
+    <p><strong>Paso 5:</strong> Andá a "Menú" → seleccioná un plato con el radio button → "Confirmar vianda".</p>
+    <p><strong>Paso 6:</strong> Andá a "Admin" → deberías ver la tabla semáforo con tu confirmación en verde.</p>
+    <p><strong>Paso 7:</strong> Hacé clic en "Simular jueves 10 AM" → confirmá otro plato → debería aparecer en amarillo (tarde).</p>
 
-    <h3 class="section-title">I.2 Datos de prueba pre-cargados</h3>
-    <p>El archivo <code>menu.json</code> contiene el menú de la semana 12-16 de mayo 2026 con 6 opciones por día. No requiere configuración previa.</p>
+    <h3 class="section-title">I.2 Datos de prueba que incluí</h3>
+    <p>Armé un <code>menu.json</code> con el menú de la semana 12-16 de mayo 2026 (6 opciones por día). Está hardcodeado para que funcione inmediatamente sin configurar nada.</p>
 
-    <h3 class="section-title">I.3 Casos límite testeados</h3>
+    <h3 class="section-title">I.3 Casos límite que me fijé</h3>
+    <p>Estos son los escenarios raros que fui probando a mano:</p>
     <ul>
-        <li><strong>Sin selección:</strong> clic en "Confirmar" sin elegir plato → alerta obligatoria.</li>
-        <li><strong>Sin días de asistencia:</strong> empleado sin configurar → pantalla vacía con CTA a Config.</li>
-        <li><strong>Cambio de días:</strong> Martín pasa de [Lun,Mar,Mie] a [Lun,Jue] → reservas de Martes y Miércoles se limpian automáticamente.</li>
-        <li><strong>Deadline pasado:</strong> confirmaciones post-deadline se marcan como "Tarde" en tabla y CSV.</li>
-        <li><strong>Cambio de empleado:</strong> selector en header recarga página con datos del nuevo usuario.</li>
+        <li><strong>Sin selección:</strong> si hacés clic en "Confirmar" sin elegir plato, aparece una alerta. No deja guardar nada vacío.</li>
+        <li><strong>Sin días de asistencia:</strong> si un empleado no configuró días, la pantalla de menú muestra un CTA invitándolo a ir a Config.</li>
+        <li><strong>Cambio de días:</strong> si Martín pasa de asistir Lun/Mar/Mie a solo Lun/Jue, las reservas de Mar y Mie se borran automáticamente. No quedan huérfanas.</li>
+        <li><strong>Deadline pasado:</strong> después de activar "Simular jueves 10 AM", las nuevas confirmaciones aparecen como "Tarde" (amarillo) en tabla y CSV.</li>
+        <li><strong>Cambio de empleado:</strong> si cambiás el selector del header, la página recarga con los datos del nuevo usuario. No se mezclan.</li>
     </ul>
 
-    <h3 class="section-title">I.4 Entorno y dependencias</h3>
+    <h3 class="section-title">I.4 Qué necesitás para correrlo</h3>
     <ul>
-        <li><strong>Navegador:</strong> Cualquier navegador moderno con localStorage habilitado.</li>
-        <li><strong>Dependencias:</strong> Ninguna. Zero libraries, zero build step.</li>
-        <li><strong>Conexión:</strong> Solo requiere internet para cargar fuentes Google Fonts (se cachean).</li>
-        <li><strong>Servidor:</strong> Opcional. Funciona abriendo archivo directamente (file://).</li>
+        <li><strong>Navegador:</strong> Cualquiera moderno con localStorage habilitado (Chrome, Firefox, Edge).</li>
+        <li><strong>Dependencias:</strong> Ninguna. Zero libraries, zero build step. Lo armé así a propósito.</li>
+        <li><strong>Internet:</strong> Solo para cargar las fuentes de Google Fonts (se cachean en el navegador).</li>
+        <li><strong>Servidor:</strong> No hace falta. Funciona abriendo el archivo directamente (file://).</li>
     </ul>
 
     <div class="page-footer">
