@@ -2296,5 +2296,279 @@ La semana que viene largamos 🚀</div>
     </div>
 </div>
 
+<!-- ════════════════════════════════════════════════════════════
+     ANEXOS TÉCNICOS (Agregados para re-entrega)
+     ════════════════════════════════════════════════════════════ -->
+
+<!-- ── Página 12 ── -->
+<div class="page">
+    <div class="page-header">
+        <h1>Anexos Técnicos</h1>
+        <p class="subtitle">Arquitectura, algoritmos, pruebas y reproducibilidad</p>
+    </div>
+
+    <span class="annex-label">Anexo F</span>
+    <h2 class="annex-title">Arquitectura y Decisiones Técnicas</h2>
+
+    <h3 class="section-title">F.1 Supuestos y definiciones</h3>
+    <ul>
+        <li><strong>Usuario:</strong> empleado de StackLab que asiste a la oficina y consume viandas.</li>
+        <li><strong>Confirmación:</strong> registro de que un empleado pidió un plato específico para un día específico.</li>
+        <li><strong>Deadline:</strong> jueves 10:00 AM, momento en que Lucía cierra el pedido semanal.</li>
+        <li><strong>Estados posibles:</strong> confirmado (verde), tarde (amarillo), falta (rojo), no aplica (gris).</li>
+    </ul>
+
+    <h3 class="section-title">F.2 Estrategia general</h3>
+    <p>El sistema se resuelve en tres capas: configuración de asistencia, selección de platos y consolidación administrativa. Elegí HTML/CSS/JS vanilla sin frameworks ni build step porque el objetivo de la Etapa 1 es validar el flujo con usuarios reales, no perder tiempo en infraestructura. Si la hipótesis se confirma, la Etapa 2 migra a React + Supabase.</p>
+
+    <h3 class="section-title">F.3 Decisiones clave</h3>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr><th>Decisión</th><th>Opción A</th><th>Opción B</th><th>Elegida</th><th>Justificación</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Almacenamiento</td>
+                    <td>localStorage (cliente)</td>
+                    <td>Supabase/PostgreSQL (nube)</td>
+                    <td><strong>A</strong></td>
+                    <td>Zero setup, validación rápida. Migración trivial en Etapa 2.</td>
+                </tr>
+                <tr>
+                    <td>Framework frontend</td>
+                    <td>HTML/JS vanilla</td>
+                    <td>React/Vue</td>
+                    <td><strong>A</strong></td>
+                    <td>No requiere build step ni dependencias. Un archivo, un navegador, funciona.</td>
+                </tr>
+                <tr>
+                    <td>Estructura de datos</td>
+                    <td>Arrays (attendance[])</td>
+                    <td>Objetos con fechas como claves</td>
+                    <td><strong>A</strong></td>
+                    <td>Los días de la semana son fijos (Lun-Vie). Un array de 5 booleans es O(1) para acceso por índice y ocupa menos espacio que un objeto.</td>
+                </tr>
+                <tr>
+                    <td>Renderizado</td>
+                    <td>Re-render completo</td>
+                    <td>Update parcial (DOM)</td>
+                    <td><strong>Mix</strong></td>
+                    <td>Re-render completo para cambio de usuario (pocos empleados). Update parcial para confirmación de plato (evita perder selecciones de otros días).</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="page-footer">
+        <span>Viandas StackLab — Informe Final de Validación · Rodrigo Ruiz · 2026</span>
+        <span>Pág. 12</span>
+    </div>
+</div>
+
+<!-- ── Página 13 ── -->
+<div class="page">
+    <span class="annex-label">Anexo G</span>
+    <h2 class="annex-title">Análisis de Complejidad Algorítmica</h2>
+
+    <h3 class="section-title">G.1 Complejidad temporal</h3>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr><th>Función</th><th>Complejidad</th><th>Justificación</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>saveUser()</code></td>
+                    <td><strong>O(1)</strong></td>
+                    <td>localStorage.setItem() escribe un string serializado. El tamaño del objeto usuario es constante (5 booleans).</td>
+                </tr>
+                <tr>
+                    <td><code>getConfirmations()</code></td>
+                    <td><strong>O(n)</strong></td>
+                    <td>Parsea JSON de confirmaciones. n = cantidad de días confirmados (máx. 5 por empleado/semana).</td>
+                </tr>
+                <tr>
+                    <td><code>saveConfirmation()</code></td>
+                    <td><strong>O(1)</strong></td>
+                    <td>Lectura + modificación de un campo en objeto + escritura. n pequeño y acotado.</td>
+                </tr>
+                <tr>
+                    <td><code>renderAdminTable()</code></td>
+                    <td><strong>O(e × d)</strong></td>
+                    <td>e = empleados (5), d = días (5). Doble loop anidado. Para StackLab: 25 celdas, trivial.</td>
+                </tr>
+                <tr>
+                    <td><code>generateCSV()</code></td>
+                    <td><strong>O(e × d)</strong></td>
+                    <td>Recorre la misma matriz para generar strings. Mismo orden que renderAdminTable.</td>
+                </tr>
+                <tr>
+                    <td><code>updateCardForDate()</code></td>
+                    <td><strong>O(1)</strong></td>
+                    <td>Reemplaza un solo nodo DOM. No recorre la lista completa.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3 class="section-title">G.2 Complejidad espacial</h3>
+    <ul>
+        <li><strong>Usuario:</strong> O(1) — nombre (~20 chars) + 5 booleans.</li>
+        <li><strong>Confirmaciones/semana:</strong> O(d) — máximo 5 entradas por empleado. Cada entrada: fecha (10 chars) + estado + timestamp + índice de plato (~100 bytes).</li>
+        <li><strong>Total por empleado:</strong> ~500 bytes/semana. Para 50 empleados: ~25 KB/semana. localStorage soporta 5 MB, sobra espacio para años.</li>
+    </ul>
+
+    <h3 class="section-title">G.3 Escalabilidad y trade-offs</h3>
+    <p><strong>Cuello de botella:</strong> localStorage vive en el navegador del usuario. Si un empleado cambia de computadora, pierde sus datos. Para 5-50 empleados con estaciones fijas, no es problema. Para 500+ o trabajo remoto, requiere base de datos central (Etapa 2).</p>
+    <p><strong>Trade-off clave:</strong> Elegí re-render completo de la tabla admin en cada cambio de usuario porque con 5 empleados el costo es 25 celdas, imperceptible. Con 500 empleados, esto sería O(n²) y requeriría virtualización o paginación.</p>
+
+    <div class="page-footer">
+        <span>Viandas StackLab — Informe Final de Validación · Rodrigo Ruiz · 2026</span>
+        <span>Pág. 13</span>
+    </div>
+</div>
+
+<!-- ── Página 14 ── -->
+<div class="page">
+    <span class="annex-label">Anexo H</span>
+    <h2 class="annex-title">Suite de Pruebas Unitarias</h2>
+
+    <h3 class="section-title">H.1 Alcance</h3>
+    <p>Se implementaron <strong>10 tests</strong> que cubren: almacenamiento, confirmaciones, cancelaciones, estados de semáforo, simulación de deadline, separación de datos por empleado y formato de fechas.</p>
+
+    <h3 class="section-title">H.2 Metodología</h3>
+    <p>Framework propio ligero (~30 líneas) usando <code>console.assert</code>. No requiere dependencias externas. Los tests se ejecutan abriendo <code>tests.html</code> en cualquier navegador.</p>
+
+    <h3 class="section-title">H.3 Casos de prueba</h3>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr><th>#</th><th>Caso</th><th>Entrada</th><th>Resultado esperado</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>01</td>
+                    <td>localStorage disponible</td>
+                    <td>—</td>
+                    <td>storageAvailable() === true</td>
+                    <td>PASS</td>
+                </tr>
+                <tr>
+                    <td>02</td>
+                    <td>Guardar y leer usuario</td>
+                    <td>{name: "Martín", attendance: [T,F,T,F,F]}</td>
+                    <td>getCurrentUser() devuelve objeto idéntico</td>
+                    <td>PASS</td>
+                </tr>
+                <tr>
+                    <td>03</td>
+                    <td>Confirmación con plato</td>
+                    <td>date="2026-05-12", dishIndex=2</td>
+                    <td>Confirmación guardada con plato 2</td>
+                    <td>PASS</td>
+                </tr>
+                <tr>
+                    <td>04</td>
+                    <td>Cancelar confirmación</td>
+                    <td>date="2026-05-13"</td>
+                    <td>Confirmación eliminada de localStorage</td>
+                    <td>PASS</td>
+                </tr>
+                <tr>
+                    <td>05</td>
+                    <td>Semáforo: sin confirmación</td>
+                    <td>date sin confirmar</td>
+                    <td>status-missing (rojo)</td>
+                    <td>PASS</td>
+                </tr>
+                <tr>
+                    <td>06</td>
+                    <td>Semáforo: a tiempo</td>
+                    <td>date confirmado, late=false</td>
+                    <td>status-ok (verde)</td>
+                    <td>PASS</td>
+                </tr>
+                <tr>
+                    <td>07</td>
+                    <td>Semáforo: tarde</td>
+                    <td>date confirmado, late=true</td>
+                    <td>status-late (amarillo)</td>
+                    <td>PASS</td>
+                </tr>
+                <tr>
+                    <td>08</td>
+                    <td>Simulación deadline</td>
+                    <td>toggleDeadlineSimulated()</td>
+                    <td>Flag cambia true/false correctamente</td>
+                    <td>PASS</td>
+                </tr>
+                <tr>
+                    <td>09</td>
+                    <td>Formato ISO de fechas</td>
+                    <td>—</td>
+                    <td>nowISO() devuelve YYYY-MM-DD</td>
+                    <td>PASS</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>Datos separados por empleado</td>
+                    <td>Martín confirma lunes; Sofía no</td>
+                    <td>Confirmación de Martín no aparece en Sofía</td>
+                    <td>PASS</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3 class="section-title">H.4 Cómo ejecutar</h3>
+    <p>Abrir <code>tests.html</code> (incluye <code>app.js</code> + <code>tests.js</code>) en cualquier navegador. Resultados visibles inmediatamente. No requiere servidor ni dependencias.</p>
+
+    <div class="page-footer">
+        <span>Viandas StackLab — Informe Final de Validación · Rodrigo Ruiz · 2026</span>
+        <span>Pág. 14</span>
+    </div>
+</div>
+
+<!-- ── Página 15 ── -->
+<div class="page">
+    <span class="annex-label">Anexo I</span>
+    <h2 class="annex-title">Datos de Prueba y Reproducibilidad</h2>
+
+    <h3 class="section-title">I.1 Instrucciones de reproducibilidad</h3>
+    <p><strong>Paso 1:</strong> Clonar repo desde <code>https://github.com/rjruiz-dev/viandas-stacklab</code> o descargar ZIP.</p>
+    <p><strong>Paso 2:</strong> Abrir <code>index.html</code> en cualquier navegador moderno (Chrome, Firefox, Edge). No requiere servidor.</p>
+    <p><strong>Paso 3:</strong> Seleccionar empleado del dropdown superior (ej: "Martín Fernández").</p>
+    <p><strong>Paso 4:</strong> Ir a "Config" → marcar días de asistencia → guardar.</p>
+    <p><strong>Paso 5:</strong> Ir a "Menú" → seleccionar plato con radio button → "Confirmar vianda".</p>
+    <p><strong>Paso 6:</strong> Ir a "Admin" → verificar tabla semáforo con estado verde.</p>
+    <p><strong>Paso 7:</strong> Hacer clic en "Simular jueves 10 AM" → confirmar otro plato → verificar estado amarillo (tarde).</p>
+
+    <h3 class="section-title">I.2 Datos de prueba pre-cargados</h3>
+    <p>El archivo <code>menu.json</code> contiene el menú de la semana 12-16 de mayo 2026 con 6 opciones por día. No requiere configuración previa.</p>
+
+    <h3 class="section-title">I.3 Casos límite testeados</h3>
+    <ul>
+        <li><strong>Sin selección:</strong> clic en "Confirmar" sin elegir plato → alerta obligatoria.</li>
+        <li><strong>Sin días de asistencia:</strong> empleado sin configurar → pantalla vacía con CTA a Config.</li>
+        <li><strong>Cambio de días:</strong> Martín pasa de [Lun,Mar,Mie] a [Lun,Jue] → reservas de Martes y Miércoles se limpian automáticamente.</li>
+        <li><strong>Deadline pasado:</strong> confirmaciones post-deadline se marcan como "Tarde" en tabla y CSV.</li>
+        <li><strong>Cambio de empleado:</strong> selector en header recarga página con datos del nuevo usuario.</li>
+    </ul>
+
+    <h3 class="section-title">I.4 Entorno y dependencias</h3>
+    <ul>
+        <li><strong>Navegador:</strong> Cualquier navegador moderno con localStorage habilitado.</li>
+        <li><strong>Dependencias:</strong> Ninguna. Zero libraries, zero build step.</li>
+        <li><strong>Conexión:</strong> Solo requiere internet para cargar fuentes Google Fonts (se cachean).</li>
+        <li><strong>Servidor:</strong> Opcional. Funciona abriendo archivo directamente (file://).</li>
+    </ul>
+
+    <div class="page-footer">
+        <span>Viandas StackLab — Informe Final de Validación · Rodrigo Ruiz · 2026</span>
+        <span>Pág. 15</span>
+    </div>
+</div>
+
 </body>
 </html>
