@@ -8,6 +8,33 @@ StackLab es una empresa de software con aproximadamente 50 empleados en Santa Fe
 
 Este proyecto construye una herramienta web simple para que los empleados configuren sus días de asistencia y confirmen viandas con un solo clic, mientras la administradora recibe un consolidado automático sin intervención manual.
 
+## Cómo Ejecutar (Reproducibilidad)
+
+Este proyecto **no requiere instalación de dependencias ni servidor web**.
+
+### Opción A: Abrir directamente (recomendado)
+```bash
+git clone https://github.com/rjruiz-dev/viandas-stacklab.git
+cd viandas-stacklab/prototype/
+# Abrí index.html en cualquier navegador moderno (doble clic)
+```
+
+### Opción B: Servidor local (si preferís)
+```bash
+cd viandas-stacklab/prototype/
+python -m http.server 8000
+# Navegá a http://localhost:8000
+```
+
+### Tests unitarios
+```bash
+# Abrí tests.html en navegador. Resultados visibles inmediatamente.
+# 10 pruebas cubren: almacenamiento, confirmaciones, cancelaciones,
+# estados de semáforo, deadline, separación de datos por empleado.
+```
+
+**Requisitos:** Navegador moderno con localStorage habilitado. **Zero dependencias.**
+
 ## Enfoque Híbrido
 
 El repositorio sigue un enfoque progresivo: documentación → prototipo → código fuente.

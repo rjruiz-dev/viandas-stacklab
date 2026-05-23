@@ -2,7 +2,20 @@
    Viandas StackLab — Etapa 1: Esqueleto
    Shared vanilla JavaScript: localStorage I/O, state management,
    user simulation, reset, deadline, notifications, traffic-light
-   Zero dependencies · Zero build step
+   
+   STACK: JavaScript ES5+ (vanilla, zero dependencies)
+   
+   CÓMO EJECUTAR:
+     1. Este archivo es incluido por index.html, config.html y admin.html.
+     2. No requiere compilación ni bundling. Funciona directo en navegador.
+     3. Abrir cualquier archivo .html del directorio prototype/ en navegador.
+   
+   DEPENDENCIAS: Ninguna.
+   
+   TESTS: Abrir tests.html en navegador para ejecutar 10 pruebas unitarias.
+   
+   AUTOR: Rodrigo Ruiz
+   FECHA: Mayo 2026
    ============================================================ */
 
 ;(function () {
