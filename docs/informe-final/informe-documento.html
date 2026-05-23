@@ -2371,57 +2371,118 @@ La semana que viene largamos 🚀</div>
     <span class="annex-label">Anexo G</span>
     <h2 class="annex-title">Análisis de Complejidad Algorítmica</h2>
 
-    <h3 class="section-title">G.1 Complejidad temporal</h3>
+    <h3 class="section-title">G.1 Definición de variables de escala</h3>
+    <ul>
+        <li><strong>u</strong> = cantidad de usuarios (empleados) que usan el sistema.</li>
+        <li><strong>d</strong> = días de la semana con menú (constante: 5, de lunes a viernes).</li>
+        <li><strong>p</strong> = platos disponibles por día (constante: 6 opciones).</li>
+        <li><strong>c</strong> = confirmaciones históricas almacenadas por usuario (crece linealmente con las semanas).</li>
+        <li><strong>n</strong> = total de registros procesados en una operación (ej: u × d para renderizar tabla).</li>
+    </ul>
+
+    <h3 class="section-title">G.2 Análisis temporal: Big-O y pasos dominantes</h3>
     <div class="table-wrap">
         <table>
             <thead>
-                <tr><th>Función</th><th>Complejidad</th><th>Justificación</th></tr>
+                <tr><th>Operación</th><th>Big-O</th><th>Paso dominante</th><th>Explicación</th></tr>
             </thead>
             <tbody>
                 <tr>
                     <td><code>saveUser()</code></td>
                     <td><strong>O(1)</strong></td>
-                    <td>localStorage.setItem() escribe un string serializado. El tamaño del objeto usuario es constante (5 booleans).</td>
+                    <td>Serialización JSON + escritura a localStorage</td>
+                    <td>El objeto usuario tiene tamaño fijo (nombre + 5 booleans). localStorage.setItem() escribe un string de longitud constante.</td>
                 </tr>
                 <tr>
                     <td><code>getConfirmations()</code></td>
-                    <td><strong>O(n)</strong></td>
-                    <td>Parsea JSON de confirmaciones. n = cantidad de días confirmados (máx. 5 por empleado/semana).</td>
+                    <td><strong>O(c)</strong></td>
+                    <td>Parseo de JSON desde localStorage</td>
+                    <td>c = confirmaciones históricas del usuario. En la práctica c ≤ 5 (una semana), pero si guardamos historial, c crece linealmente con el tiempo.</td>
                 </tr>
                 <tr>
                     <td><code>saveConfirmation()</code></td>
-                    <td><strong>O(1)</strong></td>
-                    <td>Lectura + modificación de un campo en objeto + escritura. n pequeño y acotado.</td>
+                    <td><strong>O(c)</strong></td>
+                    <td>Lectura del objeto completo + modificación + re-escritura</td>
+                    <td>Aunque solo modificamos una entrada, localStorage obliga a leer y re-escribir todo el objeto de confirmaciones. c determina el tamaño de esa operación.</td>
                 </tr>
                 <tr>
                     <td><code>renderAdminTable()</code></td>
-                    <td><strong>O(e × d)</strong></td>
-                    <td>e = empleados (5), d = días (5). Doble loop anidado. Para StackLab: 25 celdas, trivial.</td>
+                    <td><strong>O(u × d)</strong></td>
+                    <td>Doble loop: recorre cada empleado × cada día</td>
+                    <td>Para cada celda (u × d) consulta localStorage (O(1) con hash) y genera HTML. Con u=5, d=5: 25 iteraciones, trivial. Con u=1000, d=5: 5000 iteraciones, aún manejable en navegador moderno (~5ms).</td>
                 </tr>
                 <tr>
                     <td><code>generateCSV()</code></td>
-                    <td><strong>O(e × d)</strong></td>
-                    <td>Recorre la misma matriz para generar strings. Mismo orden que renderAdminTable.</td>
+                    <td><strong>O(u × d)</strong></td>
+                    <td>Recorre matriz empleado-día y concatena strings</td>
+                    <td>Mismo orden que renderAdminTable, pero con overhead adicional de escapeCSV (revisión char-by-char de cada celda). En la práctica, el string resultante para 1000 empleados pesa ~500 KB, generable en <100ms.</td>
                 </tr>
                 <tr>
                     <td><code>updateCardForDate()</code></td>
                     <td><strong>O(1)</strong></td>
-                    <td>Reemplaza un solo nodo DOM. No recorre la lista completa.</td>
+                    <td>Reemplazo de un nodo DOM por otro pre-renderizado</td>
+                    <td>No recorre la lista de días. El navegador actualiza solo ese subtree del DOM.</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <h3 class="section-title">G.2 Complejidad espacial</h3>
+    <h3 class="section-title">G.3 Análisis espacial: memoria auxiliar y estructuras</h3>
     <ul>
-        <li><strong>Usuario:</strong> O(1) — nombre (~20 chars) + 5 booleans.</li>
-        <li><strong>Confirmaciones/semana:</strong> O(d) — máximo 5 entradas por empleado. Cada entrada: fecha (10 chars) + estado + timestamp + índice de plato (~100 bytes).</li>
-        <li><strong>Total por empleado:</strong> ~500 bytes/semana. Para 50 empleados: ~25 KB/semana. localStorage soporta 5 MB, sobra espacio para años.</li>
+        <li><strong>Usuario activo:</strong> O(1) — 1 objeto {name, attendance[5]} ≈ 50 bytes en JSON.</li>
+        <li><strong>Confirmaciones:</strong> O(c) — c entradas {date: {confirmed, late, dishIndex, timestamp}}. Cada entrada ≈ 80 bytes. Para c=5/semana: 400 bytes/usuario.</li>
+        <li><strong>Tabla admin en memoria:</strong> O(u × d) — matriz de celdas generada para renderizado. En el DOM, cada celda es un nodo (~200 bytes). Para u=1000, d=5: ~1 MB de nodos.</li>
+        <li><strong>Menú semanal:</strong> O(d × p) — 5 días × 6 platos = 30 strings. Fijo, no crece con usuarios.</li>
+        <li><strong>Total por usuario/semana:</strong> ~500 bytes. Para 1000 usuarios: ~500 KB. Para 10.000 usuarios: ~5 MB (límite de localStorage por dominio).</li>
     </ul>
 
-    <h3 class="section-title">G.3 Escalabilidad y trade-offs</h3>
-    <p><strong>Cuello de botella:</strong> localStorage vive en el navegador del usuario. Si un empleado cambia de computadora, pierde sus datos. Para 5-50 empleados con estaciones fijas, no es problema. Para 500+ o trabajo remoto, requiere base de datos central (Etapa 2).</p>
-    <p><strong>Trade-off clave:</strong> Elegí re-render completo de la tabla admin en cada cambio de usuario porque con 5 empleados el costo es 25 celdas, imperceptible. Con 500 empleados, esto sería O(n²) y requeriría virtualización o paginación.</p>
+    <h3 class="section-title">G.4 Casos: mejor, promedio y peor</h3>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr><th>Escenario</th><th>Condición</th><th>Impacto</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Mejor caso</strong></td>
+                    <td>Usuario sin confirmaciones previas (c=0)</td>
+                    <td>saveConfirmation() opera sobre objeto vacío. O(1) real. Renderizado mínimo.</td>
+                </tr>
+                <tr>
+                    <td><strong>Caso promedio</strong></td>
+                    <td>Usuario confirma 2-3 días por semana (c=3)</td>
+                    <td>Operaciones sobre objeto pequeño. localStorage I/O < 1ms. DOM updates imperceptibles.</td>
+                </tr>
+                <tr>
+                    <td><strong>Peor caso</strong></td>
+                    <td>Historial acumulado de 52 semanas (c=260) + 1000 usuarios simultáneos</td>
+                    <td>localStorage parsea 260 entradas × 1000 usuarios = 260K objetos. renderAdminTable genera 5000 celdas. localStorage quota de 5 MB se alcanza.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3 class="section-title">G.5 Cuellos de botella prácticos (más allá del Big-O)</h3>
+    <p><strong>I/O de localStorage:</strong> Aunque getItem/setItem son O(1), son síncronas y bloquean el hilo principal. Con 1000 usuarios y escrituras concurrentes, el navegador puede congelarse 50-100ms. En la práctica esto no ocurre porque cada empleado opera su propio navegador (no hay concurrencia real).</p>
+    <p><strong>Serialización JSON:</strong> JSON.stringify/parse son costosos para objetos grandes. Con c=260 confirmaciones, parsear toma ~2ms. No es crítico para interacciones humanas, pero lo sería si procesáramos lotes de 1000 usuarios en segundo plano.</p>
+    <p><strong>Renderizado DOM:</strong> Generar 5000 celdas de tabla (u=1000) crea ~5000 nodos DOM. El navegador moderno lo renderiza en <50ms, pero el reflow puede hacer scroll lento. Para u>500, sería necesario virtualizar la tabla (mostrar solo filas visibles).</p>
+
+    <h3 class="section-title">G.6 Implicancias al escalar</h3>
+    <ul>
+        <li><strong>Para 50 empleados (actual StackLab):</strong> El sistema funciona sin fricción. localStorage sobra. Renderizado instantáneo.</li>
+        <li><strong>Para 500 empleados:</strong> localStorage sigue siendo viable (~250 KB), pero el renderizado de la tabla admin comienza a notarse (50ms de lag). Se recomienda virtualización o paginación.</li>
+        <li><strong>Para 5000 empleados:</strong> localStorage alcanza su límite de 5 MB. El parseo de JSON en cada operación introduce latencia perceptible. Se requiere base de datos indexada (IndexedDB o Supabase) con paginación server-side.</li>
+        <li><strong>Para 50.000 empleados:</strong> localStorage es inviable. Se requiere arquitectura cliente-servidor con API REST, base de datos PostgreSQL, caché Redis y CDN para assets estáticos.</li>
+    </ul>
+
+    <h3 class="section-title">G.7 Recomendaciones y mejoras para escalar</h3>
+    <ul>
+        <li><strong>Optimización inmediata (Etapa 2):</strong> Migrar de localStorage a IndexedDB. Soporta índices, queries y hasta 50 MB. Reduce costo de serialización JSON.</li>
+        <li><strong>Virtualización de tabla (Etapa 2):</strong> Implementar react-window o similar para renderizar solo filas visibles. Reduce DOM de O(u × d) a O(20 × d) (solo las filas en viewport).</li>
+        <li><strong>Compresión de historial:</strong> En lugar de guardar todas las semanas, mantener solo las últimas 4 semanas en localStorage y archivar el resto en cloud.</li>
+        <li><strong>Batching de escrituras:</strong> Acumular cambios en memoria y flush a localStorage cada 5 segundos (o al cambiar de página), reduciendo I/O síncrona.</li>
+        <li><strong>Worker threads (Etapa 3):</strong> Para generación de CSV con u>1000, mover la lógica a un Web Worker para no bloquear el UI thread.</li>
+    </ul>
 
     <div class="page-footer">
         <span>Viandas StackLab — Informe Final de Validación · Rodrigo Ruiz · 2026</span>
