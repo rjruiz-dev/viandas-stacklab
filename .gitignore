@@ -22,3 +22,7 @@ docs/informe-final/package-lock.json
 .env
 .env.local
 docs/informe-final/presentacion.html
+
+# Scripts y exports locales del informe
+docs/informe-final/crear-google-doc.gs
+docs/informe-final/informe-viandas-stacklab.html

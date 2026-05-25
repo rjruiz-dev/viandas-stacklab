@@ -12,7 +12,7 @@
 | **MVP en vivo** | https://rjruiz-dev.github.io/viandas-stacklab/ |
 | **Repositorio** | https://github.com/rjruiz-dev/viandas-stacklab |
 
-> **⚠️ Nota legal y de privacidad:** Los nombres de personas (Martín Fernández, Lucía Gómez, Diego Martínez, Sofía Herrera) y la empresa "StackLab" son ficticios, creados para proteger la identidad de empleados reales y evitar exponer información sensible de la empresa y proveedores involucrados. El problema descrito (gestión de viandas mediante Excel, olvidos, desperdicio, fricción administrativa) es **real y documentado**. Las métricas, citas textuales y evidencias se sustentan en observación directa del entorno laboral, time-tracking y entrevistas anonimizadas elaboradas exclusivamente para este informe.
+> **⚠️ Nota de privacidad:** Los nombres de personas (Martín Fernández, Lucía Gómez, Diego Martínez, Sofía Herrera) y la denominación "StackLab" son seudónimos adoptados para proteger la identidad de los empleados reales involucrados. La empresa, el rol de cada persona y el contexto organizacional son reales. Las planillas, capturas de pantalla y el email de recordatorio incluidos en este informe son **documentos originales y no modificados** extraídos directamente de las herramientas internas de la empresa. Las métricas, citas y observaciones se obtuvieron mediante trabajo de campo directo, time-tracking y entrevistas realizadas en el entorno laboral real.
 
 ---
 
@@ -113,7 +113,7 @@ Para cuantificar la fragilidad del sistema, se auditaron las planillas reales (a
 
 5. **Sin recordatorios automáticos**: Lucía cruza mentalmente la lista y contacta uno por uno a quienes no confirmaron.
 
-6. **Riesgo de sobreescritura**: caso documentado — "Rodrigo Sánchez" marcó un plato en la fila de "Roberto Sánchez", generando una vianda sobrante y un consolidado incorrecto al proveedor.
+6. **Riesgo de sobreescritura**: caso documentado — "Franco Formigo" marcó un plato en la fila de "Franco Friggeri", generando una vianda sobrante y un consolidado incorrecto al proveedor.
 
 ![Planilla de la semana auditada — semana 12-16 mayo 2026](assets/capturas/planilla-de-la-semana.png)
 
@@ -375,9 +375,12 @@ Las entrevistas fueron diseñadas específicamente para evitar respuestas sesgad
 | **MVP en vivo** | Vista empleado + vista admin desplegadas en GitHub Pages | https://rjruiz-dev.github.io/viandas-stacklab/ |
 | **Repositorio** | Código fuente completo del proyecto | https://github.com/rjruiz-dev/viandas-stacklab |
 | **Tests unitarios** | 10 pruebas ejecutables en navegador, sin dependencias | `prototype/tests.html` |
-| **Planilla Menú Semanal** | Versión anonimizada con códigos de plato (C1, C2, P1, S1, L1, L2) y opciones especiales | `docs/informe-final/assets/planilla-menu-semanal.md` |
-| **Planilla Empleados** | Seguimiento individual de pedidos por día con marcas de confirmación, faltantes y observaciones | `docs/informe-final/assets/planilla-empleados.md` |
-| **Consolidado Diario** | Resumen para el proveedor con conteos por código, totales y cálculo económico de no-reclamadas | `docs/informe-final/assets/planilla-consolidado.md` |
+| **Captura — Menú Semanal** | Planilla original de la empresa: menú con códigos de plato (C1, C2, P1, S1, L1, L2) | `docs/informe-final/assets/capturas/menu-semanal.png` |
+| **Captura — Planilla de la Semana** | Planilla original de confirmaciones: seguimiento individual por empleado y día | `docs/informe-final/assets/capturas/planilla-de-la-semana.png` |
+| **Captura — Lista del Día** | Vista de consolidado diario utilizada para comunicar el pedido al proveedor | `docs/informe-final/assets/capturas/lista-del-dia.png` |
+| **Captura — Email de Recordatorio** | Email original enviado por Lucía a todos los empleados cada semana | `docs/informe-final/assets/capturas/recordatorio-email.png` |
+| **Planilla Empleados (tabular)** | Seguimiento individual de pedidos: marcas de confirmación, faltantes y observaciones | `docs/informe-final/assets/planilla-empleados.md` |
+| **Consolidado Diario (tabular)** | Resumen para el proveedor: conteos por código, totales y cálculo económico de no-reclamadas | `docs/informe-final/assets/planilla-consolidado.md` |
 | **Gráficos de métricas** | 4 PNG: evolución NSM, pérdidas mensuales, tiempo admin, dashboard compacto 4 KPIs | `docs/informe-final/assets/graficos/` |
 
 ---
