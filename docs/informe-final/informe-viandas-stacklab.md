@@ -67,6 +67,8 @@ Las hipótesis H1 y H4 determinan la viabilidad del proyecto. Si a las 4 semanas
 | Solicitudes de cambio post-deadline | 6-10 por semana | Historial de mensajes directos de WhatsApp a Lucía |
 | Empleados sin confirmar (semana auditada) | 11 de 20 (55%) | Auditoría planilla semana 12-16 mayo 2026 |
 
+![Email de recordatorio de viandas — ejemplo real](assets/capturas/recordatorio-email.png)
+
 **Desglose del flujo actual — por qué tiene 5+ pasos:**
 
 1. Abrir el email de recordatorio (en bandeja saturada de Jira, Slack y GitHub).
@@ -79,27 +81,12 @@ Cada paso es una oportunidad de abandono. La respuesta natural es "lo hago despu
 
 ### 3.2 Datos Cualitativos — Citas Textuales
 
-**Martín Fernández** (Desarrollador, 37 años — usa el comedor 3-4 veces por semana):
-
-> *"Ya ni leo los emails de Lucía. Veo el asunto 'PEDIDO VIANDAS — Semana...' y digo 'después lo hago'. Después me olvido y el jueves a las 10:30 me quiero matar. Me da culpa cuando veo mi vianda en la heladera el viernes y sé que la empresa gastó plata al pedo. Pero entre Jira, Slack y GitHub, el email es lo último que miro."*
-
-**Lucía Gómez** (RRHH / Administración, 45 años):
-
-> *"Me cansa ser la que manda recordatorios todos los miércoles. Siento que molesto, pero si no lo hago, la mitad no pide."*
-
-> *"Los jueves de 9 a 11 AM son un infierno. Estoy consolidando la planilla, me escriben tres personas por WhatsApp diciendo 'me olvidé, ¿me agregás?', y el proveedor me espera a las 11. Termino anotando todo a mano en un papelito. El mes pasado armé una planilla con fórmulas condicionales para trackear quién confirmó y quién no. Le dediqué un sábado a la tarde de mi tiempo libre."*
-
-**Diego Martínez** (QA, 34 años):
-
-> *"Desde el celular ni lo intento porque la planilla se ve horrible. Espero a estar en la compu, abro el mail, busco el link, abro la planilla... y cuando llego son tantos pasos que lo dejo para después del almuerzo, y después me olvido por completo."*
-
-> *"La semana pasada fui a la oficina el viernes por una reunión que me avisaron el jueves a la tarde. Ya había pasado el deadline. Tuve que pedir delivery. $8.500 pesos tirados. Me dolió."*
-
-**Sofía Herrera** (Diseñadora UX, 29 años — cambia menú frecuentemente):
-
-> *"En una empresa de tecnología estamos pidiendo viandas con Excel. Es una locura."*
-
-> *"Yo como vegetariano algunos días y otros no. Si el menú del jueves tiene algo que no me gusta, quisiera poder cambiarlo, pero si ya mandé el pedido el lunes, cagué."*
+| Entrevistado | Cita representativa |
+|---|---|
+| **Martín Fernández**<br>Desarrollador, 37 años<br>Comedor 3-4×/semana | *"Ya ni leo los emails de Lucía. Veo el asunto 'PEDIDO VIANDAS' y digo 'después lo hago'. Después me olvido y el jueves a las 10:30 me quiero matar. Entre Jira, Slack y GitHub, el email es lo último que miro."* |
+| **Lucía Gómez**<br>RRHH / Administración, 45 años | *"Los jueves de 9 a 11 AM son un infierno. Me escriben por WhatsApp diciendo 'me olvidé, ¿me agregás?' y el proveedor me espera a las 11. El mes pasado armé fórmulas condicionales para trackear confirmaciones. Le dediqué un sábado de mi tiempo libre."* |
+| **Diego Martínez**<br>QA, 34 años | *"Desde el celular ni lo intento porque la planilla se ve horrible. Son tantos pasos que lo dejo para después del almuerzo y me olvido. La semana pasada tuve que pedir delivery. $8.500 pesos tirados. Me dolió."* |
+| **Sofía Herrera**<br>Diseñadora UX, 29 años | *"En una empresa de tecnología estamos pidiendo viandas con Excel. Es una locura. Si el menú del jueves tiene algo que no me gusta, quisiera cambiarlo, pero si ya mandé el pedido el lunes, no puedo."* |
 
 ### 3.3 Señales de Validación del Problema
 
@@ -111,6 +98,8 @@ Cada paso es una oportunidad de abandono. La respuesta natural es "lo hago despu
 | Más de 3 personas describieron el mismo problema | ✓ Sí | Los 4 usaron frases como "me olvidé", "no llegué a completar" y "ya había mandado el pedido" de forma independiente. |
 
 ### 3.4 Evidencia del Workaround Actual — Auditoría de Planillas Excel
+
+![Menú semanal — planilla Excel real](assets/capturas/menu-semanal.png)
 
 Para cuantificar la fragilidad del sistema, se auditaron las planillas reales (anonimizadas) de la semana del 12 al 16 de mayo de 2026. Resultados:
 
@@ -125,6 +114,8 @@ Para cuantificar la fragilidad del sistema, se auditaron las planillas reales (a
 5. **Sin recordatorios automáticos**: Lucía cruza mentalmente la lista y contacta uno por uno a quienes no confirmaron.
 
 6. **Riesgo de sobreescritura**: caso documentado — "Rodrigo Sánchez" marcó un plato en la fila de "Roberto Sánchez", generando una vianda sobrante y un consolidado incorrecto al proveedor.
+
+![Planilla de la semana auditada — semana 12-16 mayo 2026](assets/capturas/planilla-de-la-semana.png)
 
 ---
 
@@ -223,6 +214,8 @@ La Etapa 1 fue desarrollada bajo la filosofía *Zero Setup*: validar la UX rápi
 | Datos | JSON estático (`menu.json`) | Hardcodeado para Etapa 1; migrará a tabla en DB en Etapa 2 |
 | Tests | Framework propio (~30 líneas) | Sin dependencias externas; ejecutable en cualquier navegador sin configuración |
 
+![Lista del día — consolidado manual actual](assets/capturas/lista-del-dia.png)
+
 **Decisión clave — localStorage vs. Supabase:** podía pasar 2 días configurando Supabase o 2 horas armando el esqueleto con localStorage. Elegí la segunda: si el problema no valía la pena resolverlo, no tenía sentido incurrir en costos de infraestructura antes de validar la interfaz.
 
 **Decisión clave — Arrays vs. Objetos para días de asistencia:** los días son invariablemente fijos (Lun-Vie). Un array de 5 booleans es **O(1)** por índice y ocupa una fracción de lo que ocuparía un objeto con claves de fecha completas, que además requeriría parsear fechas ISO.
@@ -305,25 +298,9 @@ Se implementó un mini-framework de testing propio (~30 líneas de JS) sin depen
 
 El sistema fue diseñado con reproducibilidad como requisito desde el inicio. Cualquier evaluador puede levantar el entorno completo en menos de 2 minutos, sin dependencias externas.
 
-**Requisitos mínimos:** navegador moderno (Chrome, Firefox, Safari o Edge) con localStorage habilitado. Sin Node.js, npm, Docker ni variables de entorno.
+**Requisitos mínimos:** navegador moderno (Chrome, Firefox, Safari o Edge) con localStorage habilitado. Sin instalación ni configuración.
 
-**Opción A — Acceso directo (recomendado para evaluación):**
-
-```bash
-git clone https://github.com/rjruiz-dev/viandas-stacklab.git
-cd viandas-stacklab/prototype/
-# Abrí index.html con doble clic en cualquier navegador
-```
-
-**Opción B — Servidor local (para evitar restricciones CORS en algunos navegadores):**
-
-```bash
-cd viandas-stacklab/prototype/
-python -m http.server 8000
-# Navegá a http://localhost:8000
-```
-
-**Opción C — MVP en producción (sin ningún setup):**
+**MVP en producción (sin ningún setup):**
 
 ```
 https://rjruiz-dev.github.io/viandas-stacklab/
@@ -407,13 +384,11 @@ Las entrevistas fueron diseñadas específicamente para evitar respuestas sesgad
 
 ### 7.9 Gráficos de Métricas — Detalle
 
-<table>
-<tr>
-<td><img src="assets/graficos/grafico-1-nsm-evolucion.png" width="200"><br><em>NSM semanal: baseline 72% → ≥ 95%</em></td>
-<td><img src="assets/graficos/grafico-2-perdidas-mensuales.png" width="200"><br><em>Pérdidas: $71-129k → ≤ $15k ARS/mes</em></td>
-<td><img src="assets/graficos/grafico-3-tiempo-admin.png" width="200"><br><em>Tiempo admin: 2.5h → ≤ 30 min/semana</em></td>
-</tr>
-</table>
+![NSM semanal: baseline 72% → ≥ 95%](assets/graficos/grafico-1-nsm-evolucion.png)
+
+![Pérdidas mensuales: $71-129k → ≤ $15k ARS/mes](assets/graficos/grafico-2-perdidas-mensuales.png)
+
+![Tiempo administrativo: 2.5h → ≤ 30 min/semana](assets/graficos/grafico-3-tiempo-admin.png)
 
 ---
 
